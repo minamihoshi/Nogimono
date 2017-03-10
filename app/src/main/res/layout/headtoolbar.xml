@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/headtoolbar"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    android:background="@color/main_bg_color"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="horizontal" >
+
+    <!-- 顶部标题 -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="4.0"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/top_back_ground"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_back"
+            android:gravity="left|center_vertical"
+            android:onClick="back"
+            android:orientation="horizontal"
+            android:paddingRight="20dp" >
+
+            <ImageButton
+                android:id="@+id/top_button_back"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical|left"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/back_bg"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:paddingBottom="5dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/back_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:focusable="false"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="5dp"
+                android:text="返回"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/headtitle_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="left"
+                android:paddingLeft="15dp"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0" >
+
+            <ImageView
+                android:id="@+id/user_imgs_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/left_btn_onbg"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginRight="2dp"
+            android:background="@null"
+            android:gravity="center_vertical|center_horizontal"
+            android:onClick="doActionleft"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="0dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/headtoolbar_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="3.0"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/headtoolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="4.0"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal" >
+        </LinearLayout>
+
+</LinearLayout>

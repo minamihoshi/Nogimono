@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">乃木物</string>
+    <string name="intentent_slow">网络似乎开小差</string>
+    <string name="tab_mainpage">主页</string>
+    <string name="tab_mainpage_me">我</string>
+    <string name="tab_mainpage_gz">关注</string>
+    <string name="tab_1_txt">新闻</string>
+    <string name="tab_2_txt">博客</string>
+    <string name="tab_3_txt">视频</string>
+    <string name="tab_4_txt">杂志</string>
+    <string name="tab_5_txt">其他</string>
+    <string name="news_type">类型:</string>
+    <string name="news_times">时间:</string>
+    <!--博客-->
+    <string name="blog_title1">时间</string>
+    <string name="blog_title2">成员</string>
+   <!--设置-->
+    <string name="set1_txt">设置</string>
+    <string name="set2_txt">关于我们</string>
+    <string name="set3_txt">退出</string>
+    <string name="nodata">没有数据</string>
+    <string name="news_info">新闻详情</string>
+    <!-- 下拉/上拉菜单 -->
+    <string name="pull_to_refresh_pull_label">下拉可以加载更多数据</string>
+    <string name="pull_to_refresh_release_label">松开立即加载更多数据</string>
+    <string name="pull_to_refresh_refreshing_label">正在加载数据...</string>
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_from_bottom_pull_label">上拉可以加载更多数据</string>
+    <string name="pull_to_refresh_from_bottom_release_label">松开立即加载更多数据</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">正在加载数据...</string>
+</resources>

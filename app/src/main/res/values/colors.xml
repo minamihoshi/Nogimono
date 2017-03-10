@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="main_bg_color">#800080</color>
+    <color name="main_tab_bg">#fcfcfc </color>
+    <color name="LightGray_tab">#9B9B9B</color>
+    <color name="blue">#08a9f8</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#C0C0C0 </color>
+    <color name="black">#000000 </color>
+    <color name="barbtn_back">#039de8</color>
+    <color name="more_bg">#f3f9fe</color>
+    <color name="purple_btn_bg">#9900ff</color>
+    <color name="purple_btn_normal">#800080</color>
+    <color name="purple_btn_pressed">#9B9B9B</color>
+    <color name="LightGray">#999999</color>
+     <color name="news_line_pink">#d8357e</color>
+    <color name="q_blue">#0080FF</color>
+    <color name="lavender">#FFF0F5</color>
+    <color name="mainpage_radiocolor">#b2bdc5</color>
+    <color name="default_color">#02a6d8</color>
+    <color name="default_color_dark">#52a6b8</color>
+    <color name="color_red">#FF0000</color>
+</resources>
