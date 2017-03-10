@@ -6,6 +6,11 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="5dp"
+        android:background="@color/gray" />
 
     <RadioGroup
         android:id="@+id/blog_group"
@@ -14,7 +19,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="3dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -29,12 +34,18 @@
             android:text="@string/blog_title1"
             android:textColor="@drawable/color_mainradio_one" />
 
+        <TextView
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:background="@color/gray" />
 
         <RadioButton
             android:id="@+id/btn2"
             style="@style/Radiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/mainradio_right"
             android:text="@string/blog_title2"
             android:textColor="@drawable/color_mainradio_one" />
@@ -79,8 +90,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:scrollbars="none"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="main_bg_color">#800080</color>
+    <color name="main_bg_color">#08a9f8</color>
     <color name="main_tab_bg">#fcfcfc </color>
     <color name="LightGray_tab">#9B9B9B</color>
     <color name="blue">#08a9f8</color>
@@ -21,4 +21,5 @@
     <color name="default_color">#02a6d8</color>
     <color name="default_color_dark">#52a6b8</color>
     <color name="color_red">#FF0000</color>
+    <color name="blue_btn_pressed">#439ef2</color>
 </resources>
