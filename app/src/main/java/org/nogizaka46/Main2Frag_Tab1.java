@@ -1,6 +1,5 @@
 package org.nogizaka46;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,27 +8,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
-import com.lidroid.xutils.http.client.HttpRequest;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import adapter.NewsListAdapter;
 import utils.Constants;
+import utils.Httputil;
 import utils.MyToast;
 
 
@@ -67,7 +60,6 @@ public class Main2Frag_Tab1 extends Fragment {
     private void initView() {
         recyclerView= (RecyclerView) view.findViewById(R.id.recyclerview);
         swipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
-
     }
 
     private void initData() {
@@ -77,9 +69,7 @@ public class Main2Frag_Tab1 extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_bg_color);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshListener());
-
     }
-
 
     private class SwipeRefreshListener implements  SwipeRefreshLayout.OnRefreshListener{
 
@@ -143,8 +133,7 @@ public class Main2Frag_Tab1 extends Fragment {
     }
 
     private void doAction() {
-        HttpUtils httpUtils=new HttpUtils();
-        httpUtils.send(HttpRequest.HttpMethod.GET, Constants.Base_Url +"blogs/getBlogsByPage", null, new RequestCallBack<String>() {
+        Httputil.httpGet(Constants.Base_Url + "blogs/getBlogsByPage", new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
                 Message msg = new Message();
@@ -172,14 +161,14 @@ public class Main2Frag_Tab1 extends Fragment {
                 }
                 handler.sendMessage(msg);
             }
+
             @Override
-            public void onFailure(HttpException error, String s) {
+            public void onFailure(HttpException e, String s) {
                 Message msg=new Message();
                 msg.what=3;
                 msg.obj=getResources().getString(R.string.intentent_slow);
                 handler.sendMessage(msg);
             }
-
         });
     }
 }
