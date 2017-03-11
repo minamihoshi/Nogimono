@@ -51,7 +51,11 @@
             android:textColor="@drawable/color_mainradio_one" />
 
     </RadioGroup>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="5dp"
+        android:background="@color/gray" />
 
     <LinearLayout
         android:id="@+id/group_layout1"
@@ -88,7 +92,7 @@
         android:visibility="gone">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            android:id="@+id/main2_recylerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">

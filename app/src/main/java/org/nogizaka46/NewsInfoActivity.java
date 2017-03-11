@@ -22,7 +22,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import utils.Constants;
-import utils.MyToast;
+import utils.Httputil;
+import view.MyToast;
 import utils.MyUtil;
 
 /**
@@ -50,7 +51,7 @@ public class NewsInfoActivity extends  BaseActivity{
         ImageButton left_img=(ImageButton) findViewById(R.id.top_button_back);
         left_img.setVisibility(View.VISIBLE);
         id=getIntent().getStringExtra("id");
-        title = (TextView) findViewById(R.id.headtoolbar_title);
+        title = (TextView) findViewById(R.id.title);
         title.setText(R.string.news_info);
         txt1= (TextView) findViewById(R.id.title);
         txt2= (TextView) findViewById(R.id.content);
@@ -78,8 +79,7 @@ public class NewsInfoActivity extends  BaseActivity{
         };
     }
     private void doAction() {
-        HttpUtils http=new HttpUtils();
-        http.send(HttpRequest.HttpMethod.GET, Constants.Base_Url+"/blogs/getBlogDetailById?id="+ id, null, new RequestCallBack<String>() {
+        Httputil.httpGet( Constants.Base_Url+"/blogs/getBlogDetailById?id="+ id, new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
                 Message msg=new Message();
@@ -119,5 +119,7 @@ public class NewsInfoActivity extends  BaseActivity{
         this.finish();
     }
 
+    public  void doActionRight(View view){
 
+    }
 }

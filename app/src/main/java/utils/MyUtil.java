@@ -17,26 +17,7 @@ public class MyUtil {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
-    //处理请求异常
-    public static Boolean getRequestStutas(String RequestStutas) {
-        Boolean eStutas;
-        if (RequestStutas.equals("100")) {//无网络
-            eStutas = false;
-        } else if (RequestStutas.equals("600")) {//连接超时,请确认你的网络是否连接
-            eStutas = false;
-        } else if (RequestStutas.equals("300")) {
-            eStutas = false;
-        } else if (RequestStutas.equals("400")) {
-            eStutas = false;
-        } else if (RequestStutas.equals("500")) {
-            eStutas = false;
-        } else if (RequestStutas.equals("")) {
-            eStutas = false;
-        } else {
-            eStutas = true;//正常登陆
-        }
-        return eStutas;
-    }
+
 
     // dip转像素
     public static int DipToPixels(Context context, int dip) {

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -19,6 +20,7 @@ public class MainActivity extends BaseActivity  {
     Main2Frag main2Frag;
     Main3Frag main3Frag;
     TextView head_title;
+    LinearLayout right_layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +38,10 @@ public class MainActivity extends BaseActivity  {
         mTabs[2] = (Button) findViewById(R.id.btn_me);
         setDrawableTop(mTabs[2],25,25);
         mTabs[1].setSelected(true);
-        head_title= (TextView)findViewById(R.id.headtoolbar_title);
+        head_title= (TextView)findViewById(R.id.title);
         head_title.setText(getResources().getString(R.string.tab_mainpage));
+        right_layout= (LinearLayout) findViewById(R.id.right_layout);
+        right_layout.setVisibility(View.VISIBLE);
     }
 
 
@@ -84,7 +88,7 @@ public class MainActivity extends BaseActivity  {
                 mTabs[0].setSelected(true);
                 mTabs[1].setSelected(false);
                 mTabs[2].setSelected(false);
-                head_title= (TextView)findViewById(R.id.headtoolbar_title);
+                head_title= (TextView)findViewById(R.id.title);
                 head_title.setText(getResources().getString(R.string.tab_mainpage_gz));
 
                 break;
@@ -98,7 +102,7 @@ public class MainActivity extends BaseActivity  {
                 mTabs[0].setSelected(false);
                 mTabs[1].setSelected(true);
                 mTabs[2].setSelected(false);
-                head_title= (TextView)findViewById(R.id.headtoolbar_title);
+                head_title= (TextView)findViewById(R.id.title);
                 head_title.setText(getResources().getString(R.string.tab_mainpage));
                 break;
             case R.id.btn_me:
@@ -111,7 +115,7 @@ public class MainActivity extends BaseActivity  {
                 mTabs[0].setSelected(false);
                 mTabs[1].setSelected(false);
                 mTabs[2].setSelected(true);
-                head_title= (TextView)findViewById(R.id.headtoolbar_title);
+                head_title= (TextView)findViewById(R.id.title);
                 head_title.setText(getResources().getString(R.string.tab_mainpage_me));
                 break;
         }
@@ -130,4 +134,8 @@ public class MainActivity extends BaseActivity  {
    public void back(View view){
        this.finish();
    }
+
+    public  void doActionRight(View view){
+
+    }
 }

@@ -1,6 +1,7 @@
 package org.nogizaka46;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,13 +24,14 @@ import java.util.Map;
 import adapter.NewsListAdapter;
 import utils.Constants;
 import utils.Httputil;
-import utils.MyToast;
+import view.MyToast;
+import view.jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
 
 public class Main2Frag_Tab1 extends Fragment {
       View view;
      RecyclerView recyclerView;
-     SwipeRefreshLayout swipeRefreshLayout;
+    WaveSwipeRefreshLayout swipeRefreshLayout;
      private Handler handler;
      private List<Map<String, Object>> mSelfData;
      NewsListAdapter adapter;
@@ -59,7 +61,7 @@ public class Main2Frag_Tab1 extends Fragment {
 
     private void initView() {
         recyclerView= (RecyclerView) view.findViewById(R.id.recyclerview);
-        swipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout= (WaveSwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
     }
 
     private void initData() {
@@ -67,11 +69,11 @@ public class Main2Frag_Tab1 extends Fragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         swipeRefreshLayout.setRefreshing(true);
-        swipeRefreshLayout.setColorSchemeResources(R.color.main_bg_color);
+        swipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshListener());
     }
 
-    private class SwipeRefreshListener implements  SwipeRefreshLayout.OnRefreshListener{
+    private class SwipeRefreshListener implements  WaveSwipeRefreshLayout.OnRefreshListener{
 
         @Override
         public void onRefresh() {
