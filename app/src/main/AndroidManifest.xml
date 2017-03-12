@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.nogizaka46">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -22,10 +23,7 @@
             android:name="org.nogizaka46.NewsInfoActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity
-            android:name="org.nogizaka46.MemberInfoActivity"
-            android:screenOrientation="nosensor"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+
     </application>
 
 </manifest>

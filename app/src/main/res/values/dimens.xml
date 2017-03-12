@@ -8,4 +8,18 @@
     <dimen name="indicator_corner_radius">12dp</dimen>
     <dimen name="indicator_internal_padding">4dp</dimen>
     <dimen name="min_height">160dp</dimen>
+    <dimen name="text_size_toolbar_title">25sp</dimen>
+    <dimen name="text_size_profile_toolbar_title">20sp</dimen>
+    <dimen name="corner_radius_oval">16dp</dimen>
+
+    <dimen name="height_toolbar">43dp</dimen>
+    <dimen name="height_profile_image">211dp</dimen>
+
+    <!-- sum of *height_toolbar* and *height_profile_image* -->
+    <dimen name="height_profile_picture_with_toolbar">220dp</dimen>
+
+    <dimen name="size_button_message">60dp</dimen>
+
+    <!-- *height_profile_picture_with_toolbar* - half of *size_button_message* -->
+    <dimen name="margin_top_button_message">290dp</dimen>
 </resources>

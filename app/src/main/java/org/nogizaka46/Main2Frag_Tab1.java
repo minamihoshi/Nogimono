@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,6 +39,7 @@ public class Main2Frag_Tab1 extends Fragment {
         if (view == null) {
             view=inflater.inflate(R.layout.main2frag_tab1, container, false);
         }
+
         return view;
     }
 
@@ -48,15 +48,18 @@ public class Main2Frag_Tab1 extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null)
             return;
-        initView();
-        initHandler();
-        initData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshList();
-            }
-        }, 500);
+        if (handler==null){
+           initView();
+           initHandler();
+            initData();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshList();
+                }
+            }, 500);
+        }
+
     }
 
     private void initView() {
@@ -96,7 +99,7 @@ public class Main2Frag_Tab1 extends Fragment {
                          swipeRefreshLayout.setRefreshing(false);
                          break;
                      case 3:
-                         MyToast.showText(getActivity(),msg.obj.toString(),false);
+                         //MyToast.showText(getActivity(),msg.obj.toString(),false);
                          swipeRefreshLayout.setRefreshing(false);
                          break;
                  }
@@ -173,4 +176,5 @@ public class Main2Frag_Tab1 extends Fragment {
             }
         });
     }
+
 }

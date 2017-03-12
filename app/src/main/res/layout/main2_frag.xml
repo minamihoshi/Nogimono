@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
@@ -8,63 +9,24 @@
 
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RadioGroup
-            android:id="@+id/main2frag_radiotype"
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
+            app:tabIndicatorColor="@color/main_bg_color"
+            app:tabSelectedTextColor="@color/main_bg_color"
+            app:tabTextColor="@color/black" />
 
-            <RadioButton
-                android:id="@+id/radio_manger1"
-                style="@style/Radiobutton"
-                android:background="@drawable/radio_selector"
-                android:checked="true"
-                android:text="@string/tab_1_txt"
-                android:textColor="@drawable/color_radiobutton" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/tab_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-            <RadioButton
-                android:id="@+id/radio_manger2"
-                style="@style/Radiobutton"
-                android:background="@drawable/radio_selector"
-                android:text="@string/tab_2_txt"
-                android:textColor="@drawable/color_radiobutton" />
-
-            <RadioButton
-                android:id="@+id/radio_manger3"
-                style="@style/Radiobutton"
-                android:background="@drawable/radio_selector"
-                android:text="@string/tab_3_txt"
-                android:textColor="@drawable/color_radiobutton" />
-
-            <RadioButton
-                android:id="@+id/radio_manger4"
-                style="@style/Radiobutton"
-                android:background="@drawable/radio_selector"
-                android:text="@string/tab_4_txt"
-                android:textColor="@drawable/color_radiobutton" />
-
-            <RadioButton
-                android:id="@+id/radio_manger5"
-                style="@style/Radiobutton"
-                android:background="@drawable/radio_selector"
-                android:text="@string/tab_5_txt"
-                android:textColor="@drawable/color_radiobutton" />
-        </RadioGroup>
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="1dp"
-        android:layout_weight="1.0"
-        android:background="@null" />
 
 </LinearLayout>

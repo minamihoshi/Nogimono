@@ -18,6 +18,7 @@
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:background="@color/main_bg_color"
         android:gravity="center_vertical"

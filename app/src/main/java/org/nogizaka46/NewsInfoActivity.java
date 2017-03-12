@@ -53,7 +53,7 @@ public class NewsInfoActivity extends  BaseActivity{
         id=getIntent().getStringExtra("id");
         title = (TextView) findViewById(R.id.title);
         title.setText(R.string.news_info);
-        txt1= (TextView) findViewById(R.id.title);
+        txt1= (TextView) findViewById(R.id.title_texts);
         txt2= (TextView) findViewById(R.id.content);
         txt3= (TextView) findViewById(R.id.type);
         txt4= (TextView) findViewById(R.id.time);

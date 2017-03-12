@@ -90,14 +90,8 @@
         android:orientation="vertical"
         android:padding="0dp"
         android:visibility="gone">
+        <include layout="@layout/main2_euclid"></include>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/main2_recylerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none">
-
-        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 

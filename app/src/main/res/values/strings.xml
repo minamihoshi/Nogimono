@@ -28,4 +28,23 @@
     <string name="pull_to_refresh_from_bottom_pull_label">上拉可以加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_release_label">松开立即加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">正在加载数据...</string>
+    <string name="lorem_ipsum_short">测试</string>
+    <string name="lorem_ipsum_long">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
+
+    <string name="title_following">Following</string>
+    <string name="toolbar_bio">测试1</string>
+    <string name="toolbar_details">测试2</string>
+    <string-array name="array_names">
+        <item>"Anastasia"</item>
+        <item>"Andriy"</item>
+        <item>"Dmitriy"</item>
+        <item>"Dmitry"</item>
+        <item>"Eduard"</item>
+        <item>"Iliya"</item>
+        <item>"Kirill "</item>
+        <item>"Konstanti"</item>
+        <item>" Shliama"</item>
+        <item>"Apisov"</item>
+        <item>" Ooleynik"</item>
+    </string-array>
 </resources>
