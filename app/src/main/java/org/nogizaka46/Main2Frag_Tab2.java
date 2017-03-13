@@ -4,10 +4,10 @@ package org.nogizaka46;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +22,15 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.squareup.picasso.Picasso;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +40,9 @@ import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import utils.Constants;
 import utils.EuclidState;
+import utils.Httputil;
+import utils.MyUtil;
+import view.MyToast;
 
 
 public class Main2Frag_Tab2 extends Fragment {
@@ -47,7 +58,8 @@ public class Main2Frag_Tab2 extends Fragment {
     private RelativeLayout mToolbarProfile;
     private LinearLayout mProfileDetails;
     private TextView mTextViewProfileName;
-    private TextView mTextViewProfileDescription;
+    private TextView mTextViewProfileBirthday;
+    private TextView mTextViewProfileHeight;
     private EuclidListAdapter adapter;
     EuclidState mState = EuclidState.Closed;
     private View mOverlayListItemView;
@@ -55,6 +67,9 @@ public class Main2Frag_Tab2 extends Fragment {
     private AnimatorSet mOpenProfileAnimatorSet;
     private AnimatorSet mCloseProfileAnimatorSet;
     float mInitialProfileButtonX;
+    Handler handler;
+    HashMap<String,Object>map;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
@@ -70,6 +85,23 @@ public class Main2Frag_Tab2 extends Fragment {
             return;
         initView();
         initData();
+        initHandler();
+    }
+
+    private void initHandler() {
+        handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case  1:
+                        SetListData();
+                        break;
+                    case  2:
+                        MyToast.showText(getActivity(), msg.obj.toString(), Toast.LENGTH_SHORT, false);
+                        break;
+                }
+            }
+        };
     }
 
     private void initView() {
@@ -80,7 +112,8 @@ public class Main2Frag_Tab2 extends Fragment {
         mToolbarProfile = (RelativeLayout) view.findViewById(R.id.toolbar_profile);
         mProfileDetails = (LinearLayout)view. findViewById(R.id.wrapper_profile_details);
         mTextViewProfileName = (TextView) view.findViewById(R.id.text_view_profile_name);
-        mTextViewProfileDescription = (TextView)view.findViewById(R.id.text_view_profile_description);
+        mTextViewProfileBirthday= (TextView)view.findViewById(R.id.birthday);
+        mTextViewProfileHeight= (TextView) view.findViewById(R.id.height);
         mWrapper = (RelativeLayout) view.findViewById(R.id.wrapper);
         mToolbar = (FrameLayout) view.findViewById(R.id.toolbar_list);
         mButtonProfile = view.findViewById(R.id.button_profile);
@@ -91,8 +124,7 @@ public class Main2Frag_Tab2 extends Fragment {
         group.setOnCheckedChangeListener(new Main2Group());
         sScreenWidth = getResources().getDisplayMetrics().widthPixels;
         sProfileImageHeight = getResources().getDimensionPixelSize(R.dimen.height_profile_image);
-        sOverlayShape=buildAvatarCircleOverlay();
-        initTestData();
+        sOverlayShape= MyUtil.buildAvatarCircleOverlay(getActivity());
         ec_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -107,14 +139,60 @@ public class Main2Frag_Tab2 extends Fragment {
                 animateCloseProfileDetails();
             }
         });
+        doAction();
     }
 
+    private void SetListData() {
+      if(adapter==null){
+          adapter=new EuclidListAdapter(getActivity(),R.layout.list_item,mSelfData);
+          ec_list.setAdapter(adapter);
+      }else {
+          adapter.notifyDataSetChanged();
+      }
+    }
+
+    private void doAction() {
+        Httputil.httpGet( Constants.Base_Url+"member/getAll", new RequestCallBack<String>() {
+            @Override
+            public void onSuccess(ResponseInfo<String> responseInfo) {
+                Message msg=new Message();
+                try {
+                    JSONObject obj = new JSONObject(responseInfo.result);
+                    if(obj.getString("code").equals("200")){
+                            JSONArray responseData=obj.getJSONArray("responseData");
+                        if (responseData!=null&& responseData.length() > 0) {
+                            for (int i = 0; i <responseData.length() ; i++) {
+                                map = new HashMap<String, Object>();
+                                JSONObject itemobj = new JSONObject(responseData.get(i).toString());
+                                map.put("name_kanji",itemobj.optString("name_kanji").toString()); //姓名-汉字
+                                map.put("avatar",itemobj.optString("avatar").toString());//成员头像
+                                map.put("birthday",itemobj.optString("birthday").toString());//生日
+                                map.put("height",itemobj.optString("height").toString());//身高
+                                mSelfData.add(map);
+                            }
+                        }
+                        msg.what=1;
+                    }
+                } catch (Exception e) {
+                }
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailure(HttpException e, String s) {
+                Message msg=new Message();
+                msg.what=2;
+                msg.obj=getResources().getString(R.string.nodata);
+                handler.sendMessage(msg);
+            }
+        });
+    }
     private void showProfileDetails(Map<String, Object> item, final View view) {
         //防止出现滚动
         ec_list.setEnabled(false);
         //根据view的Top算出相对动画时间
         int profileDetailsAnimationDelay = Constants.MAX_DELAY_SHOW_DETAILS_ANIMATION * Math.abs(view.getTop()) / sScreenWidth;
-        //一个和当前点击Item元素一样布局的view,覆盖在当前item元素上，让你以为是当前item元素进行了移动
+        //当前点击Item元素一样布局的view,覆盖在当前item元素上，让你以为是当前item元素进行了移动
         addOverlayListItem(item, view);
         //执行Reveal动画和把覆盖在Item元素上的布局进行从当前位置移动到toolbar的Bottom位置
         startRevealAnimation(profileDetailsAnimationDelay);
@@ -128,16 +206,14 @@ public class Main2Frag_Tab2 extends Fragment {
         } else {
             mWrapper.removeView(mOverlayListItemView);
         }
-        Picasso.with(getActivity()).load((Integer) item.get(EuclidListAdapter.KEY_AVATAR))
-                .resize(sScreenWidth, sProfileImageHeight).centerCrop()
-                .placeholder(R.color.blue)
-                .into((ImageView) mOverlayListItemView.findViewById(R.id.image_view_reveal_avatar));
+        Picasso.with(getActivity()).load(item.get("avatar").toString()).resize(sScreenWidth, sProfileImageHeight).centerCrop().placeholder(R.color.blue).into((ImageView) mOverlayListItemView.findViewById(R.id.image_view_reveal_avatar));
 
-        mOverlayListItemView.findViewById(R.id.view_avatar_overlay).setBackground(sOverlayShape);
-        ((TextView) mOverlayListItemView.findViewById(R.id.text_view_name)).setText((String) item.get(EuclidListAdapter.KEY_NAME));
-        ((TextView) mOverlayListItemView.findViewById(R.id.text_view_description)).setText((String) item.get(EuclidListAdapter.KEY_DESCRIPTION_SHORT));
-        mTextViewProfileName.setText((String) item.get(EuclidListAdapter.KEY_NAME));
-        mTextViewProfileDescription.setText((String) item.get(EuclidListAdapter.KEY_DESCRIPTION_FULL));
+        ((TextView) mOverlayListItemView.findViewById(R.id.text_view_name)).setText(item.get("name_kanji").toString());
+
+        mTextViewProfileName.setText(item.get("name_kanji").toString());
+        mTextViewProfileBirthday.setText(getResources().getString(R.string.ec_txt1)+item.get("birthday").toString());
+        mTextViewProfileHeight.setText(getResources().getString(R.string.ec_txt2)+item.get("height").toString());
+
         //动态的添加一个View到相对布局里，并且把这个View显示在你点击ListView的那个Item一样的位置。
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.topMargin = view.getTop() + mToolbar.getHeight();
@@ -149,7 +225,7 @@ public class Main2Frag_Tab2 extends Fragment {
         mOverlayListItemView.post(new Runnable() {
             @Override
             public void run() {
-                getAvatarRevealAnimator().start();
+                getAvatarRevealAnimator().start();//开启一个自定义的动画
                 getAvatarShowAnimator(profileDetailsAnimationDelay).start();
             }
         });
@@ -163,7 +239,7 @@ public class Main2Frag_Tab2 extends Fragment {
     private SupportAnimator getAvatarRevealAnimator() {
         final LinearLayout mWrapperListItemReveal = (LinearLayout) mOverlayListItemView.findViewById(R.id.wrapper_list_item_reveal);
         int finalRadius = Math.max(mOverlayListItemView.getWidth(), mOverlayListItemView.getHeight());
-        final SupportAnimator mRevealAnimator = ViewAnimationUtils.createCircularReveal(mWrapperListItemReveal, sScreenWidth / 2, sProfileImageHeight / 2, dpToPx(Constants.CIRCLE_RADIUS_DP * 2), finalRadius);
+        final SupportAnimator mRevealAnimator = ViewAnimationUtils.createCircularReveal(mWrapperListItemReveal, sScreenWidth / 2, sProfileImageHeight / 2, MyUtil.dpToPx(getActivity(),Constants.CIRCLE_RADIUS_DP * 2), finalRadius);
         mRevealAnimator.setDuration(Constants.REVEAL_ANIMATION_DURATION);
         mRevealAnimator.addListener(new SupportAnimator.AnimatorListener() {
             @Override
@@ -189,53 +265,6 @@ public class Main2Frag_Tab2 extends Fragment {
         });
         return mRevealAnimator;
     }
-    private void initTestData() {
-        Map<String, Object> profileMap;
-        List<Map<String, Object>> profilesList = new ArrayList<>();
-
-        int[] avatars = {
-                R.drawable.anastasia,
-                R.drawable.andriy,
-                R.drawable.dmitriy,
-                R.drawable.dmitry_96,
-                R.drawable.ed,
-                R.drawable.illya,
-                R.drawable.kirill,
-                R.drawable.konstantin,
-                R.drawable.oleksii,
-                R.drawable.pavel,
-                R.drawable.vadim};
-        String[] names = getResources().getStringArray(R.array.array_names);
-
-        for (int i = 0; i < avatars.length; i++) {
-            profileMap = new HashMap<>();
-            profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[i]);
-            profileMap.put(EuclidListAdapter.KEY_NAME, names[i]);
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, getString(R.string.lorem_ipsum_short));
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, getString(R.string.lorem_ipsum_long));
-            profilesList.add(profileMap);
-        }
-        adapter=new EuclidListAdapter(getActivity(),R.layout.list_item,profilesList);
-        ec_list.setAdapter(adapter);
-    }
-
-
-    //用ShapeDrawable画个圆
-    private ShapeDrawable buildAvatarCircleOverlay() {
-        //获取半径
-        int radius = 666;
-        ShapeDrawable overlay = new ShapeDrawable(new RoundRectShape(null, new RectF(
-                        sScreenWidth / 2 - dpToPx(Constants.CIRCLE_RADIUS_DP * 2),
-                        sProfileImageHeight / 2 - dpToPx(Constants.CIRCLE_RADIUS_DP* 2),
-                        sScreenWidth / 2 - dpToPx(Constants.CIRCLE_RADIUS_DP * 2),
-                        sProfileImageHeight / 2 - dpToPx(Constants.CIRCLE_RADIUS_DP * 2)),
-                new float[]{radius, radius, radius, radius, radius, radius, radius, radius}));
-        overlay.getPaint().setColor(getResources().getColor(R.color.gray));
-        return overlay;
-    }
-    public int dpToPx(int dp) {
-        return Math.round((float) dp * getResources().getDisplayMetrics().density);
-    }
 
     private void animateOpenProfileDetails(int profileDetailsAnimationDelay) {
         getOpenProfileAnimatorSet(profileDetailsAnimationDelay).start();
@@ -257,12 +286,6 @@ public class Main2Frag_Tab2 extends Fragment {
     }
 
 
-
-    /**
-     * This method creates and setups animator which shows profile toolbar.
-     *
-     * @return - animator object.
-     */
     private Animator getOpenProfileToolbarAnimator() {
         Animator mOpenProfileToolbarAnimator = ObjectAnimator.ofFloat(mToolbarProfile, View.Y, -mToolbarProfile.getHeight(), 0);
         mOpenProfileToolbarAnimator.addListener(new Animator.AnimatorListener() {
@@ -274,8 +297,7 @@ public class Main2Frag_Tab2 extends Fragment {
                 mProfileDetails.setX(0);
                 mProfileDetails.bringToFront();
                 mProfileDetails.setVisibility(View.VISIBLE);
-                mButtonProfile.setX(mInitialProfileButtonX);
-                mButtonProfile.bringToFront();
+
             }
 
             @Override
@@ -296,32 +318,16 @@ public class Main2Frag_Tab2 extends Fragment {
         return mOpenProfileToolbarAnimator;
     }
 
-    /**
-     * This method creates animator which shows profile details.
-     */
     private Animator getOpenProfileDetailsAnimator() {
-        Animator mOpenProfileDetailsAnimator = ObjectAnimator.ofFloat(mProfileDetails, View.Y,
-                getResources().getDisplayMetrics().heightPixels,
-                getResources().getDimensionPixelSize(R.dimen.height_profile_picture_with_toolbar));
+        Animator mOpenProfileDetailsAnimator = ObjectAnimator.ofFloat(mProfileDetails, View.Y, getResources().getDisplayMetrics().heightPixels, getResources().getDimensionPixelSize(R.dimen.height_profile_picture_with_toolbar));
         return mOpenProfileDetailsAnimator;
     }
 
-    /**
-     * This method starts set of transition animations, which hides profile toolbar, profile avatar
-     * and profile details views.
-     */
     private void animateCloseProfileDetails() {
         mState = EuclidState.Closing;
         getCloseProfileAnimatorSet().start();
     }
 
-    /**
-     * This method creates if needed the set of transition animations, which hides profile toolbar, profile avatar
-     * and profile details views. Also it calls notifyDataSetChanged() on the ListView's adapter,
-     * so it starts slide-in left animation on list items.
-     *
-     * @return - animator set that starts transition animations.
-     */
     private AnimatorSet getCloseProfileAnimatorSet() {
         if (mCloseProfileAnimatorSet == null) {
             Animator profileToolbarAnimator = ObjectAnimator.ofFloat(mToolbarProfile, View.X,
@@ -352,9 +358,7 @@ public class Main2Frag_Tab2 extends Fragment {
             mCloseProfileAnimatorSet.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-
                 }
-
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mToolbarProfile.setVisibility(View.INVISIBLE);

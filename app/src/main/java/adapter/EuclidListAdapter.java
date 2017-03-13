@@ -20,7 +20,7 @@ import java.util.Map;
 
 
 public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> {
-    private List<Map<String, Object>> mSelfData;
+     List<Map<String, Object>> mSelfData;
     public static final String KEY_AVATAR = "avatar";
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION_SHORT = "description_short";
@@ -34,8 +34,14 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> {
     }
 
     @Override
+    public int getCount() {
+        return mSelfData.size();
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
+        final Map<String,?>item=mSelfData.get(position);
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item, parent, false);
             viewHolder = new ViewHolder();
@@ -48,14 +54,13 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Picasso.with(getContext()).load((Integer) mSelfData.get(position).get(KEY_AVATAR))
+        Picasso.with(getContext()).load(item.get("avatar").toString())
                 .resize(Main2Frag_Tab2.sScreenWidth, Main2Frag_Tab2.sProfileImageHeight).centerCrop()
-                .placeholder(R.color.blue)
+                .placeholder(R.color.white)
                 .into(viewHolder.mListItemAvatar);
 
-        viewHolder.mListItemName.setText(mSelfData.get(position).get(KEY_NAME).toString().toUpperCase());
-        viewHolder.mListItemDescription.setText((String) mSelfData.get(position).get(KEY_DESCRIPTION_SHORT));
-        viewHolder.mViewOverlay.setBackground(Main2Frag_Tab2.sOverlayShape);
+        viewHolder.mListItemName.setText(item.get("name_kanji").toString().toUpperCase());
+        //viewHolder.mViewOverlay.setBackground(Main2Frag_Tab2.sOverlayShape);
         return convertView;
     }
     static class ViewHolder {

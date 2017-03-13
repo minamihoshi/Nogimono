@@ -13,10 +13,10 @@
     <dimen name="corner_radius_oval">16dp</dimen>
 
     <dimen name="height_toolbar">43dp</dimen>
-    <dimen name="height_profile_image">211dp</dimen>
+    <dimen name="height_profile_image">275dp</dimen>
 
     <!-- sum of *height_toolbar* and *height_profile_image* -->
-    <dimen name="height_profile_picture_with_toolbar">220dp</dimen>
+    <dimen name="height_profile_picture_with_toolbar">230dp</dimen>
 
     <dimen name="size_button_message">60dp</dimen>
 

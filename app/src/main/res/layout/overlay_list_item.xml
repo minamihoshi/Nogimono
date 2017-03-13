@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/gray">
 
     <include
         layout="@layout/list_item"
@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@+id/wrapper_list_item_reveal"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/wrapper_list_item"
         android:layout_alignBottom="@+id/wrapper_list_item"
         android:orientation="vertical"
@@ -22,9 +22,11 @@
 
         <ImageView
             android:id="@+id/image_view_reveal_avatar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_profile_image"
+            android:layout_width="215dp"
+            android:layout_height="215dp"
+            android:layout_gravity="center"
             android:clickable="true"
+            android:scaleType="centerCrop"
             tools:src="@drawable/nicolas_cage" />
 
     </LinearLayout>
