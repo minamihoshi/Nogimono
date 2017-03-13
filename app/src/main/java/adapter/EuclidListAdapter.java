@@ -21,11 +21,7 @@ import java.util.Map;
 
 public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> {
      List<Map<String, Object>> mSelfData;
-    public static final String KEY_AVATAR = "avatar";
-    public static final String KEY_NAME = "name";
-    public static final String KEY_DESCRIPTION_SHORT = "description_short";
-    public static final String KEY_DESCRIPTION_FULL = "description_full";
-    LayoutInflater mInflater;
+     LayoutInflater mInflater;
 
     public EuclidListAdapter(Context context, int layoutResourceId, List<Map<String, Object>> data) {
         super(context, layoutResourceId, data);
