@@ -99,7 +99,7 @@ public class Main2Frag_Tab1 extends Fragment {
                          swipeRefreshLayout.setRefreshing(false);
                          break;
                      case 3:
-                         //MyToast.showText(getActivity(),msg.obj.toString(),false);
+                         MyToast.showText(getActivity(),msg.obj.toString(),false);
                          swipeRefreshLayout.setRefreshing(false);
                          break;
                  }
