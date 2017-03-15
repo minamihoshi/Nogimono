@@ -7,6 +7,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +49,8 @@ public class NewsInfoActivity extends  BaseActivity{
     }
 
     private void initView() {
-        ImageButton left_img=(ImageButton) findViewById(R.id.top_button_back);
-        left_img.setVisibility(View.VISIBLE);
+        LinearLayout left_layout=(LinearLayout) findViewById(R.id.back_layout);
+        left_layout.setVisibility(View.VISIBLE);
         id=getIntent().getStringExtra("id");
         title = (TextView) findViewById(R.id.title);
         title.setText(R.string.news_info);
