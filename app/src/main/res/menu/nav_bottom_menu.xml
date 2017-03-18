@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_home"
+        android:checked="true"
         android:icon="@drawable/tab1icon_xml"
         android:title="@string/tab_mainpage" />
     <item

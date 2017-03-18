@@ -2,7 +2,6 @@ package org.nogizaka46;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
@@ -14,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener,View.OnClickListener{
     Main1Frag main1Frag;
     Main2Frag main2Frag;
     Main3Frag main3Frag;
@@ -50,6 +49,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
+
     @Override
     public boolean onNavigationItemSelected( MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();
@@ -101,6 +101,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         transaction.commit();
         return true;
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+
     public void back(View view){
 
     }
