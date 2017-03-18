@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package view.jp.co.recruit_lifestyle.android.widget;
+package view;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;

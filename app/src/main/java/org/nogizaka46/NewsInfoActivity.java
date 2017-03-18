@@ -49,8 +49,8 @@ public class NewsInfoActivity extends  BaseActivity{
     }
 
     private void initView() {
-        LinearLayout left_layout=(LinearLayout) findViewById(R.id.back_layout);
-        left_layout.setVisibility(View.VISIBLE);
+        ImageButton img_left_layout=(ImageButton) findViewById(R.id.top_button_back);
+        img_left_layout.setVisibility(View.VISIBLE);
         id=getIntent().getStringExtra("id");
         title = (TextView) findViewById(R.id.title);
         title.setText(R.string.news_info);

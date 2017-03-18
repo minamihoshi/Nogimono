@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 
-public class Main3Frag extends Fragment {
+
+public class Main3Frag extends Fragment  {
     View view;
     Button btn;
     @Override
@@ -38,4 +39,6 @@ public class Main3Frag extends Fragment {
             }
         });
     }
+
+
 }

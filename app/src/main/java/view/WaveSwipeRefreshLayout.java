@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package view.jp.co.recruit_lifestyle.android.widget;
+package view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -36,6 +36,8 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
+
+import utils.DisplayUtil;
 
 /**
  * @author amyu

@@ -16,8 +16,7 @@
         android:layout_alignParentLeft="true"
         android:onClick="back"
         android:orientation="horizontal"
-        android:paddingRight="10dp"
-        android:visibility="gone">
+        android:paddingRight="10dp">
 
         <ImageButton
             android:id="@+id/top_button_back"
@@ -28,7 +27,22 @@
             android:layout_marginTop="1dp"
             android:background="@drawable/back_bg"
             android:clickable="false"
+            android:visibility="gone"
             android:focusable="false"
+            android:gravity="center_vertical"
+            android:paddingBottom="5dp"
+            />
+        <ImageButton
+            android:id="@+id/menu_head_icon"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/menu_head"
+            android:clickable="true"
+            android:visibility="gone"
+            android:focusable="true"
             android:gravity="center_vertical"
             android:paddingBottom="5dp"
             />

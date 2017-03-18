@@ -24,7 +24,7 @@ import adapter.NewsListAdapter;
 import utils.Constants;
 import utils.Httputil;
 import view.MyToast;
-import view.jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
+import view.WaveSwipeRefreshLayout;
 
 
 public class Main2Frag_Tab1 extends Fragment {

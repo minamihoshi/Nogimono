@@ -12,8 +12,8 @@
     <string name="news_type">类型:</string>
     <string name="news_times">时间:</string>
     <!--博客-->
-    <string name="blog_title1">时间</string>
-    <string name="blog_title2">成员</string>
+    <string name="blog_title1">成员</string>
+    <string name="blog_title2">时间</string>
    <!--设置-->
     <string name="set1_txt">设置</string>
     <string name="set2_txt">关于我们</string>
@@ -28,12 +28,6 @@
     <string name="pull_to_refresh_from_bottom_pull_label">上拉可以加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_release_label">松开立即加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">正在加载数据...</string>
-    <string name="lorem_ipsum_short">测试</string>
-    <string name="lorem_ipsum_long">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
-
-    <string name="title_following">Following</string>
-    <string name="toolbar_bio">测试1</string>
-    <string name="toolbar_details">测试2</string>
     <string name="ec_txt1">生日:</string>
     <string name="ec_txt2">身高:</string>
 </resources>
