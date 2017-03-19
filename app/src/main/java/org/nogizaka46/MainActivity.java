@@ -1,6 +1,7 @@
 package org.nogizaka46;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         right_layout= (LinearLayout) findViewById(R.id.right_layout);
         right_layout.setVisibility(View.VISIBLE);
         menu_head= (ImageButton) findViewById(R.id.menu_head_icon);
-        menu_head.setVisibility(View.VISIBLE);
+        menu_head.setVisibility(View.GONE);
         bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }

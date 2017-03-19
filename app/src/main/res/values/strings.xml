@@ -1,6 +1,8 @@
 <resources>
+    <!--其他-->
     <string name="app_name">乃木物</string>
     <string name="intentent_slow">网络似乎开小差</string>
+    <!--主页-->
     <string name="tab_mainpage">主页</string>
     <string name="tab_mainpage_me">我</string>
     <string name="tab_mainpage_gz">关注</string>
@@ -11,9 +13,16 @@
     <string name="tab_5_txt">其他</string>
     <string name="news_type">类型:</string>
     <string name="news_times">时间:</string>
+    <!--左侧菜单-->
+    <string name="left_menu_txt1">关于乃木坂</string>
+    <string name="left_menu_txt2">乃木坂的相关</string>
+    <string name="left_menu_txt3">握手会</string>
+    <string name="left_menu_txt4">乃木字典</string>
     <!--博客-->
     <string name="blog_title1">成员</string>
     <string name="blog_title2">时间</string>
+    <string name="ec_txt1">生日:</string>
+    <string name="ec_txt2">身高:</string>
    <!--设置-->
     <string name="set1_txt">设置</string>
     <string name="set2_txt">关于我们</string>
@@ -28,6 +37,5 @@
     <string name="pull_to_refresh_from_bottom_pull_label">上拉可以加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_release_label">松开立即加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">正在加载数据...</string>
-    <string name="ec_txt1">生日:</string>
-    <string name="ec_txt2">身高:</string>
+
 </resources>
