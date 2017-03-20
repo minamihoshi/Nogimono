@@ -32,20 +32,7 @@
             android:gravity="center_vertical"
             android:paddingBottom="5dp"
             />
-        <ImageButton
-            android:id="@+id/menu_head_icon"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/menu_head"
-            android:clickable="true"
-            android:visibility="gone"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:paddingBottom="5dp"
-            />
+
     </LinearLayout>
     <TextView
         android:id="@+id/title"

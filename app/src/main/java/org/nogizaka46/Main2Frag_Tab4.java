@@ -81,9 +81,8 @@ public class Main2Frag_Tab4 extends Fragment{
             img.setBackgroundResource(data[position]);
             LinearLayout lin1= (LinearLayout) contentView.findViewById(R.id.layout1);
             if (clickTemp == position) {
-                lin1.setBackgroundResource(R.drawable.spotlight);
+
             }else{
-                lin1.setBackgroundColor(Color.TRANSPARENT);
             }
             return contentView;
         }

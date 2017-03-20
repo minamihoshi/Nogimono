@@ -1,7 +1,6 @@
 package org.nogizaka46;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -9,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,7 +18,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     Main3Frag main3Frag;
     TextView head_title;
     LinearLayout right_layout;
-    ImageButton menu_head;
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +42,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         head_title.setText(getResources().getString(R.string.tab_mainpage));
         right_layout= (LinearLayout) findViewById(R.id.right_layout);
         right_layout.setVisibility(View.VISIBLE);
-        menu_head= (ImageButton) findViewById(R.id.menu_head_icon);
-        menu_head.setVisibility(View.GONE);
         bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }

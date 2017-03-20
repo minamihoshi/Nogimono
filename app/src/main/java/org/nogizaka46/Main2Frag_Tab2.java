@@ -1,14 +1,17 @@
 package org.nogizaka46;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -35,11 +38,9 @@ public class Main2Frag_Tab2 extends Fragment {
     private  LinearLayout lin1,lin2;
      List<Map<String, Object>> mSelfData;
     Handler handler;
-    HashMap<String,Object>map;
     ShowMemberAdapter adapter;
     GridView gridView;
     RecyclerView recyclerView;
-    WaveSwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -91,6 +92,7 @@ public class Main2Frag_Tab2 extends Fragment {
     private void initData() {
         mSelfData = new ArrayList<Map<String, Object>>();
         group.setOnCheckedChangeListener(new Main2Group());
+        gridView.setOnItemClickListener(new GridMemberLisntener());
         doAction();
     }
 
@@ -110,11 +112,12 @@ public class Main2Frag_Tab2 extends Fragment {
                             JSONArray responseData=obj.getJSONArray("responseData");
                         if (responseData!=null&& responseData.length() > 0) {
                             for (int i = 0; i <responseData.length() ; i++) {
-                                map = new HashMap<String, Object>();
+                                HashMap<String,Object>map = new HashMap<String, Object>();
                                 JSONObject itemobj = new JSONObject(responseData.get(i).toString());
                                 map.put("name_kanji",itemobj.optString("name_kanji").toString()); //姓名-汉字
                                 map.put("avatar",itemobj.optString("avatar").toString());//成员头像
                                 map.put("birthday",itemobj.optString("birthday").toString());//生日
+                                map.put("url",itemobj.optString("url").toString());//blog地址
                                 map.put("height",itemobj.optString("height").toString());//身高
                                 mSelfData.add(map);
                             }
@@ -136,7 +139,17 @@ public class Main2Frag_Tab2 extends Fragment {
         });
     }
 
+  private  class  GridMemberLisntener implements AdapterView.OnItemClickListener{
 
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+          Map<String,?>item=mSelfData.get(position);
+          Intent intent=new Intent(getActivity(),BlogInfoActivity.class);
+          intent.putExtra("name_kanji",item.get("name_kanji").toString());
+          intent.putExtra("url",item.get("url").toString());
+          startActivity(intent);
+      }
+  }
    private  class Main2Group implements RadioGroup.OnCheckedChangeListener{
        @Override
        public void onCheckedChanged(RadioGroup group, int checkedId) {

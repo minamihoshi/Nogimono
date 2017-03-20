@@ -72,6 +72,7 @@ public class Main2Frag_Tab1 extends Fragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setWaveColor(R.color.main_bg_color);
         swipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshListener());
     }
