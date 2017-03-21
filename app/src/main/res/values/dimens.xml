@@ -11,5 +11,5 @@
     <dimen name="text_size_toolbar_title">25sp</dimen>
     <dimen name="text_size_profile_toolbar_title">20sp</dimen>
     <dimen name="corner_radius_oval">16dp</dimen>
-
+    <dimen name="padding_search_bar">0dp</dimen>
 </resources>

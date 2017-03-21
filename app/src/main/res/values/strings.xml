@@ -36,9 +36,4 @@
     <string name="pull_to_refresh_from_bottom_pull_label">上拉可以加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_release_label">松开立即加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">正在加载数据...</string>
-     <string-array name="adBlockUrl">
-         <item>http://ioc1.157w.com/zl/pro/gdt2016122301.html </item>
-         <item> http://115.159.36.16:9000/</item>
-         <item> http://115.159.36.16:9000/ad/?h=55&amp;w=360</item>
-     </string-array>
 </resources>

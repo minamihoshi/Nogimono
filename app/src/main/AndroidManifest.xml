@@ -23,14 +23,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--新闻界面-->
         <activity
             android:name="org.nogizaka46.NewsInfoActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <!--博客列表-->
+        <activity
+            android:name="org.nogizaka46.BlogListActivity"
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <!--博客界面-->
         <activity
             android:name="org.nogizaka46.BlogInfoActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <!--成员搜索界面-->
+        <activity
+            android:name="org.nogizaka46.MemberSearchListActivity"
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+
     </application>
 
 </manifest>

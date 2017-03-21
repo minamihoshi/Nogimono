@@ -114,7 +114,8 @@ public class Main2Frag_Tab2 extends Fragment {
                             for (int i = 0; i <responseData.length() ; i++) {
                                 HashMap<String,Object>map = new HashMap<String, Object>();
                                 JSONObject itemobj = new JSONObject(responseData.get(i).toString());
-                                map.put("name_kanji",itemobj.optString("name_kanji").toString()); //姓名-汉字
+                                map.put("name_kanji",itemobj.optString("name_kanji").toString()); //成员的汉字
+                                map.put("name_alpha",itemobj.optString("name_alpha").toString()); //成员的罗马音
                                 map.put("avatar",itemobj.optString("avatar").toString());//成员头像
                                 map.put("birthday",itemobj.optString("birthday").toString());//生日
                                 map.put("url",itemobj.optString("url").toString());//blog地址
@@ -144,9 +145,9 @@ public class Main2Frag_Tab2 extends Fragment {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
           Map<String,?>item=mSelfData.get(position);
-          Intent intent=new Intent(getActivity(),BlogInfoActivity.class);
+          Intent intent=new Intent(getActivity(),BlogListActivity.class);
+          intent.putExtra("name_alpha",item.get("name_alpha").toString());
           intent.putExtra("name_kanji",item.get("name_kanji").toString());
-          intent.putExtra("url",item.get("url").toString());
           startActivity(intent);
       }
   }

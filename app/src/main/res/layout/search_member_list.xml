@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="0dp"
+    android:background="@color/gray"
+    android:paddingBottom="0dp"
+    android:paddingLeft="@dimen/padding_search_bar"
+    android:paddingRight="@dimen/padding_search_bar"
+    android:layout_height="50dp">
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:iconifiedByDefault="false"
+        android:background="@drawable/search_input_bg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="2dp"
+        android:imeOptions="actionSearch"
+        android:layout_marginBottom="2dp"
+        android:queryHint="请输入成员名字"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+
+    <pulltorefresh.PullToRefreshListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_weight="1"
+        android:layout_height="match_parent"/>
+</LinearLayout>
