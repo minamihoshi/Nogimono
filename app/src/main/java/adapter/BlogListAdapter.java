@@ -48,7 +48,6 @@ public class BlogListAdapter extends BaseAdapter {
             convertView= LayoutInflater.from(context).inflate(R.layout.blog_list_item,null);
             holder.author= (TextView) convertView.findViewById(R.id.author);
             holder.title= (TextView) convertView.findViewById(R.id.title);
-            holder.summary= (TextView) convertView.findViewById(R.id.summary);
             holder.created_time= (TextView) convertView.findViewById(R.id.time);
             convertView.setTag(holder);
         }else {
@@ -56,14 +55,12 @@ public class BlogListAdapter extends BaseAdapter {
         }
         holder.author.setText(item.get("author").toString());
         holder.title.setText(item.get("title").toString());
-        holder.summary.setText(item.get("summary").toString());
         holder.created_time.setText(MyUtil.timeToDate(item.get("time").toString()));
         return convertView;
     }
     class ViewHolder{
         TextView author;
         TextView title;
-        TextView summary;
         TextView created_time;
 
     }
