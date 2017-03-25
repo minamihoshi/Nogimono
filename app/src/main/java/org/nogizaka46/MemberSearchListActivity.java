@@ -6,44 +6,30 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.ListView;
-import android.widget.SearchView;
-
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import adapter.MemberSearchAdapter;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import pulltorefresh.PullToRefreshBase;
 import pulltorefresh.PullToRefreshListView;
-import utils.Constants;
-import utils.Httputil;
 
-public class MemberSearchListActivity extends BaseActivity{
-    SearchView searchView;
-    PullToRefreshListView listView;
-    Context context=MemberSearchListActivity.this;
+public class MemberSearchListActivity extends BaseActivity {
+    Context context = MemberSearchListActivity.this;
     MemberSearchAdapter memberSearchAdapter;
-    String result;
+    @InjectView(R.id.listview)
+    PullToRefreshListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_member_list);
-        initView();
+        ButterKnife.inject(this);
         initData();
         initHandler();
 
     }
 
-    private void initView() {
-        searchView= (SearchView) findViewById(R.id.search_view);
-        listView= (PullToRefreshListView) findViewById(R.id.listview);
-    }
+
     private void initData() {
         listView.setMode(PullToRefreshBase.Mode.BOTH);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
@@ -60,28 +46,15 @@ public class MemberSearchListActivity extends BaseActivity{
 
             }
         });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                result=query.toString();
-                return true;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                result=newText.toString();
-                return true;
-            }
-        });
     }
 
     private void initHandler() {
-        handler=new Handler(){
+        handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what){
-                    case  1:
-                        //SetListData();
+                switch (msg.what) {
+                    case 1:
                         listView.onRefreshComplete();
                         break;
                     case 2:
@@ -95,8 +68,6 @@ public class MemberSearchListActivity extends BaseActivity{
             }
         };
     }
-
-
 
 
 }

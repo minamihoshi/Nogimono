@@ -2,24 +2,19 @@ package adapter;
 
 
 import android.content.Context;
-
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-
 import org.nogizaka46.R;
-
 import java.util.List;
 import java.util.Map;
-
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import utils.MyUtil;
 
 public class NewsListAdapter extends Adapter<ViewHolder>{
@@ -82,20 +77,19 @@ public class NewsListAdapter extends Adapter<ViewHolder>{
         this.onItemClickListener = onItemClickListener;
     }
     static class ItemViewHolder extends ViewHolder {
+        @InjectView(R.id.news_images)
         ImageView images;
+        @InjectView(R.id.name)
         TextView name;
+        @InjectView(R.id.summary)
         TextView summary;
+        @InjectView(R.id.created_time)
         TextView created_time;
 
         public ItemViewHolder(View view) {
             super(view);
-            images=(ImageView) view.findViewById(R.id.news_images);
-            name=(TextView) view.findViewById(R.id.name);
-            summary=(TextView) view.findViewById(R.id.summer);
-            created_time=(TextView) view.findViewById(R.id.created_time);
+            ButterKnife.inject(this, view);
+
         }
     }
-
-
-
 }
