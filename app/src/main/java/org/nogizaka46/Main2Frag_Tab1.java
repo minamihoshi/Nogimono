@@ -1,16 +1,24 @@
 package org.nogizaka46;
 
+import android.animation.Animator;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.LinearLayout;
 
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -29,6 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
 import utils.Httputil;
+import utils.SpacesItemDecoration;
 import view.WaveSwipeRefreshLayout;
 
 
@@ -39,6 +48,8 @@ public class Main2Frag_Tab1 extends Fragment {
     RecyclerView recyclerview;
     @InjectView(R.id.swipeRefresh)
     WaveSwipeRefreshLayout swipeRefresh;
+    @InjectView(R.id.main_layout)
+    LinearLayout mainLayout;
     private Handler handler;
     private List<Map<String, Object>> mSelfData;
 
@@ -120,19 +131,29 @@ public class Main2Frag_Tab1 extends Fragment {
         }
         adapter.setOnItemClickListener(new NewsListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View v, int position) {
                 Map<String, ?> item = mSelfData.get(position);
                 Intent intent = new Intent(getActivity(), NewsInfoActivity.class);
                 intent.putExtra("id", item.get("id").toString());
-                startActivity(intent);
+                //因为共享元素是Android5.0引入的，所以需在android5.0（LOLLIPOP）以上系统下运行，低版本运行会报错，需要判断版本
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    //实现元素共享效果前后两个界面的元素共享名字TransitionName必须相同，设置任意的字符串即可。
+                    v.setTransitionName(getString( R.string.app_name));
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), v, v.getTransitionName());
+                    startActivityForResult(intent, 1, options.toBundle());
+                } else {
+                    startActivity(intent);
+                }
             }
-
             @Override
             public void onItemLongClick(View view, int position) {
-
             }
         });
+        SpacesItemDecoration decoration = new SpacesItemDecoration(16);
+        recyclerview.addItemDecoration(decoration);
     }
+
+
 
     private void refreshList() {
         if (!swipeRefresh.isRefreshing()) {
@@ -181,4 +202,6 @@ public class Main2Frag_Tab1 extends Fragment {
             }
         });
     }
+
+
 }

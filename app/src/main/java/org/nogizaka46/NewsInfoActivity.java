@@ -1,12 +1,19 @@
 package org.nogizaka46;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.transition.Transition;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +55,8 @@ public class NewsInfoActivity extends BaseActivity {
     ImageView images;
     @InjectView(R.id.content)
     TextView content;
+    @InjectView(R.id.news_layout)
+    LinearLayout newsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +68,9 @@ public class NewsInfoActivity extends BaseActivity {
         title.setText(R.string.news_info);
         initHandler();
         doAction();
+        EndAnimation();
     }
+
 
     private void initHandler() {
         handler = new Handler() {
@@ -119,7 +130,63 @@ public class NewsInfoActivity extends BaseActivity {
     }
 
     public void back(View view) {
-        this.finish();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            NewsInfoActivity.this.finishAfterTransition();
+        else
+            NewsInfoActivity.this.finish();
+    }
+
+    private void EndAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Transition transition = getWindow().getSharedElementEnterTransition();
+            transition.addListener(new Transition.TransitionListener() {
+                @Override
+                public void onTransitionStart(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    performCircleReveal();
+                }
+
+                @Override
+                public void onTransitionCancel(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionPause(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionResume(Transition transition) {
+
+                }
+            });
+        }
+    }
+
+    private void performCircleReveal() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            final float finalRadius = (float) Math.hypot(newsLayout.getWidth(), newsLayout.getHeight());
+            Animator anim = ViewAnimationUtils.createCircularReveal(newsLayout, (topButtonBack.getLeft() + topButtonBack.getRight()) / 2, (topButtonBack.getTop() + topButtonBack.getBottom()) / 2, (float) topButtonBack.getWidth() / 2, finalRadius);
+            anim.setDuration(3000);
+            anim.setInterpolator(new AccelerateDecelerateInterpolator());
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                }
+            });
+            anim.start();
+        }
     }
 
     public void doActionRight(View view) {

@@ -85,4 +85,8 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+
+
+
+
 </resources>
