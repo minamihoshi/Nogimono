@@ -30,7 +30,7 @@ public class ShowMemberAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mSelfData.size();
+        return mSelfData.size()+1;
     }
 
     @Override
@@ -49,25 +49,31 @@ public class ShowMemberAdapter extends BaseAdapter {
         Map<String, ?> item = mSelfData.get(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.member_grid_item, null);
-            holder = new ViewHolder(convertView);
+            holder = new ViewHolder();
+            holder.imageview= (ImageView) convertView.findViewById(R.id.imageview);
+            holder.text= (TextView) convertView.findViewById(R.id.text);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Glide.with(context).load(item.get("avatar").toString()).override(290, 350).centerCrop().error(R.drawable.noimg).into(holder.imageview);
-        holder.text.setText(item.get("name_kanji").toString());
+        if(position==0){
+            convertView = LayoutInflater.from(context).inflate(R.layout.listview_group_item, null);
+            holder.peroid_txt= (TextView) convertView.findViewById(R.id.group_name);
+            holder.peroid_txt.setText(item.get("peroid").toString());
+        }else{
+            Glide.with(context).load(item.get("avatar").toString()).override(290, 350).centerCrop().error(R.drawable.noimg).into(holder.imageview);
+            holder.text.setText(item.get("name_kanji").toString());
+        }
+
+
         return convertView;
     }
 
 
     class ViewHolder {
-        @InjectView(R.id.imageview)
+        TextView peroid_txt;
         ImageView imageview;
-        @InjectView(R.id.text)
         TextView text;
 
-        ViewHolder(View view) {
-            ButterKnife.inject(this, view);
-        }
     }
 }

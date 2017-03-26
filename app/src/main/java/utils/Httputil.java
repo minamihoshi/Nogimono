@@ -14,6 +14,7 @@ public class Httputil {
     public static  void httpPost(String url, String json, RequestCallBack callBacks){
 
         HttpUtils http=new HttpUtils();
+        http.configCurrentHttpCacheExpiry(1);
         RequestParams params = new RequestParams();
         try {
             params.setBodyEntity(new StringEntity(json.toString(), "UTF-8"));
@@ -26,6 +27,7 @@ public class Httputil {
 
    public  static  void httpGet(String url,RequestCallBack callbacks){
        HttpUtils http=new HttpUtils();
+       http.configCurrentHttpCacheExpiry(1);
        http.send(HttpRequest.HttpMethod.GET,url,callbacks);
    }
 

@@ -1,6 +1,7 @@
 package org.nogizaka46;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,9 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
@@ -25,11 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import adapter.ShowMemberAdapter;
 import utils.Constants;
 import utils.Httputil;
-import view.MyToast;
-import view.WaveSwipeRefreshLayout;
+
+
 
 
 public class Main2Frag_Tab2 extends Fragment {
@@ -41,8 +46,7 @@ public class Main2Frag_Tab2 extends Fragment {
     ShowMemberAdapter adapter;
     GridView gridView;
     RecyclerView recyclerView;
-
-
+    public List<Map<String, Object>> total;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,9 +77,7 @@ public class Main2Frag_Tab2 extends Fragment {
                     case  1:
                        SetListData();
                         break;
-                    case  2:
-                        MyToast.showText(getActivity(),msg.obj.toString(),false);
-                        break;
+
                 }
             }
         };
@@ -91,6 +93,7 @@ public class Main2Frag_Tab2 extends Fragment {
 
     private void initData() {
         mSelfData = new ArrayList<Map<String, Object>>();
+        total= new ArrayList<Map<String, Object>>();
         group.setOnCheckedChangeListener(new Main2Group());
         gridView.setOnItemClickListener(new GridMemberLisntener());
         doAction();
@@ -99,6 +102,7 @@ public class Main2Frag_Tab2 extends Fragment {
     private void SetListData() {
         adapter=new ShowMemberAdapter(getActivity(),mSelfData);
         gridView.setAdapter(adapter);
+
     }
 
     private void doAction() {
@@ -109,17 +113,18 @@ public class Main2Frag_Tab2 extends Fragment {
                 try {
                     JSONObject obj = new JSONObject(responseInfo.result);
                     if(obj.getString("code").equals("200")){
-                            JSONArray responseData=obj.getJSONArray("responseData");
+                            JSONArray responseData=obj.optJSONArray("responseData");
                         if (responseData!=null&& responseData.length() > 0) {
                             for (int i = 0; i <responseData.length() ; i++) {
                                 HashMap<String,Object>map = new HashMap<String, Object>();
-                                JSONObject itemobj = new JSONObject(responseData.get(i).toString());
+                                JSONObject itemobj = new JSONObject(responseData.opt(i).toString());
                                 map.put("name_kanji",itemobj.optString("name_kanji").toString()); //成员的汉字
                                 map.put("name_alpha",itemobj.optString("name_alpha").toString()); //成员的罗马音
                                 map.put("avatar",itemobj.optString("avatar").toString());//成员头像
                                 map.put("birthday",itemobj.optString("birthday").toString());//生日
                                 map.put("url",itemobj.optString("url").toString());//blog地址
                                 map.put("height",itemobj.optString("height").toString());//身高
+                                map.put("period",itemobj.optString("period").toString());//
                                 mSelfData.add(map);
                             }
                         }
@@ -132,10 +137,7 @@ public class Main2Frag_Tab2 extends Fragment {
 
             @Override
             public void onFailure(HttpException e, String s) {
-                Message msg=new Message();
-                msg.what=2;
-                msg.obj=getResources().getString(R.string.intentent_slow);
-                handler.sendMessage(msg);
+
             }
         });
     }
@@ -166,4 +168,65 @@ public class Main2Frag_Tab2 extends Fragment {
            }
        }
    }
+
+    public class ShowMemberAdapter extends BaseAdapter {
+        private Context context;
+        private List<Map<String, Object>> mSelfData;
+
+        public ShowMemberAdapter(Context context, List<Map<String, Object>> data) {
+            this.context = context;
+            this.mSelfData = data;
+        }
+
+        @Override
+        public int getCount() {
+            return mSelfData.size();
+        }
+
+
+        @Override
+        public Object getItem(int position) {
+            return mSelfData.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            Map<String, ?> item = mSelfData.get(position);
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.member_grid_item, null);
+                holder=new ViewHolder();
+                holder.imageview= (ImageView) convertView.findViewById(R.id.imageview);
+                holder.text= (TextView) convertView.findViewById(R.id.text);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            if(position==mSelfData.size()){
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.listview_group_item, null);
+                holder.peroid= (TextView) convertView.findViewById(R.id.group_name);
+                holder.peroid.setText(item.get("peroid").toString());
+            }else {
+                Glide.with(context).load(item.get("avatar").toString()).override(290, 350).centerCrop().error(R.drawable.noimg).into(holder.imageview);
+                holder.text.setText(item.get("name_kanji").toString());
+            }
+
+            return convertView;
+        }
+
+
+        class ViewHolder {
+            TextView peroid;
+            ImageView imageview;
+            TextView text;
+
+        }
+    }
 }

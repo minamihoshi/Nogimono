@@ -8,6 +8,9 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+<include layout="@layout/net_error"
+    android:id="@+id/net_error_layout"
+    android:visibility="gone" />
 
     <view.WaveSwipeRefreshLayout
         android:id="@+id/swipeRefresh"

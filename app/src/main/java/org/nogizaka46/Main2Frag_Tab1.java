@@ -1,6 +1,5 @@
 package org.nogizaka46;
 
-import android.animation.Animator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,17 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.ColorRes;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -37,7 +33,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
 import utils.Httputil;
-import utils.SpacesItemDecoration;
 import view.WaveSwipeRefreshLayout;
 
 
@@ -48,10 +43,10 @@ public class Main2Frag_Tab1 extends Fragment {
     RecyclerView recyclerview;
     @InjectView(R.id.swipeRefresh)
     WaveSwipeRefreshLayout swipeRefresh;
-    @InjectView(R.id.main_layout)
-    LinearLayout mainLayout;
+    RelativeLayout netErrorMain;
     private Handler handler;
     private List<Map<String, Object>> mSelfData;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +72,7 @@ public class Main2Frag_Tab1 extends Fragment {
                 }
             }, 500);
         }
+
     }
 
     private void initData() {
@@ -87,6 +83,7 @@ public class Main2Frag_Tab1 extends Fragment {
         swipeRefresh.setWaveColor(R.color.main_bg_color);
         swipeRefresh.setColorSchemeColors(Color.WHITE, Color.WHITE);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshListener());
+        netErrorMain= (RelativeLayout) getActivity().findViewById(R.id.net_error_layout);
     }
 
     @Override
@@ -111,11 +108,19 @@ public class Main2Frag_Tab1 extends Fragment {
                 switch (msg.what) {
                     case 1:
                         SetListData();
+                        netErrorMain.setVisibility(View.GONE);//网络设置隐藏
                         swipeRefresh.setRefreshing(false);
                         break;
                     case 2:
-                        break;
-                    case 3:
+                        netErrorMain.setVisibility(View.VISIBLE);
+                        netErrorMain.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                                startActivity(intent);
+                            }
+                        });
+                        swipeRefresh.setRefreshing(false);
                         break;
                 }
             }
@@ -138,21 +143,20 @@ public class Main2Frag_Tab1 extends Fragment {
                 //因为共享元素是Android5.0引入的，所以需在android5.0（LOLLIPOP）以上系统下运行，低版本运行会报错，需要判断版本
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     //实现元素共享效果前后两个界面的元素共享名字TransitionName必须相同，设置任意的字符串即可。
-                    v.setTransitionName(getString( R.string.app_name));
+                    v.setTransitionName(getString(R.string.app_name));
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), v, v.getTransitionName());
                     startActivityForResult(intent, 1, options.toBundle());
                 } else {
                     startActivity(intent);
                 }
             }
+
             @Override
             public void onItemLongClick(View view, int position) {
             }
         });
-        SpacesItemDecoration decoration = new SpacesItemDecoration(16);
-        recyclerview.addItemDecoration(decoration);
-    }
 
+    }
 
 
     private void refreshList() {
@@ -170,11 +174,11 @@ public class Main2Frag_Tab1 extends Fragment {
                 Message msg = new Message();
                 try {
                     JSONObject jsonObject = new JSONObject(responseInfo.result);
-                    JSONArray content = jsonObject.getJSONArray("content");
+                    JSONArray content = jsonObject.optJSONArray("content");
                     if (content != null && content.length() > 0) {
                         for (int i = 0; i < content.length(); i++) {
                             HashMap<String, Object> map1 = new HashMap<String, Object>();
-                            JSONObject itemobj = new JSONObject(content.get(i).toString());
+                            JSONObject itemobj = new JSONObject(content.opt(i).toString());
                             map1.put("id", itemobj.optString("id").toString());
                             map1.put("image_url", itemobj.optString("image_url").toString());
                             map1.put("name", itemobj.optString("name").toString());
@@ -187,8 +191,6 @@ public class Main2Frag_Tab1 extends Fragment {
                     }
                     msg.what = 1;
                 } catch (Exception e) {
-                    msg.what = 2;
-                    msg.obj = getResources().getString(R.string.nodata);
                 }
                 handler.sendMessage(msg);
             }
@@ -196,7 +198,7 @@ public class Main2Frag_Tab1 extends Fragment {
             @Override
             public void onFailure(HttpException e, String s) {
                 Message msg = new Message();
-                msg.what = 3;
+                msg.what = 2;
                 msg.obj = getResources().getString(R.string.intentent_slow);
                 handler.sendMessage(msg);
             }

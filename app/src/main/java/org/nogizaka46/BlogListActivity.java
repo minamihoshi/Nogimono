@@ -2,10 +2,12 @@ package org.nogizaka46;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import adapter.BlogListAdapter;
 import butterknife.ButterKnife;
@@ -61,6 +64,7 @@ public class BlogListActivity extends BaseActivity {
         img_left_layout.setVisibility(View.VISIBLE);
         listView.setMode(PullToRefreshBase.Mode.BOTH);
         listView.setOnRefreshListener(new BlogListRefreshListener());
+        listView.setOnItemClickListener(new BlogLisntener());
     }
 
     private class BlogListRefreshListener implements PullToRefreshBase.OnRefreshListener2 {
@@ -76,6 +80,16 @@ public class BlogListActivity extends BaseActivity {
         public void onPullUpToRefresh(PullToRefreshBase refreshView) {
             mSelfData.clear();
             doAction();
+        }
+    }
+    private  class  BlogLisntener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 Map<String,?> item=mSelfData.get(position);
+                 Intent intent=new Intent(context,BlogInfoActivity.class);
+                  intent.putExtra("url",item.get("url").toString());
+                 startActivity(intent);
         }
     }
 
@@ -125,11 +139,11 @@ public class BlogListActivity extends BaseActivity {
                 Message msg = new Message();
                 try {
                     JSONObject jsonObject = new JSONObject(responseInfo.result);
-                    JSONArray content = jsonObject.getJSONArray("content");
+                    JSONArray content = jsonObject.optJSONArray("content");
                     if (content != null && content.length() > 0) {
                         for (int i = 0; i < content.length(); i++) {
                             HashMap<String, Object> map1 = new HashMap<String, Object>();
-                            JSONObject itemobj = new JSONObject(content.get(i).toString());
+                            JSONObject itemobj = new JSONObject(content.opt(i).toString());
                             map1.put("id", itemobj.optString("id").toString());
                             map1.put("author", itemobj.optString("author").toString());
                             map1.put("time", itemobj.optString("time").toString());
