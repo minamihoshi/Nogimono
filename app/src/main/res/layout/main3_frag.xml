@@ -112,7 +112,7 @@
             android:id="@+id/exit_btn"
             android:layout_width="fill_parent"
             android:layout_height="43dp"
-            android:background="@drawable/purple_btn"
+            android:background="@drawable/mainradio_left"
             android:text="@string/set3_txt"
             android:textColor="@color/white"
             android:textSize="16sp" />

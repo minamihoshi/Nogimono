@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.ListView;
 
-import adapter.MemberSearchAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pulltorefresh.PullToRefreshBase;
@@ -15,7 +14,6 @@ import pulltorefresh.PullToRefreshListView;
 
 public class MemberSearchListActivity extends BaseActivity {
     Context context = MemberSearchListActivity.this;
-    MemberSearchAdapter memberSearchAdapter;
     @InjectView(R.id.listview)
     PullToRefreshListView listView;
 

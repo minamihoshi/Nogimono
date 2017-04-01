@@ -12,15 +12,17 @@ import org.nogizaka46.R;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import utils.MyUtil;
 
 
-public class MemberSearchAdapter extends BaseAdapter {
+public class NewsAdapter extends BaseAdapter {
     private Context context;
     private List<Map<String, Object>> mSelfData;
 
-    public MemberSearchAdapter(Context context, List<Map<String, Object>> data) {
-        this.context=context;
+    public NewsAdapter(Context context, List<Map<String, Object>> data) {
+        this.context = context;
         this.mSelfData = data;
     }
 
@@ -42,29 +44,33 @@ public class MemberSearchAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        Map<String,?>item=mSelfData.get(position);
-        if(convertView==null){
-            holder=new ViewHolder();
-            convertView= LayoutInflater.from(context).inflate(R.layout.search_list_item,null);
-            holder.author= (TextView) convertView.findViewById(R.id.author);
-            holder.title= (TextView) convertView.findViewById(R.id.title);
-            holder.summary= (TextView) convertView.findViewById(R.id.summary);
-            holder.created_time= (TextView) convertView.findViewById(R.id.time);
+        Map<String,Object>item=mSelfData.get(position);
+        if (convertView!=null) {
+            holder = (ViewHolder) convertView.getTag();
+        } else {
+            convertView = LayoutInflater.from(context).inflate(R.layout.member_grid_item, null);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }else {
-            holder= (ViewHolder) convertView.getTag();
         }
-        holder.author.setText(item.get("author").toString());
         holder.title.setText(item.get("title").toString());
+        holder.delivery.setText(MyUtil.timeToDate(item.get("delivery").toString()));
         holder.summary.setText(item.get("summary").toString());
-        holder.created_time.setText(MyUtil.timeToDate(item.get("time").toString()));
+
+
         return convertView;
     }
-    class ViewHolder{
-        TextView author;
-        TextView title;
-        TextView summary;
-        TextView created_time;
 
+
+     class ViewHolder {
+        @InjectView(R.id.title)
+        TextView title;
+        @InjectView(R.id.delivery)
+        TextView delivery;
+        @InjectView(R.id.summary)
+        TextView summary;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

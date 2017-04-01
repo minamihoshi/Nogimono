@@ -6,102 +6,17 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <TextView
+    <include layout="@layout/net_error"
+        android:id="@+id/net_error_layout"
+        android:visibility="gone" />
+
+    <pulltorefresh.PullToRefreshListView
+        android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="5dp"
-        android:background="@color/gray" />
+        android:scrollbars="none"
+        android:layout_weight="1"
+        android:layout_height="match_parent"/>
 
-    <RadioGroup
-        android:id="@+id/blog_group"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="3dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-
-        <RadioButton
-            android:id="@+id/btn1"
-            style="@style/Radiobutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/mainradio_left"
-            android:checked="true"
-            android:text="@string/blog_title1"
-            android:textColor="@drawable/color_mainradio_one" />
-
-        <TextView
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:background="@color/gray" />
-
-        <RadioButton
-            android:id="@+id/btn2"
-            style="@style/Radiobutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/mainradio_right"
-            android:text="@string/blog_title2"
-            android:textColor="@drawable/color_mainradio_one" />
-
-    </RadioGroup>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="5dp"
-        android:background="@color/gray" />
-
-    <LinearLayout
-        android:id="@+id/group_layout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical">
-        <GridView
-            android:id="@+id/grid"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:horizontalSpacing="8dp"
-            android:verticalSpacing="8dp"
-            android:scrollbars="none"
-            android:numColumns="2"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/group_layout2"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:visibility="gone">
-        <view.WaveSwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/member_list_recyclerview"
-                android:scrollbars="none"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v7.widget.RecyclerView>
-
-        </view.WaveSwipeRefreshLayout>
-
-
-    </LinearLayout>
 
 
 </LinearLayout>

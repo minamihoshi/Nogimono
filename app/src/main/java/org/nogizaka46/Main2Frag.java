@@ -17,11 +17,10 @@ import java.util.List;
 
 public class Main2Frag extends Fragment {
     View view;
-     Main2Frag_Tab1 main2Frag_tab1=new Main2Frag_Tab1();
-    Main2Frag_Tab2 main2Frag_tab2=new Main2Frag_Tab2();
-    Main2Frag_Tab3 main2Frag_tab3=new Main2Frag_Tab3();
-    Main2Frag_Tab4 main2Frag_tab4=new Main2Frag_Tab4();
-    Main2Frag_Tab5 main2Frag_tab5=new Main2Frag_Tab5();
+     Main2Frag_Tab1 main2Frag_tab1=new Main2Frag_Tab1();//所有
+    Main2Frag_Tab2 main2Frag_tab2=new Main2Frag_Tab2();//博客
+    Main2Frag_Tab3 main2Frag_tab3=new Main2Frag_Tab3();//新闻
+    Main2Frag_Tab4 main2Frag_tab4=new Main2Frag_Tab4();//杂志
     TabLayout tabLayout;
     ViewPager viewPager;
     private List<String> mTitleList = new ArrayList<>();//页卡标题集合
@@ -52,18 +51,15 @@ public class Main2Frag extends Fragment {
         mTitleList.add(getResources().getString(R.string.tab_2_txt));
         mTitleList.add(getResources().getString(R.string.tab_3_txt));
         mTitleList.add(getResources().getString(R.string.tab_4_txt));
-        mTitleList.add(getResources().getString(R.string.tab_5_txt));
         mViewList.add(main2Frag_tab1);
         mViewList.add(main2Frag_tab2);
         mViewList.add(main2Frag_tab3);
         mViewList.add(main2Frag_tab4);
-        mViewList.add(main2Frag_tab5);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);//设置tab模式，当前为系统默认模式
+        tabLayout.setTabMode(TabLayout. MODE_FIXED);//设置tab模式，当前为系统默认模式
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));//添加tab选项卡
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(2)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(3)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(4)));
         MyPagerAdapter mAdapter = new MyPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。

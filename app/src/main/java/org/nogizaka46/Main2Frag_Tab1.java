@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import adapter.NewsListAdapter;
+import adapter.AllListAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
@@ -38,7 +38,7 @@ import view.WaveSwipeRefreshLayout;
 
 public class Main2Frag_Tab1 extends Fragment {
     View view;
-    NewsListAdapter adapter;
+    AllListAdapter adapter;
     @InjectView(R.id.recyclerview)
     RecyclerView recyclerview;
     @InjectView(R.id.swipeRefresh)
@@ -129,26 +129,19 @@ public class Main2Frag_Tab1 extends Fragment {
 
     private void SetListData() {
         if (adapter == null) {
-            adapter = new NewsListAdapter(getActivity(), mSelfData);
+            adapter = new AllListAdapter(getActivity(), mSelfData);
             recyclerview.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();
         }
-        adapter.setOnItemClickListener(new NewsListAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new AllListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Map<String, ?> item = mSelfData.get(position);
-                Intent intent = new Intent(getActivity(), NewsInfoActivity.class);
-                intent.putExtra("id", item.get("id").toString());
-                //因为共享元素是Android5.0引入的，所以需在android5.0（LOLLIPOP）以上系统下运行，低版本运行会报错，需要判断版本
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    //实现元素共享效果前后两个界面的元素共享名字TransitionName必须相同，设置任意的字符串即可。
-                    v.setTransitionName(getString(R.string.app_name));
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), v, v.getTransitionName());
-                    startActivityForResult(intent, 1, options.toBundle());
-                } else {
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getActivity(), BlogInfoActivity.class);
+                intent.putExtra("preview", item.get("preview").toString());
+                startActivity(intent);
+
             }
 
             @Override
@@ -168,7 +161,7 @@ public class Main2Frag_Tab1 extends Fragment {
     }
 
     private void doAction() {
-        Httputil.httpGet(Constants.Base_Url + "blogs/getBlogsByPage", new RequestCallBack<String>() {
+        Httputil.httpGet(Constants.New_Base_Url + "data/getall", new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
                 Message msg = new Message();
@@ -180,12 +173,12 @@ public class Main2Frag_Tab1 extends Fragment {
                             HashMap<String, Object> map1 = new HashMap<String, Object>();
                             JSONObject itemobj = new JSONObject(content.opt(i).toString());
                             map1.put("id", itemobj.optString("id").toString());
-                            map1.put("image_url", itemobj.optString("image_url").toString());
-                            map1.put("name", itemobj.optString("name").toString());
+                            map1.put("title", itemobj.optString("title").toString());
                             map1.put("summary", itemobj.optString("summary").toString());
-                            map1.put("content", itemobj.optString("content").toString());
-                            map1.put("category", itemobj.optString("category").toString());
-                            map1.put("created_time", itemobj.optString("created_time").toString());
+                            map1.put("delivery", itemobj.optString("delivery").toString());
+                            map1.put("type", itemobj.optString("type").toString());
+                            map1.put("detail", itemobj.optString("detail").toString());
+                            map1.put("preview", itemobj.optString("preview").toString());
                             mSelfData.add(map1);
                         }
                     }

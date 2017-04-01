@@ -17,11 +17,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.MyUtil;
 
-public class NewsListAdapter extends Adapter<ViewHolder>{
+public class AllListAdapter extends Adapter<ViewHolder>{
     private Context context;
     private List<Map<String, Object>> mSelfData;
 
-    public NewsListAdapter(Context context,List<Map<String, Object>> data) {
+    public AllListAdapter(Context context, List<Map<String, Object>> data) {
         this.context=context;
         this.mSelfData = data;
     }
@@ -36,10 +36,10 @@ public class NewsListAdapter extends Adapter<ViewHolder>{
     public void onBindViewHolder(final ViewHolder holder, int position) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             Map<String,?>item=mSelfData.get(position);
-            Glide.with(context).load(item.get("image_url").toString()).error(R.drawable.noimg).into(itemViewHolder.images);
-            itemViewHolder.name.setText(item.get("name").toString());
+           // Glide.with(context).load(item.get("image_url").toString()).error(R.drawable.noimg).into(itemViewHolder.images);
+            itemViewHolder.name.setText(item.get("title").toString());
             itemViewHolder.summary.setText(item.get("summary").toString());
-            itemViewHolder.created_time.setText(MyUtil.timeToDate(item.get("created_time").toString()));
+            itemViewHolder.created_time.setText(MyUtil.timeToDate(item.get("delivery").toString()));
             if (onItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

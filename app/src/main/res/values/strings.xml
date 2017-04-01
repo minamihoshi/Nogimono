@@ -2,15 +2,15 @@
     <!--其他-->
     <string name="app_name">乃木物</string>
     <string name="intentent_slow">网络似乎开小差</string>
+    <string name="web_error">网页加载错误</string>
     <!--主页-->
     <string name="tab_mainpage">主页</string>
     <string name="tab_mainpage_me">我</string>
     <string name="tab_mainpage_gz">关注</string>
-    <string name="tab_1_txt">新闻</string>
+    <string name="tab_1_txt">全部</string>
     <string name="tab_2_txt">博客</string>
-    <string name="tab_3_txt">视频</string>
+    <string name="tab_3_txt">新闻</string>
     <string name="tab_4_txt">杂志</string>
-    <string name="tab_5_txt">专辑</string>
     <string name="news_type">类型:</string>
     <string name="news_times">时间:</string>
     <!--左侧菜单-->

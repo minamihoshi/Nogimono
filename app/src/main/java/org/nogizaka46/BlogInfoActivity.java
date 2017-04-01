@@ -1,6 +1,7 @@
 package org.nogizaka46;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -10,22 +11,24 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import utils.Constants;
+import view.MyToast;
 
 
 public class BlogInfoActivity extends BaseActivity {
 
-    @InjectView(R.id.top_button_back)
-    ImageButton img_left_layout;
-    @InjectView(R.id.webview)
-    WebView webview;
-
+    @InjectView(R.id.top_button_back) ImageButton img_left_layout;
+    @InjectView(R.id.webview)  WebView webview;
     @InjectView(R.id.title)
     TextView head;
-
+    String previews;
     String url;
+    Context context = BlogInfoActivity.this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +39,20 @@ public class BlogInfoActivity extends BaseActivity {
     }
 
     private void initwebview() {
-        url = getIntent().getStringExtra("url");
+        if(getIntent()!=null&&getIntent().getExtras()!=null){
+            previews=getIntent().getStringExtra("preview");
+           url = Constants.New_Base_Url1 + previews;
+
+        }
         webview.loadUrl(url);
         WebSettings webSetting = webview.getSettings();
         webSetting.setJavaScriptEnabled(true);//设置WebView是否允许执行JavaScript脚本，默认false，不允许。
+        webSetting.setSupportZoom(true);
+        webSetting.setBuiltInZoomControls(true);
         webSetting.setSupportMultipleWindows(true);//设置WebView是否支持多窗口。如果设置为true
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);//让JavaScript自动打开窗口，默认false
         webSetting.setAllowFileAccess(true);//是否允许访问文件，默认允许
-        webSetting.setBuiltInZoomControls(true); // 设置显示缩放按钮
+        webSetting.setDisplayZoomControls(false);
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSetting.setUseWideViewPort(true);//为图片添加放大缩小功能
         webview.setWebViewClient(new WebViewClient() {
@@ -68,7 +77,11 @@ public class BlogInfoActivity extends BaseActivity {
                 //重新测量
                 webview.measure(w, h);
             }
-
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                MyToast.showText(context, getResources().getString(R.string.web_error), Toast.LENGTH_SHORT, false);
+            }
         });
         webview.setWebChromeClient(new WebChromeClient() {
 

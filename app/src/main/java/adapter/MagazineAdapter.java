@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.nogizaka46.R;
@@ -18,11 +17,11 @@ import butterknife.InjectView;
 import utils.MyUtil;
 
 
-public class ShowMemberAdapter extends BaseAdapter {
+public class MagazineAdapter extends BaseAdapter {
     private Context context;
     private List<Map<String, Object>> mSelfData;
 
-    public ShowMemberAdapter(Context context, List<Map<String, Object>> data) {
+    public MagazineAdapter(Context context, List<Map<String, Object>> data) {
         this.context = context;
         this.mSelfData = data;
     }

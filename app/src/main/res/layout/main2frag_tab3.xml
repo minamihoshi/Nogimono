@@ -2,6 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <include layout="@layout/net_error"
+        android:id="@+id/net_error_layout"
+        android:visibility="gone" />
+
+
+    <pulltorefresh.PullToRefreshListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none" />
 </LinearLayout>

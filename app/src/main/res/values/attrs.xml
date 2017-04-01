@@ -78,6 +78,9 @@
     <declare-styleable name="ShelvesView">
         <attr name="shelfBackground" format="reference" />
     </declare-styleable>
+    <declare-styleable name="MarkdownView">
+        <attr name="escapeHtml" format="boolean"/>
+    </declare-styleable>
 
 
 </resources>
