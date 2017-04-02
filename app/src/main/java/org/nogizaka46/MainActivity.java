@@ -19,12 +19,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     Main1Frag main1Frag;
     Main2Frag main2Frag;
     Main3Frag main3Frag;
-    @InjectView(R.id.title)
-    TextView head_title;
-    @InjectView(R.id.right_layout)
-    LinearLayout right_layout;
-    @InjectView(R.id.bottom_navigation_view)
-    BottomNavigationView bottomNavigationView;
+    @InjectView(R.id.title) TextView head_title;
+    @InjectView(R.id.right_layout)  LinearLayout right_layout;
+    @InjectView(R.id.bottom_navigation_view)  BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

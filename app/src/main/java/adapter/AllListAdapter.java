@@ -36,7 +36,6 @@ public class AllListAdapter extends Adapter<ViewHolder>{
     public void onBindViewHolder(final ViewHolder holder, int position) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             Map<String,?>item=mSelfData.get(position);
-           // Glide.with(context).load(item.get("image_url").toString()).error(R.drawable.noimg).into(itemViewHolder.images);
             itemViewHolder.name.setText(item.get("title").toString());
             itemViewHolder.summary.setText(item.get("summary").toString());
             itemViewHolder.created_time.setText(MyUtil.timeToDate(item.get("delivery").toString()));

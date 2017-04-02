@@ -19,20 +19,19 @@ import utils.Constants;
 import view.MyToast;
 
 
-public class BlogInfoActivity extends BaseActivity {
-
+public class WebPageActivity extends BaseActivity {
     @InjectView(R.id.top_button_back) ImageButton img_left_layout;
     @InjectView(R.id.webview)  WebView webview;
     @InjectView(R.id.title)
     TextView head;
     String previews;
     String url;
-    Context context = BlogInfoActivity.this;
+    Context context = WebPageActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.blog_info);
+        setContentView(R.layout.webpager);
         ButterKnife.inject(this);
         img_left_layout.setVisibility(View.VISIBLE);
         initwebview();
@@ -42,7 +41,6 @@ public class BlogInfoActivity extends BaseActivity {
         if(getIntent()!=null&&getIntent().getExtras()!=null){
             previews=getIntent().getStringExtra("preview");
            url = Constants.New_Base_Url1 + previews;
-
         }
         webview.loadUrl(url);
         WebSettings webSetting = webview.getSettings();
@@ -55,6 +53,7 @@ public class BlogInfoActivity extends BaseActivity {
         webSetting.setDisplayZoomControls(false);
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSetting.setUseWideViewPort(true);//为图片添加放大缩小功能
+        webSetting.setLoadWithOverviewMode(true);
         webview.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -70,12 +69,7 @@ public class BlogInfoActivity extends BaseActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                int w = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                int h = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                //重新测量
-                webview.measure(w, h);
+
             }
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {

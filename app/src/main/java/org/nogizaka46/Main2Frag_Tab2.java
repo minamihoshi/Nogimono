@@ -6,13 +6,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -26,23 +25,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import adapter.ShowMemberAdapter;
+import adapter.AllListAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import pulltorefresh.PullToRefreshBase;
-import pulltorefresh.PullToRefreshListView;
 import utils.Constants;
 import utils.Httputil;
 
 
-public class Main2Frag_Tab2 extends Fragment implements  AdapterView.OnItemClickListener {
+public class Main2Frag_Tab2 extends Fragment{
     View view;
+    @InjectView(R.id.recyclerview) RecyclerView recyclerview;
+    @InjectView(R.id.net_error_layout)  RelativeLayout netErrorMain;
     List<Map<String, Object>> mSelfData;
     Handler handler;
-    @InjectView(R.id.listview)
-    PullToRefreshListView listview;
-    ShowMemberAdapter showMemberAdapter;
-    @InjectView(R.id.net_error_layout)  RelativeLayout netErrorMain;
+    AllListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,9 +68,8 @@ public class Main2Frag_Tab2 extends Fragment implements  AdapterView.OnItemClick
 
     private void initData() {
         mSelfData = new ArrayList<Map<String, Object>>();
-        listview.setMode(PullToRefreshBase.Mode.BOTH);
-        listview.setOnRefreshListener(new BlogListRefreshListener());
-        listview.setOnItemClickListener(this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerview.setLayoutManager(layoutManager);
     }
 
     private void initHandler() {
@@ -85,7 +80,6 @@ public class Main2Frag_Tab2 extends Fragment implements  AdapterView.OnItemClick
                     case 1:
                         SetListData();
                         netErrorMain.setVisibility(View.GONE);//网络设置隐藏
-                        listview.onRefreshComplete();
                         break;
                     case 2:
                         netErrorMain.setVisibility(View.VISIBLE);
@@ -96,7 +90,6 @@ public class Main2Frag_Tab2 extends Fragment implements  AdapterView.OnItemClick
                                 startActivity(intent);
                             }
                         });
-                        listview.onRefreshComplete();
                         break;
                 }
             }
@@ -104,45 +97,31 @@ public class Main2Frag_Tab2 extends Fragment implements  AdapterView.OnItemClick
     }
 
     private void SetListData() {
-        if (showMemberAdapter == null) {
-            showMemberAdapter = new ShowMemberAdapter(getActivity(), mSelfData);
-            listview.setAdapter(showMemberAdapter);
+        if (adapter == null) {
+            adapter = new AllListAdapter(getActivity(), mSelfData);
+            recyclerview.setAdapter(adapter);
         } else {
-            showMemberAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
+        adapter.setOnItemClickListener(new AllListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Map<String, ?> item = mSelfData.get(position);
+                Intent intent = new Intent(getActivity(), WebPageActivity.class);
+                intent.putExtra("preview", item.get("preview").toString());
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+            }
+        });
 
     }
 
     private void refreshList() {
-        if (!listview.isRefreshing()) {
-            listview.setRefreshing();
-        } else {
-            doAction();
-        }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Map<String,?>item=mSelfData.get(position-1);
-        Intent intent=new Intent(getActivity(),BlogInfoActivity.class);
-        intent.putExtra("preview",item.get("preview").toString());
-        startActivity(intent);
-    }
-
-    private class BlogListRefreshListener implements PullToRefreshBase.OnRefreshListener2 {
-
-        @Override
-        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-            listview.setMode(PullToRefreshBase.Mode.BOTH);
-            mSelfData.clear();
-            refreshList();
-        }
-
-        @Override
-        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-            mSelfData.clear();
-            doAction();
-        }
+         doAction();
     }
 
     private void doAction() {

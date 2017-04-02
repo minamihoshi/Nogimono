@@ -1,9 +1,7 @@
 package org.nogizaka46;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,14 +37,11 @@ import view.WaveSwipeRefreshLayout;
 public class Main2Frag_Tab1 extends Fragment {
     View view;
     AllListAdapter adapter;
-    @InjectView(R.id.recyclerview)
-    RecyclerView recyclerview;
-    @InjectView(R.id.swipeRefresh)
-    WaveSwipeRefreshLayout swipeRefresh;
+    @InjectView(R.id.recyclerview) RecyclerView recyclerview;
+    @InjectView(R.id.swipeRefresh) WaveSwipeRefreshLayout swipeRefresh;
     RelativeLayout netErrorMain;
     private Handler handler;
     private List<Map<String, Object>> mSelfData;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +75,6 @@ public class Main2Frag_Tab1 extends Fragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerview.setLayoutManager(layoutManager);
         swipeRefresh.setRefreshing(true);
-        swipeRefresh.setWaveColor(R.color.main_bg_color);
         swipeRefresh.setColorSchemeColors(Color.WHITE, Color.WHITE);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshListener());
         netErrorMain= (RelativeLayout) getActivity().findViewById(R.id.net_error_layout);
@@ -93,7 +87,6 @@ public class Main2Frag_Tab1 extends Fragment {
     }
 
     private class SwipeRefreshListener implements WaveSwipeRefreshLayout.OnRefreshListener {
-
         @Override
         public void onRefresh() {
             mSelfData.clear();
@@ -138,19 +131,16 @@ public class Main2Frag_Tab1 extends Fragment {
             @Override
             public void onItemClick(View v, int position) {
                 Map<String, ?> item = mSelfData.get(position);
-                Intent intent = new Intent(getActivity(), BlogInfoActivity.class);
+                Intent intent = new Intent(getActivity(), WebPageActivity.class);
                 intent.putExtra("preview", item.get("preview").toString());
                 startActivity(intent);
-
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
             }
         });
-
     }
-
 
     private void refreshList() {
         if (!swipeRefresh.isRefreshing()) {
@@ -197,6 +187,4 @@ public class Main2Frag_Tab1 extends Fragment {
             }
         });
     }
-
-
 }

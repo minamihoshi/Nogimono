@@ -21,7 +21,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import adapter.BlogListAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pulltorefresh.PullToRefreshBase;
@@ -32,7 +31,6 @@ import utils.Httputil;
 public class BlogListActivity extends BaseActivity {
     Context context = BlogListActivity.this;
     String name_alphas, member_names;
-    BlogListAdapter bloglistadapter;
     @InjectView(R.id.top_button_back)
     ImageButton img_left_layout;
     @InjectView(R.id.title)
@@ -87,7 +85,7 @@ public class BlogListActivity extends BaseActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  Map<String,?> item=mSelfData.get(position);
-                 Intent intent=new Intent(context,BlogInfoActivity.class);
+                 Intent intent=new Intent(context,WebPageActivity.class);
                   intent.putExtra("url",item.get("url").toString());
                  startActivity(intent);
         }
@@ -124,12 +122,7 @@ public class BlogListActivity extends BaseActivity {
     }
 
     private void SetListData() {
-        if (bloglistadapter == null) {
-            bloglistadapter = new BlogListAdapter(context, mSelfData);
-            listView.setAdapter(bloglistadapter);
-        } else {
-            bloglistadapter.notifyDataSetChanged();
-        }
+
     }
 
     private void doAction() {

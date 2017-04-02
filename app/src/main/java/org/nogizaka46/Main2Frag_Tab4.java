@@ -6,10 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 
 import com.lidroid.xutils.exception.HttpException;
@@ -24,11 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import adapter.MagazineAdapter;
+import adapter.AllListAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import pulltorefresh.PullToRefreshBase;
-import pulltorefresh.PullToRefreshListView;
 import utils.Constants;
 import utils.Httputil;
 
@@ -36,14 +35,13 @@ import utils.Httputil;
 /**
  * 杂志
  */
-public class Main2Frag_Tab4 extends Fragment implements AdapterView.OnItemClickListener{
+public class Main2Frag_Tab4 extends Fragment {
     View view;
     @InjectView(R.id.net_error_layout)  RelativeLayout netErrorMain;
-    @InjectView(R.id.listview)
-    PullToRefreshListView listview;
+    @InjectView(R.id.recyclerview)  RecyclerView recyclerview;
     List<Map<String, Object>> mSelfData;
     Handler handler;
-    MagazineAdapter  magazineAdapter;
+    AllListAdapter allListAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
@@ -72,18 +70,31 @@ public class Main2Frag_Tab4 extends Fragment implements AdapterView.OnItemClickL
 
     private void initData() {
         mSelfData = new ArrayList<Map<String, Object>>();
-        listview.setMode(PullToRefreshBase.Mode.BOTH);
-        listview.setOnRefreshListener(new BlogListRefreshListener());
-        listview.setOnItemClickListener(this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerview.setLayoutManager(layoutManager);
+        netErrorMain= (RelativeLayout) getActivity().findViewById(R.id.net_error_layout);
     }
 
     private void SetListData() {
-        if (magazineAdapter == null) {
-            magazineAdapter = new MagazineAdapter(getActivity(), mSelfData);
-            listview.setAdapter(magazineAdapter);
+        if (allListAdapter == null) {
+            allListAdapter = new AllListAdapter(getActivity(), mSelfData);
+            recyclerview.setAdapter(allListAdapter);
         } else {
-            magazineAdapter.notifyDataSetChanged();
+            allListAdapter.notifyDataSetChanged();
         }
+        allListAdapter.setOnItemClickListener(new AllListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Map<String, ?> item = mSelfData.get(position);
+                Intent intent = new Intent(getActivity(), WebPageActivity.class);
+                intent.putExtra("preview", item.get("preview").toString());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+            }
+        });
     }
 
 
@@ -95,7 +106,6 @@ public class Main2Frag_Tab4 extends Fragment implements AdapterView.OnItemClickL
                     case 1:
                         SetListData();
                         netErrorMain.setVisibility(View.GONE);//网络设置隐藏
-                        listview.onRefreshComplete();
                         break;
                     case 2:
                         netErrorMain.setOnClickListener(new View.OnClickListener() {
@@ -105,45 +115,17 @@ public class Main2Frag_Tab4 extends Fragment implements AdapterView.OnItemClickL
                                 startActivity(intent);
                             }
                         });
-                        listview.onRefreshComplete();
                         break;
                 }
             }
         };
     }
 
-
     private void refreshList() {
-        if (!listview.isRefreshing()) {
-            listview.setRefreshing();
-        } else {
             doAction();
-        }
+
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-           Map<String,Object>item=mSelfData.get(position-1);
-           Intent intent=new Intent(getActivity(),BlogInfoActivity.class);
-           intent.putExtra("preview",item.get("preview").toString());
-          startActivity(intent);
-    }
-
-    private class BlogListRefreshListener implements PullToRefreshBase.OnRefreshListener2 {
-
-        @Override
-        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-            listview.setMode(PullToRefreshBase.Mode.BOTH);
-            mSelfData.clear();
-            refreshList();
-        }
-
-        @Override
-        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-            mSelfData.clear();
-            doAction();
-        }
-    }
     private void doAction() {
         Httputil.httpGet(Constants.New_Base_Url + "data/getmagazine", new RequestCallBack<String>() {
             @Override
