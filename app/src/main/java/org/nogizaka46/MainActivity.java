@@ -48,14 +48,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         main2Frag = new Main2Frag();
         transaction.replace(R.id.fragment_container, main2Frag);
         transaction.commit();
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
 
     private void initView() {
         head_title.setText(getResources().getString(R.string.tab_mainpage));
         right_layout.setVisibility(View.VISIBLE);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-
-
     }
 
     @Override
@@ -93,6 +92,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 }
                 head_title = (TextView) findViewById(R.id.title);
                 head_title.setText(getResources().getString(R.string.tab_mainpage));
+
                 break;
 
             case R.id.menu_me:
@@ -106,6 +106,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 head_title.setText(getResources().getString(R.string.tab_mainpage_me));
                 break;
         }
+
         transaction.commit();
         return true;
     }
