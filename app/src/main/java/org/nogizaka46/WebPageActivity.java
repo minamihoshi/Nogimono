@@ -94,32 +94,43 @@ public class WebPageActivity extends BaseActivity {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-                MyToast.showText(context, getResources().getString(R.string.web_error), Toast.LENGTH_SHORT, false);
+                new SweetAlertDialog(context,SweetAlertDialog.ERROR_TYPE).setTitleText(getResources().getString(R.string.web_error)).show();
+
             }
         });
+
         webview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 final WebView.HitTestResult hitTestResult = webview.getHitTestResult();
                 if(hitTestResult.getType()== WebView.HitTestResult.IMAGE_TYPE|| hitTestResult.getType()== WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE){
-                    new SweetAlertDialog(context,SweetAlertDialog.WARNING_TYPE).setTitleText("提示")
-                            .setContentText("是否将图片保存到本地").setConfirmText("是").setCancelText("取消").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+
+                    new SweetAlertDialog(context,SweetAlertDialog.WARNING_TYPE).setTitleText(getResources().getString(R.string.dialog_titles))
+
+                   .setContentText(getResources().getString(R.string.dialog_content)).setConfirmText(getResources().getString(R.string.ok)).setCancelText(getResources().getString(R.string.cancel)).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             if (Build.VERSION.SDK_INT >= 23) {
+
                                 sweetAlertDialog.dismiss();
+
                                 String url = hitTestResult.getExtra();
+
                                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                     initDownloadManager(url);//下载文件后的读写文件属于危险权限,因此要动态的申请权限
                                 } else {
                                     ActivityCompat.requestPermissions(WebPageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                                 }
+
                             }
                         }
+
                     }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                      sweetAlertDialog.dismiss();
+
+                             sweetAlertDialog.dismiss();
                         }
                     }).show();
                 }

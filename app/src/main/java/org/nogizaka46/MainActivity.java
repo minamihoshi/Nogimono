@@ -130,8 +130,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     }
 
     public void doActionRight(View view) {
-        Intent intent = new Intent(MainActivity.this, MemberSearchListActivity.class);
-        startActivity(intent);
+
     }
 
 

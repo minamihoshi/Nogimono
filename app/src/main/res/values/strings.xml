@@ -3,6 +3,17 @@
     <string name="app_name">乃木物</string>
     <string name="intentent_slow">网络似乎开小差</string>
     <string name="web_error">网页加载错误</string>
+    <!--对话框-->
+    <string name="default_progressbar">Default Progressbar:</string>
+    <string name="dialog_default_title">Here\'s a message!</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="LOADING">Loading...</string>
+    <string name="dialog_titles">提示</string>
+    <string name="dialog_content">是否将图片保存到本地</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+
     <!--主页-->
     <string name="tab_mainpage">主页</string>
     <string name="tab_mainpage_me">我</string>
@@ -36,9 +47,5 @@
     <string name="pull_to_refresh_from_bottom_pull_label">上拉可以加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_release_label">松开立即加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">正在加载数据...</string>
-    <string name="default_progressbar">Default Progressbar:</string>
-    <string name="dialog_default_title">Here\'s a message!</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="LOADING">Loading...</string>
+
 </resources>

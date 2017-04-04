@@ -27,7 +27,7 @@ public class Httputil {
 
    public  static  void httpGet(String url,RequestCallBack callbacks){
        HttpUtils http=new HttpUtils();
-       http.configCurrentHttpCacheExpiry(1);
+       http.configCurrentHttpCacheExpiry(5000);
        http.send(HttpRequest.HttpMethod.GET,url,callbacks);
    }
 

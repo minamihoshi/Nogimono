@@ -81,8 +81,6 @@ public class ProgressWheel extends View {
     /**
      * The constructor for the ProgressWheel
      *
-     * @param context
-     * @param attrs
      */
     public ProgressWheel(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -94,7 +92,7 @@ public class ProgressWheel extends View {
     /**
      * The constructor for the ProgressWheel
      *
-     * @param context
+     *
      */
     public ProgressWheel(Context context) {
         super(context);
