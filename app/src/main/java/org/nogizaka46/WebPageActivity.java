@@ -4,6 +4,7 @@ package org.nogizaka46;
 import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,6 +14,8 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -44,6 +47,9 @@ public class WebPageActivity extends BaseActivity {
     private DownloadManager mDownloadManager = null;
     private String mFileName = "";
     private long downloadId;
+    private WebView.HitTestResult hitTestResult;
+    private int clickdown =0;
+    private boolean longclick ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,10 +106,41 @@ public class WebPageActivity extends BaseActivity {
             }
         });
 
+        webview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.e("TAG", "onClick:1111111111111 ");
+                hitTestResult = webview.getHitTestResult();
+
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    clickdown =1;
+                    longclick =false;
+                }
+                else if(!longclick&&clickdown ==1&&motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    if(hitTestResult.getType()== WebView.HitTestResult.IMAGE_TYPE ||hitTestResult.getType()== WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE){
+                        Log.e("TAG", "onClick: " );
+                        clickdown =0;
+                        String url = hitTestResult.getExtra();
+                        Intent intent  = new Intent(WebPageActivity.this,ImageActivity.class);
+                        intent.putExtra("image",url);
+                        startActivity(intent);
+                    }
+                }else{
+                    clickdown =100;
+                }
+
+                return false;
+            }
+
+
+        });
+
         webview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                final WebView.HitTestResult hitTestResult = webview.getHitTestResult();
+                Log.e("TAG", "onLongClick: " );
+                longclick =true;
+                 hitTestResult = webview.getHitTestResult();
                 if(hitTestResult.getType()== WebView.HitTestResult.IMAGE_TYPE|| hitTestResult.getType()== WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE){
 
                     new SweetAlertDialog(context,SweetAlertDialog.WARNING_TYPE).setTitleText(getResources().getString(R.string.dialog_titles))
