@@ -19,11 +19,11 @@ import utils.MyUtil;
 
 public class AllListAdapter extends Adapter<ViewHolder>{
     private Context context;
-    private List<Map<String, Object>> mSelfData;
+    private List<Map<String, Object>> mData;
 
     public AllListAdapter(Context context, List<Map<String, Object>> data) {
         this.context=context;
-        this.mSelfData = data;
+        this.mData = data;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class AllListAdapter extends Adapter<ViewHolder>{
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            Map<String,?>item=mSelfData.get(position);
+            Map<String,?>item=mData.get(position);
             itemViewHolder.name.setText(item.get("title").toString());
             itemViewHolder.summary.setText(item.get("summary").toString());
             itemViewHolder.created_time.setText(MyUtil.timeToDate(item.get("delivery").toString()));
@@ -45,6 +45,7 @@ public class AllListAdapter extends Adapter<ViewHolder>{
                     public void onClick(View v) {
                         int position = holder.getLayoutPosition();
                         onItemClickListener.onItemClick(holder.itemView, position);
+
                     }
                 });
 
@@ -59,10 +60,10 @@ public class AllListAdapter extends Adapter<ViewHolder>{
             }
 
     }
-
+   
     @Override
     public int getItemCount() {
-        return mSelfData.size();
+        return mData.size();
     }
     public interface OnItemClickListener {
         void onItemClick(View view, int position);

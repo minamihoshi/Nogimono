@@ -12,4 +12,7 @@
     <dimen name="text_size_profile_toolbar_title">20sp</dimen>
     <dimen name="corner_radius_oval">16dp</dimen>
     <dimen name="padding_search_bar">0dp</dimen>
+    <dimen name="alert_width">290dp</dimen>
+    <dimen name="common_circle_width">3dp</dimen>
+    <dimen name="progress_circle_radius">34dp</dimen>
 </resources>

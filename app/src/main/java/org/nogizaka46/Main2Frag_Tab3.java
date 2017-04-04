@@ -30,15 +30,15 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
 import utils.Httputil;
+import view.SweetAlertDialog;
 
 
 public class Main2Frag_Tab3 extends Fragment{
     View view;
     @InjectView(R.id.recyclerview) RecyclerView recyclerview;
-    @InjectView(R.id.net_error_layout)   RelativeLayout netErrorMain;
     List<Map<String, Object>> mSelfData;
     Handler handler;
-    AllListAdapter allListAdapter;
+    AllListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,17 +70,32 @@ public class Main2Frag_Tab3 extends Fragment{
         mSelfData = new ArrayList<Map<String, Object>>();
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerview.setLayoutManager(layoutManager);
-        netErrorMain= (RelativeLayout) getActivity().findViewById(R.id.net_error_layout);
     }
 
+    private void initHandler() {
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        SetListData();
+                        break;
+                    case 2:
+                        SetListData();
+                        new SweetAlertDialog(getActivity(),SweetAlertDialog.WARNING_TYPE).setTitleText(msg.obj.toString()).show();
+                        break;
+                }
+            }
+        };
+    }
     private void SetListData() {
-        if (allListAdapter == null) {
-            allListAdapter = new AllListAdapter(getActivity(), mSelfData);
-            recyclerview.setAdapter(allListAdapter);
+        if (adapter == null) {
+            adapter = new AllListAdapter(getActivity(), mSelfData);
+            recyclerview.setAdapter(adapter);
         } else {
-            allListAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
-        allListAdapter.setOnItemClickListener(new AllListAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new AllListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Map<String, ?> item = mSelfData.get(position);
@@ -95,28 +110,7 @@ public class Main2Frag_Tab3 extends Fragment{
         });
     }
 
-    private void initHandler() {
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 1:
-                        SetListData();
-                        netErrorMain.setVisibility(View.GONE);//网络设置隐藏
-                        break;
-                    case 2:
-                        netErrorMain.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                                startActivity(intent);
-                            }
-                        });
-                        break;
-                }
-            }
-        };
-    }
+
 
     private void refreshList() {
             doAction();
@@ -153,7 +147,10 @@ public class Main2Frag_Tab3 extends Fragment{
 
             @Override
             public void onFailure(HttpException e, String s) {
-
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = getResources().getString(R.string.intentent_slow);
+                handler.sendMessage(msg);
             }
         });
     }

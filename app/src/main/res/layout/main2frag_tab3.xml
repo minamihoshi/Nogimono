@@ -6,9 +6,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <include layout="@layout/net_error"
-        android:id="@+id/net_error_layout"
-        android:visibility="gone" />
+
 
 
     <android.support.v7.widget.RecyclerView

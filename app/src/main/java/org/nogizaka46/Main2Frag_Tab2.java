@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
 import utils.Httputil;
+import view.SweetAlertDialog;
 
 
 public class Main2Frag_Tab2 extends Fragment{
@@ -79,17 +80,10 @@ public class Main2Frag_Tab2 extends Fragment{
                 switch (msg.what) {
                     case 1:
                         SetListData();
-                        netErrorMain.setVisibility(View.GONE);//网络设置隐藏
                         break;
                     case 2:
-                        netErrorMain.setVisibility(View.VISIBLE);
-                        netErrorMain.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                                startActivity(intent);
-                            }
-                        });
+                        SetListData();
+                        new SweetAlertDialog(getActivity(),SweetAlertDialog.WARNING_TYPE).setTitleText(msg.obj.toString()).show();
                         break;
                 }
             }

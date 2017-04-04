@@ -3,8 +3,10 @@ package org.nogizaka46;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +21,16 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     Main1Frag main1Frag;
     Main2Frag main2Frag;
     Main3Frag main3Frag;
-    @InjectView(R.id.title) TextView head_title;
-    @InjectView(R.id.right_layout)  LinearLayout right_layout;
-    @InjectView(R.id.bottom_navigation_view)  BottomNavigationView bottomNavigationView;
+    @InjectView(R.id.title)
+    TextView head_title;
+    @InjectView(R.id.right_layout)
+    LinearLayout right_layout;
+    @InjectView(R.id.bottom_navigation_view)
+    BottomNavigationView bottomNavigationView;
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @InjectView(R.id.navigation) NavigationView navigation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

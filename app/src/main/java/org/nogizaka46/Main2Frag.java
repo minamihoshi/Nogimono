@@ -26,6 +26,8 @@ public class Main2Frag extends Fragment {
     private List<String> mTitleList = new ArrayList<>();//页卡标题集合
     private List<Fragment> mViewList = new ArrayList<>();//页卡视图集合
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.main2_frag, container, false);

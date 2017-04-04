@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
 import utils.Httputil;
+import view.SweetAlertDialog;
 
 
 /**
@@ -105,16 +106,10 @@ public class Main2Frag_Tab4 extends Fragment {
                 switch (msg.what) {
                     case 1:
                         SetListData();
-                        netErrorMain.setVisibility(View.GONE);//网络设置隐藏
                         break;
                     case 2:
-                        netErrorMain.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                                startActivity(intent);
-                            }
-                        });
+                        SetListData();
+                        new SweetAlertDialog(getActivity(),SweetAlertDialog.WARNING_TYPE).setTitleText(msg.obj.toString()).show();
                         break;
                 }
             }
@@ -149,7 +144,7 @@ public class Main2Frag_Tab4 extends Fragment {
                         }
                     }
                     msg.what = 1;
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
                 handler.sendMessage(msg);
@@ -157,7 +152,10 @@ public class Main2Frag_Tab4 extends Fragment {
 
             @Override
             public void onFailure(HttpException e, String s) {
-
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = getResources().getString(R.string.intentent_slow);
+                handler.sendMessage(msg);
             }
         });
     }

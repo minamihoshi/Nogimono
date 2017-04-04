@@ -5,32 +5,27 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import adapter.AllListAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
 import utils.Httputil;
+import view.SweetAlertDialog;
 import view.WaveSwipeRefreshLayout;
 
 
@@ -39,7 +34,6 @@ public class Main2Frag_Tab1 extends Fragment {
     AllListAdapter adapter;
     @InjectView(R.id.recyclerview) RecyclerView recyclerview;
     @InjectView(R.id.swipeRefresh) WaveSwipeRefreshLayout swipeRefresh;
-    RelativeLayout netErrorMain;
     private Handler handler;
     private List<Map<String, Object>> mSelfData;
 
@@ -77,7 +71,6 @@ public class Main2Frag_Tab1 extends Fragment {
         swipeRefresh.setRefreshing(true);
         swipeRefresh.setColorSchemeColors(Color.WHITE, Color.WHITE);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshListener());
-        netErrorMain= (RelativeLayout) getActivity().findViewById(R.id.net_error_layout);
     }
 
     @Override
@@ -92,6 +85,7 @@ public class Main2Frag_Tab1 extends Fragment {
             mSelfData.clear();
             refreshList();
         }
+
     }
 
     private void initHandler() {
@@ -101,18 +95,11 @@ public class Main2Frag_Tab1 extends Fragment {
                 switch (msg.what) {
                     case 1:
                         SetListData();
-                        netErrorMain.setVisibility(View.GONE);//网络设置隐藏
                         swipeRefresh.setRefreshing(false);
                         break;
-                    case 2:
-                        netErrorMain.setVisibility(View.VISIBLE);
-                        netErrorMain.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                                startActivity(intent);
-                            }
-                        });
+                    case 2://当网络没有的时候就显示空的list,要不然没了网络数据还在
+                        SetListData();
+                        new SweetAlertDialog(getActivity(),SweetAlertDialog.WARNING_TYPE).setTitleText(msg.obj.toString()).show();
                         swipeRefresh.setRefreshing(false);
                         break;
                 }
