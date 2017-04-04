@@ -54,6 +54,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         head_title.setText(getResources().getString(R.string.tab_mainpage));
         right_layout.setVisibility(View.VISIBLE);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
