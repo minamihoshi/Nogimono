@@ -28,6 +28,7 @@ import java.text.DecimalFormat;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import utils.Constants;
+import utils.EncryptUtils;
 import view.MyToast;
 import view.SweetAlertDialog;
 
@@ -111,11 +112,10 @@ public class WebPageActivity extends BaseActivity {
 
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            String url = hitTestResult.getExtra();
                             if (Build.VERSION.SDK_INT >= 23) {
 
                                 sweetAlertDialog.dismiss();
-
-                                String url = hitTestResult.getExtra();
 
                                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                     initDownloadManager(url);//下载文件后的读写文件属于危险权限,因此要动态的申请权限
@@ -123,6 +123,9 @@ public class WebPageActivity extends BaseActivity {
                                     ActivityCompat.requestPermissions(WebPageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                                 }
 
+                            }else{
+                                sweetAlertDialog.dismiss();
+                                initDownloadManager(url);
                             }
                         }
 
@@ -187,15 +190,16 @@ public class WebPageActivity extends BaseActivity {
         MyToast.makeText(context,urlstring,Toast.LENGTH_LONG).show();
         mDownloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         mFileName = urlstring;
-        File destFile = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), "test.jpg");
-        if (destFile.exists()) {
-            destFile.delete();
-        }
+        String path = EncryptUtils.md5(urlstring)+".jpg";
+        //File destFile = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), "test.jpg");
+//        if (destFile.exists()) {
+//            destFile.delete();
+//        }
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlstring))
                 .setTitle("文件下载")
                 .setDescription(urlstring)
                 .setVisibleInDownloadsUi(true)
-                 .setDestinationUri(Uri.parse("file://" + destFile.getAbsolutePath()))
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,path)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setMimeType("image/jpeg||image/png||image/gif");
         downloadId = mDownloadManager.enqueue(request);

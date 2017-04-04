@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme">
         <activity android:name="org.nogizaka46.BaseActivity"/>
 
-        <activity android:name="org.nogizaka46.SplashActivity">
+        <activity android:name="org.nogizaka46.SplashActivity"
+            android:theme="@style/AppWelcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
