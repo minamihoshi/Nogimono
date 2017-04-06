@@ -4,7 +4,7 @@
     android:id="@+id/activity_image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.nogizaka46.ImageActivity">
+    tools:context="org.nogizaka46.ui.activity.ImageActivity">
 <com.github.chrisbanes.photoview.PhotoView
     android:id="@+id/photoview"
     android:layout_width="match_parent"
