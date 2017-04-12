@@ -16,4 +16,5 @@ public class UrlConfig {
     public static final String PATH_NEWS_MAGAZINE = "getmagazine";
 
 
+
 }

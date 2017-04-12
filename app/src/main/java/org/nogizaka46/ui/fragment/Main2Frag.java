@@ -58,10 +58,10 @@ public class Main2Frag extends Fragment {
         mTitleList.add(getResources().getString(R.string.tab_2_txt));
         mTitleList.add(getResources().getString(R.string.tab_3_txt));
         mTitleList.add(getResources().getString(R.string.tab_4_txt));
-        mPathList.add(UrlConfig.PATH_NEWS_ALL);
-        mPathList.add(UrlConfig.PATH_NEWS_BLOGS);
-        mPathList.add(UrlConfig.PATH_NEWS_NEWS);
-        mPathList.add(UrlConfig.PATH_NEWS_MAGAZINE);
+        mPathList.add(Constant.TYPE_ALL);
+        mPathList.add(Constant.TYPE_BLOG);
+        mPathList.add(Constant.TYPE_NEWS);
+        mPathList.add(Constant.TYPE_MAGAZINE);
         initFrag();
         tabLayout.setTabMode(TabLayout. MODE_FIXED);//设置tab模式，当前为系统默认模式
         MyPagerAdapter mAdapter = new MyPagerAdapter(getChildFragmentManager());

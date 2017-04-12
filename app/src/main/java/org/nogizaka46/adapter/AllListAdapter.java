@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import org.nogizaka46.utils.MyUtil;
 
 public class AllListAdapter extends Adapter<ViewHolder>{
     private Context context;
@@ -38,7 +37,7 @@ public class AllListAdapter extends Adapter<ViewHolder>{
             Map<String,?>item=mData.get(position);
             itemViewHolder.name.setText(item.get("title").toString());
             itemViewHolder.summary.setText(item.get("summary").toString());
-            itemViewHolder.created_time.setText(MyUtil.timeToDate(item.get("delivery").toString()));
+            //itemViewHolder.created_time.setText(TimeUtil.timeToDate(item.get("delivery").toString()));
             if (onItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

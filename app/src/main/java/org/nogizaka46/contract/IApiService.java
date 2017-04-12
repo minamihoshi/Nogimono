@@ -1,11 +1,14 @@
 package org.nogizaka46.contract;
 
 
-import org.nogizaka46.bean.NewsBean;
+import org.nogizaka46.bean.NewBean;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
 
@@ -37,6 +40,13 @@ public interface IApiService {
     @GET
     Observable<ResponseBody> getAPK(@Url String string);
 
-    @GET("data/{category}")
-    Observable<NewsBean> getNews(@Path("category") String category);
+//    @GET("data/{category}")
+//    Observable<NewsBean> getNews(@Path("category") String category);
+
+    @GET("/data/list?")
+    Observable<List<NewBean>> getNewsBean(@Query("type")  String type , @Query("page") int page, @Query("size") int size);
+
+    @GET("/data/list")
+    Observable<List<NewBean>> getNewsBean();
+
 }

@@ -1,10 +1,13 @@
 package org.nogizaka46.ui.newsfragment;
 
-import org.nogizaka46.bean.NewsBean;
+import android.util.Log;
+
+import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.contract.Contract;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.List;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
@@ -26,43 +29,70 @@ public class NewsPresenter {
         model  = new NewsModelImpl();
     }
 
-    void getData(String string){
+//    void getData(String string){
+//
+//        view.onLoading();
+//        Observable<NewsBean> observable = model.getData(string);
+//        observable.subscribeOn(Schedulers.io())
+//                   .observeOn(AndroidSchedulers.mainThread())
+//                   .subscribe(new Subscriber<NewsBean>() {
+//                       @Override
+//                       public void onCompleted() {
+//                          view.onLoaded();
+//                       }
+//
+//                       @Override
+//                       public void onError(Throwable e) {
+//
+//                       }
+//
+//
+//                       @Override
+//                       public void onNext(NewsBean newsBean) {
+//                            view.getData(newsBean);
+//                       }
+//                   });
+//
+//    }
 
+    void getData(String type ,int page ,int size){
+        Log.e("TAG", "getData: " +type +page +size);
         view.onLoading();
-        Observable<NewsBean> observable = model.getData(string);
+        Observable<List<NewBean>> observable = model.getData(type, page, size);
         observable.subscribeOn(Schedulers.io())
-                   .observeOn(AndroidSchedulers.mainThread())
-                   .subscribe(new Subscriber<NewsBean>() {
-                       @Override
-                       public void onCompleted() {
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(new Subscriber<List<NewBean>>() {
+                      @Override
+                      public void onCompleted() {
                           view.onLoaded();
-                       }
+                      }
 
-                       @Override
-                       public void onError(Throwable e) {
-                           if (e instanceof HttpException) {
-                               HttpException httpException = (HttpException) e;
-                               //httpException.response().errorBody().string()
-                               int code = httpException.code();
-                               if (code == 500 || code == 404) {
-                                   view.onLoadFailed("服务器出错");
+                      @Override
+                      public void onError(Throwable e) {
+                          if (e instanceof HttpException) {
+                              HttpException httpException = (HttpException) e;
+                              //httpException.response().errorBody().string()
+                              int code = httpException.code();
+                              if (code == 500 ) {
+                                  view.onLoadFailed("服务器出错");
+                              }
+                              else if(code ==404){
+                                  view.onLoadFailed("没有更多了");
+                              }
+                          } else if (e instanceof ConnectException) {
+                              view.onLoadFailed("网络断开,请打开网络!");
+                          } else if (e instanceof SocketTimeoutException) {
+                              view.onLoadFailed("网络连接超时!!");
+                          } else {
+                              view.onLoadFailed("发生未知错误" + e.getMessage());
+                          }
+                      }
 
-                               }
-                           } else if (e instanceof ConnectException) {
-                               view.onLoadFailed("网络断开,请打开网络!");
-                           } else if (e instanceof SocketTimeoutException) {
-                               view.onLoadFailed("网络连接超时!!");
-                           } else {
-                               view.onLoadFailed("发生未知错误" + e.getMessage());
-                           }
-                       }
-
-
-                       @Override
-                       public void onNext(NewsBean newsBean) {
-                            view.getData(newsBean);
-                       }
-                   });
+                      @Override
+                      public void onNext(List<NewBean> newBeen) {
+                          view.getData(newBeen);
+                      }
+                  });
 
     }
 }

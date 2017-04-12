@@ -1,8 +1,12 @@
 package org.nogizaka46.ui.newsfragment;
 
-import org.nogizaka46.bean.NewsBean;
+import org.nogizaka46.bean.NewBean;
+import org.nogizaka46.config.Constant;
 import org.nogizaka46.contract.Contract;
+import org.nogizaka46.contract.IApiService;
 import org.nogizaka46.http.HttpUtils;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -19,11 +23,17 @@ public class NewsModelImpl implements Contract.INewsModel{
     }
 
 
-    @Override
-    public Observable<NewsBean> getData(String string) {
-        Observable<NewsBean> observable = HttpUtils.getInstance().getRetrofitInterface().getNews(string);
 
-        return observable;
+    @Override
+    public Observable<List<NewBean>> getData(String type, int page, int size) {
+        IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
+        if (type == Constant.TYPE_ALL){
+          return retrofitInterface.getNewsBean();
+        }else {
+            return retrofitInterface.getNewsBean(type,page,size);
+        }
+
+
     }
 
 
