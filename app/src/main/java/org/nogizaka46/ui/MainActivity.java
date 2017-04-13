@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
@@ -36,7 +37,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @InjectView(R.id.navigation) NavigationView navigation;
-
+    private int INTERVAL_OF_TWO_CLICK_TO_QUIT = 1000;
+    private long mLastPressBackTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,20 +129,29 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     }
 
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            Intent home = new Intent(Intent.ACTION_MAIN);
+//            home.addCategory(Intent.CATEGORY_HOME);
+//            startActivity(home);
+//
+//        }
+//        return true;
+//    }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent home = new Intent(Intent.ACTION_MAIN);
-            home.addCategory(Intent.CATEGORY_HOME);
-            startActivity(home);
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - mLastPressBackTime < INTERVAL_OF_TWO_CLICK_TO_QUIT) {
+            finish();
+        } else {
+            Toast.makeText(this, "再次按下返回键将退出应用!", Toast.LENGTH_SHORT).show();
 
+            mLastPressBackTime = System.currentTimeMillis();
         }
-        return true;
     }
 
-    public void doActionRight(View view) {
 
-    }
 
 
 }

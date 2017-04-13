@@ -15,7 +15,7 @@ public class TimeUtil {
          return millis2String(lt*1000L);
      }
 
-    public static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm";
 
     /**
      * 将时间戳转为时间字符串

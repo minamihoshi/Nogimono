@@ -38,6 +38,11 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
     }
 
     @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
+
+    @Override
     public int getItemViewType(int position) {
 
         NewBean newBean = mList.get(position);

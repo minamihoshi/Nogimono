@@ -47,6 +47,6 @@ public interface IApiService {
     Observable<List<NewBean>> getNewsBean(@Query("type")  String type , @Query("page") int page, @Query("size") int size);
 
     @GET("/data/list")
-    Observable<List<NewBean>> getNewsBean();
+    Observable<List<NewBean>> getNewsBean(@Query("page") int page, @Query("size") int size);
 
 }

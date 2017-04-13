@@ -4,6 +4,10 @@
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
@@ -11,6 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
-
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
