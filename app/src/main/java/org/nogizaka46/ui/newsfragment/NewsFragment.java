@@ -144,7 +144,7 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
 
     @Override
     public void onLoaded() {
-        if(swipeRefresh.isRefreshing()){
+        if(swipeRefresh !=null &&swipeRefresh.isRefreshing()){
             swipeRefresh.setRefreshing(false);
         }
 

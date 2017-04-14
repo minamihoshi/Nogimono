@@ -1,6 +1,6 @@
 package org.nogizaka46.ui;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -8,10 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.KeyEvent;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,15 +30,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     Main1Frag main1Frag;
     Main2Frag main2Frag;
     Main3Frag main3Frag;
-    @InjectView(R.id.title)
-    TextView head_title;
-    @InjectView(R.id.right_layout)
-    LinearLayout right_layout;
     @InjectView(R.id.bottom_navigation_view)
     BottomNavigationView bottomNavigationView;
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @InjectView(R.id.navigation) NavigationView navigation;
+    @InjectView(R.id.navigation)
+    NavigationView navigation;
+    @InjectView(R.id.toolbar_main)
+    Toolbar toolbar;
     private int INTERVAL_OF_TWO_CLICK_TO_QUIT = 1000;
     private long mLastPressBackTime;
 
@@ -60,9 +60,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
 
+
     private void initView() {
-        head_title.setText(getResources().getString(R.string.tab_mainpage));
-        right_layout.setVisibility(View.VISIBLE);
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_close, R.string.navigation_drawer_open);
+
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+        toolbar.setTitle(getResources().getString(R.string.tab_mainpage));
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
@@ -88,8 +94,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 } else {
                     transaction.show(main1Frag);
                 }
-                head_title = (TextView) findViewById(R.id.title);
-                head_title.setText(getResources().getString(R.string.tab_mainpage_gz));
+
+                toolbar.setTitle(getResources().getString(R.string.tab_mainpage_gz));
                 break;
 
             case R.id.menu_home:
@@ -99,8 +105,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 } else {
                     transaction.show(main2Frag);
                 }
-                head_title = (TextView) findViewById(R.id.title);
-                head_title.setText(getResources().getString(R.string.tab_mainpage));
+                toolbar.setTitle(getResources().getString(R.string.tab_mainpage));
 
                 break;
 
@@ -111,8 +116,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 } else {
                     transaction.show(main3Frag);
                 }
-                head_title = (TextView) findViewById(R.id.title);
-                head_title.setText(getResources().getString(R.string.tab_mainpage_me));
+
+                toolbar.setTitle(getResources().getString(R.string.tab_mainpage_me));
                 break;
         }
 
@@ -125,10 +130,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     }
 
-
-    public void back(View view) {
-
-    }
 
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -158,8 +159,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
 
     }
-
-
 
 
 }
