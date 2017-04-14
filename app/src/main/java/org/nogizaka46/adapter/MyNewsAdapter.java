@@ -35,6 +35,8 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
     public interface onNewsClickListener {
         void onNewsClick(int position);
 
+        void onNewsLongClick(int position);
+
     }
 
     @Override
@@ -85,7 +87,7 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
         int delivery = newBean.getDelivery();
         Log.e("TAG", "onBindMyViewHolder: "+delivery );
         String provider = newBean.getProvider();
-        String time = TimeUtil.timeToDate(delivery);
+        final String time = TimeUtil.timeToDate(delivery);
         Log.e("TAG", "onBindMyViewHolder: "+time );
         if (holder instanceof NoPicHolder){
 
@@ -126,6 +128,13 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
             @Override
             public void onClick(View view) {
                 listener.onNewsClick(position);
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                listener.onNewsLongClick(position);
+                return  true;
             }
         });
 

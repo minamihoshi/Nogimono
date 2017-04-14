@@ -47,5 +47,6 @@
     <string name="pull_to_refresh_from_bottom_pull_label">上拉可以加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_release_label">松开立即加载更多数据</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">正在加载数据...</string>
+    <string name="msgexit">再次按下返回键将退出应用!</string>
 
 </resources>

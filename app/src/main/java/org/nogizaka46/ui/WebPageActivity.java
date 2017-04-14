@@ -7,14 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -25,48 +30,59 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.nogizaka46.R;
+import org.nogizaka46.base.BaseActivity;
+import org.nogizaka46.config.UrlConfig;
+import org.nogizaka46.ui.activity.ImageActivity;
+import org.nogizaka46.utils.EncryptUtils;
+import org.nogizaka46.view.MyToast;
+import org.nogizaka46.view.SweetAlertDialog;
+
 import java.text.DecimalFormat;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import org.nogizaka46.R;
-import org.nogizaka46.base.BaseActivity;
-import org.nogizaka46.ui.activity.ImageActivity;
-import org.nogizaka46.config.UrlConfig;
-import org.nogizaka46.utils.EncryptUtils;
-import org.nogizaka46.view.MyToast;
-import org.nogizaka46.view.SweetAlertDialog;
-
 
 public class WebPageActivity extends BaseActivity {
-    @InjectView(R.id.top_button_back) ImageButton img_left_layout;
-    @InjectView(R.id.webview)  WebView webview;
-    @InjectView(R.id.title)
-    TextView head;
+
+    @InjectView(R.id.webview)
+    WebView webview;
     String previews;
     String url;
-    Context context ;
+    Context context;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     private DownloadManager mDownloadManager = null;
     private String mFileName = "";
     private long downloadId;
     private WebView.HitTestResult hitTestResult;
-    private int clickdown =0;
-    private boolean longclick ;
+    private int clickdown = 0;
+    private boolean longclick;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webpager);
         ButterKnife.inject(this);
-        img_left_layout.setVisibility(View.VISIBLE);
+       // img_left_layout.setVisibility(View.VISIBLE);
         context = WebPageActivity.this;
+        initToolBar();
         initwebview();
     }
 
+    private void initToolBar() {
+        setSupportActionBar(toolbar);
+
+       toolbar.setTitleTextColor(Color.BLACK);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
     private void initwebview() {
-        if(getIntent()!=null&&getIntent().getExtras()!=null){
-            previews=getIntent().getStringExtra("preview");
-           url = UrlConfig.New_Base_Url1 + previews;
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            previews = getIntent().getStringExtra("preview");
+            url = UrlConfig.New_Base_Url1 + previews;
         }
         webview.loadUrl(url);
         WebSettings webSetting = webview.getSettings();
@@ -82,9 +98,9 @@ public class WebPageActivity extends BaseActivity {
         DecimalFormat format = new DecimalFormat("0.00");
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-        String formatResult = format.format((float)(outMetrics.widthPixels) / (float)668); //668为html页面的宽度
+        String formatResult = format.format((float) (outMetrics.widthPixels) / (float) 668); //668为html页面的宽度
         //设置初始缩放大小  100%   屏幕宽度 / 网页设置的宽度
-        webview.setInitialScale((int)(Float.valueOf(formatResult) *100));
+        webview.setInitialScale((int) (Float.valueOf(formatResult) * 100));
         webview.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -102,10 +118,11 @@ public class WebPageActivity extends BaseActivity {
             public void onPageFinished(WebView view, String url) {
 
             }
+
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-                new SweetAlertDialog(context,SweetAlertDialog.ERROR_TYPE).setTitleText(getResources().getString(R.string.web_error)).show();
+                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE).setTitleText(getResources().getString(R.string.web_error)).show();
 
             }
         });
@@ -116,21 +133,20 @@ public class WebPageActivity extends BaseActivity {
                 Log.e("TAG", "onClick:1111111111111 ");
                 hitTestResult = webview.getHitTestResult();
 
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                    clickdown =1;
-                    longclick =false;
-                }
-                else if(!longclick&&clickdown ==1&&motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    if(hitTestResult.getType()== WebView.HitTestResult.IMAGE_TYPE ||hitTestResult.getType()== WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE){
-                        Log.e("TAG", "onClick: " );
-                        clickdown =0;
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    clickdown = 1;
+                    longclick = false;
+                } else if (!longclick && clickdown == 1 && motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                        Log.e("TAG", "onClick: ");
+                        clickdown = 0;
                         String url = hitTestResult.getExtra();
-                        Intent intent  = new Intent(WebPageActivity.this,ImageActivity.class);
-                        intent.putExtra("image",url);
+                        Intent intent = new Intent(WebPageActivity.this, ImageActivity.class);
+                        intent.putExtra("image", url);
                         startActivity(intent);
                     }
-                }else{
-                    clickdown =100;
+                } else {
+                    clickdown = 100;
                 }
 
                 return false;
@@ -142,14 +158,14 @@ public class WebPageActivity extends BaseActivity {
         webview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.e("TAG", "onLongClick: " );
-                longclick =true;
-                 hitTestResult = webview.getHitTestResult();
-                if(hitTestResult.getType()== WebView.HitTestResult.IMAGE_TYPE|| hitTestResult.getType()== WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE){
+                Log.e("TAG", "onLongClick: ");
+                longclick = true;
+                hitTestResult = webview.getHitTestResult();
+                if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
 
-                    new SweetAlertDialog(context,SweetAlertDialog.SUCCESS_TYPE).setTitleText(getResources().getString(R.string.dialog_titles))
+                    new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE).setTitleText(getResources().getString(R.string.dialog_titles))
 
-                   .setContentText(getResources().getString(R.string.dialog_content)).setConfirmText(getResources().getString(R.string.ok)).setCancelText(getResources().getString(R.string.cancel)).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            .setContentText(getResources().getString(R.string.dialog_content)).setConfirmText(getResources().getString(R.string.ok)).setCancelText(getResources().getString(R.string.cancel)).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
 
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -164,7 +180,7 @@ public class WebPageActivity extends BaseActivity {
                                     ActivityCompat.requestPermissions(WebPageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                                 }
 
-                            }else{
+                            } else {
                                 sweetAlertDialog.dismiss();
                                 initDownloadManager(url);
                             }
@@ -174,7 +190,7 @@ public class WebPageActivity extends BaseActivity {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
 
-                             sweetAlertDialog.dismiss();
+                            sweetAlertDialog.dismiss();
                         }
                     }).show();
                 }
@@ -187,11 +203,11 @@ public class WebPageActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                head.setText(title);
+                toolbar.setTitle(title);
             }
 
             @Override
-            public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+            public void onShowCustomView(View view, CustomViewCallback callback) {
 
             }
 
@@ -220,6 +236,7 @@ public class WebPageActivity extends BaseActivity {
         super.onDestroy();
 
     }
+
     public void back(View view) {
         this.finish();
     }
@@ -227,11 +244,12 @@ public class WebPageActivity extends BaseActivity {
     public void doActionRight(View view) {
 
     }
+
     private void initDownloadManager(String urlstring) {
-        MyToast.makeText(context,urlstring,Toast.LENGTH_LONG).show();
+        MyToast.makeText(context, urlstring, Toast.LENGTH_LONG).show();
         mDownloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         mFileName = urlstring;
-        String path = EncryptUtils.md5(urlstring)+".jpg";
+        String path = EncryptUtils.md5(urlstring) + ".jpg";
         //File destFile = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), "test.jpg");
 //        if (destFile.exists()) {
 //            destFile.delete();
@@ -240,12 +258,44 @@ public class WebPageActivity extends BaseActivity {
                 .setTitle("文件下载")
                 .setDescription(urlstring)
                 .setVisibleInDownloadsUi(true)
-                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,path)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, path)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setMimeType("image/jpeg||image/png||image/gif");
         downloadId = mDownloadManager.enqueue(request);
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case android.R.id.home :
+                finish();
+               // webview.scrollTo(0,0);
+                break;
+            case R.id.save:
+
+//                long savecode = ((App) getApplication()).liteOrm.insert(myNewsBean);
+//                Log.e("TAG", "----------------------------------"+savecode);
+//
+//                if(savecode>0){
+//                    Toast.makeText(this,"收藏成功",Toast.LENGTH_SHORT).show();
+//                }else{
+//                    Toast.makeText(this,"已经收藏过了~",Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_web,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {

@@ -1,17 +1,22 @@
 package org.nogizaka46.ui.newsfragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import org.nogizaka46.R;
@@ -48,7 +53,9 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
     private int mLastVisibleItem;
     private LinearLayoutManager mLayoutManager ;
     private boolean NeadClear;
-
+    private PopupWindow popupWindow;
+    private Button mbtn_openweb,mbtn_share,mbtn_save;
+    private int itemposition;
     public NewsFragment() {
         // Required empty public constructor
     }
@@ -155,17 +162,67 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
 
     @Override
     public void onNewsClick(int position) {
-        bean = list.get(position);
-        String preview = bean.getView();
-        Intent intent = new Intent(getActivity(), WebPageActivity.class);
-        intent.putExtra("preview", preview);
-        startActivity(intent);
+       openweb(position);
 
+    }
+
+    @Override
+    public void onNewsLongClick(int position) {
+        if(popupWindow==null){
+            initPopup();
+        }
+         itemposition =position;
+        popupWindow.showAtLocation(recyclerview, Gravity.CENTER, 0, 0);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    private void initPopup() {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.layout_popupwindow_main, null);
+        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
+        mbtn_openweb = (Button) view.findViewById(R.id.btn_openweb_main);
+        mbtn_openweb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                openweb(itemposition);
+            }
+        });
+
+
+        mbtn_share = (Button) view.findViewById(R.id.btn_share_main);
+        mbtn_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+
+            }
+        });
+
+        mbtn_save = (Button) view.findViewById(R.id.btn_share_main);
+        mbtn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+
+
+    }
+
+    private void openweb(int position){
+        bean = list.get(position);
+        String preview = bean.getView();
+        Intent intent = new Intent(getActivity(), WebPageActivity.class);
+        intent.putExtra("preview", preview);
+        startActivity(intent);
     }
 }

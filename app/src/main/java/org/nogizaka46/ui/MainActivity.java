@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -142,13 +143,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() - mLastPressBackTime < INTERVAL_OF_TWO_CLICK_TO_QUIT) {
-            finish();
-        } else {
-            Toast.makeText(this, "再次按下返回键将退出应用!", Toast.LENGTH_SHORT).show();
 
-            mLastPressBackTime = System.currentTimeMillis();
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            if (System.currentTimeMillis() - mLastPressBackTime < INTERVAL_OF_TWO_CLICK_TO_QUIT) {
+                finish();
+            } else {
+                Toast.makeText(this, R.string.msgexit, Toast.LENGTH_SHORT).show();
+
+                mLastPressBackTime = System.currentTimeMillis();
+            }
         }
+
+
     }
 
 
