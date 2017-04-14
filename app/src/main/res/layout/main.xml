@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:scrollbars="none"
-        app:headerLayout="@layout/nav_menu_head"
+        app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/nav_left_menu" />
 
 </android.support.v4.widget.DrawerLayout>

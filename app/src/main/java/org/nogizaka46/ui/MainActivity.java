@@ -2,6 +2,7 @@ package org.nogizaka46.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -26,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     Main1Frag main1Frag;
     Main2Frag main2Frag;
     Main3Frag main3Frag;
@@ -70,10 +72,28 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         toggle.syncState();
         toolbar.setTitle(getResources().getString(R.string.tab_mainpage));
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                Log.e("TAG", "bbbbbbbbbbbbbbbbbb: "+itemId);
+                switch (itemId){
+                    case R.id.nav_main :
+                        Toast.makeText(MainActivity.this,"aaa",Toast.LENGTH_LONG).show();
+
+                        break;
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Log.e("TAG", "onNavigationItemSelected: "+item.getItemId() );
         FragmentManager fm = getSupportFragmentManager();
         // 开启Fragment事务
         FragmentTransaction transaction = fm.beginTransaction();
@@ -125,10 +145,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         return true;
     }
 
-    @Override
-    public void onClick(View v) {
 
-    }
 
 
 //    @Override
