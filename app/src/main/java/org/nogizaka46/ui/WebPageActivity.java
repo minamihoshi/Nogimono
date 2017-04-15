@@ -32,6 +32,9 @@ import android.widget.Toast;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
+import org.nogizaka46.base.MyApplication;
+import org.nogizaka46.bean.NewBean;
+import org.nogizaka46.config.Constant;
 import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.ui.activity.ImageActivity;
 import org.nogizaka46.utils.EncryptUtils;
@@ -59,6 +62,7 @@ public class WebPageActivity extends BaseActivity {
     private WebView.HitTestResult hitTestResult;
     private int clickdown = 0;
     private boolean longclick;
+    private NewBean newBean ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +85,9 @@ public class WebPageActivity extends BaseActivity {
 
     private void initwebview() {
         if (getIntent() != null && getIntent().getExtras() != null) {
-            previews = getIntent().getStringExtra("preview");
-            url = UrlConfig.New_Base_Url1 + previews;
+            newBean = (NewBean) getIntent().getExtras().getSerializable(Constant.STARTWEB);
+            previews = newBean.getView();
+            url = UrlConfig.BASE_FORMATWEB + previews;
         }
         webview.loadUrl(url);
         WebSettings webSetting = webview.getSettings();
@@ -274,16 +279,15 @@ public class WebPageActivity extends BaseActivity {
                // webview.scrollTo(0,0);
                 break;
             case R.id.save:
+                long savecode = ((MyApplication) getApplication()).liteOrm.insert(newBean);
+                Log.e("TAG", "----------------------------------"+savecode);
 
-//                long savecode = ((App) getApplication()).liteOrm.insert(myNewsBean);
-//                Log.e("TAG", "----------------------------------"+savecode);
-//
-//                if(savecode>0){
-//                    Toast.makeText(this,"收藏成功",Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(this,"已经收藏过了~",Toast.LENGTH_SHORT).show();
-//                }
-//                break;
+                if(savecode>0){
+                    Toast.makeText(this,"收藏成功",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this,"已经收藏过了~",Toast.LENGTH_SHORT).show();
+                }
+                break;
 
         }
         return super.onOptionsItemSelected(item);

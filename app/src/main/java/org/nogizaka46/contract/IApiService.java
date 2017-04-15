@@ -2,6 +2,7 @@ package org.nogizaka46.contract;
 
 
 import org.nogizaka46.bean.NewBean;
+import org.nogizaka46.bean.VersionBean;
 
 import java.util.List;
 
@@ -37,9 +38,6 @@ public interface IApiService {
 
 
 
-    @GET
-    Observable<ResponseBody> getAPK(@Url String string);
-
 //    @GET("data/{category}")
 //    Observable<NewsBean> getNews(@Path("category") String category);
 
@@ -48,5 +46,11 @@ public interface IApiService {
 
     @GET("/data/list")
     Observable<List<NewBean>> getNewsBean(@Query("page") int page, @Query("size") int size);
+
+    @GET
+    Observable<VersionBean> getVersionCheck(@Url String url);
+
+    @GET
+    Observable<ResponseBody> getAPK(@Url String string);
 
 }

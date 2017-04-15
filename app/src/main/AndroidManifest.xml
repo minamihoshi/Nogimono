@@ -41,6 +41,8 @@
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".ui.activity.ImageActivity"></activity>
+
+        <service android:name=".service.MyService" />
     </application>
 
 

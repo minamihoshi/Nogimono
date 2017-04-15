@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 import org.nogizaka46.R;
 import org.nogizaka46.bean.NewBean;
+import org.nogizaka46.bean.WithpicBean;
 import org.nogizaka46.utils.TimeUtil;
 import org.nogizaka46.utils.RecyclerViewAdapterHelper;
 
@@ -48,7 +49,7 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
     public int getItemViewType(int position) {
 
         NewBean newBean = mList.get(position);
-        List<NewBean.WithpicBean> withpics = newBean.getWithpic();
+        List<WithpicBean> withpics = newBean.getWithpic();
         if(withpics == null){
             return  0;
         }
@@ -97,8 +98,8 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
 
 
         }else if(holder instanceof  OnePicHolder){
-            List<NewBean.WithpicBean> withpic = newBean.getWithpic();
-            NewBean.WithpicBean withpicBean = withpic.get(0);
+            List<WithpicBean> withpic = newBean.getWithpic();
+            WithpicBean withpicBean = withpic.get(0);
             String image = withpicBean.getImage();
 
 
@@ -110,7 +111,7 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
             Glide.with(mContext).load(image).placeholder(R.mipmap.ic_launcher).into(imageView);
 
         }else{
-            List<NewBean.WithpicBean> withpic = newBean.getWithpic();
+            List<WithpicBean> withpic = newBean.getWithpic();
             String image1 = withpic.get(0).getImage();
             String image2 = withpic.get(1).getImage();
             String image3= withpic.get(2).getImage();
@@ -118,8 +119,8 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
 
             ((ThreePicHolder) holder).titleTextviewItemRecycleviewHotMorepic.setText(title);
             Glide.with(mContext).load(image1).into( ((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image1).into( ((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image1).into( ((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image2).into( ((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image3).into( ((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
 
 
         }

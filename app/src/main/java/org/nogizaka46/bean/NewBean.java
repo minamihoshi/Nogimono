@@ -1,12 +1,21 @@
 package org.nogizaka46.bean;
 
+import com.litesuits.orm.db.annotation.Column;
+import com.litesuits.orm.db.annotation.Mapping;
+import com.litesuits.orm.db.annotation.PrimaryKey;
+import com.litesuits.orm.db.annotation.Table;
+import com.litesuits.orm.db.enums.AssignType;
+import com.litesuits.orm.db.enums.Relation;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by acer on 2017/4/12.
  */
 
-public class NewBean {
+@Table("news")
+public class NewBean implements Serializable{
 
 
     /**
@@ -21,7 +30,8 @@ public class NewBean {
      * view : /preview/article/646480
      * withpic : [{"image":"https://platform.idolx46.top/photo/646480/587454e923f04c96ed61cf5bfba280d5.jpg"}]
      */
-
+    @PrimaryKey(AssignType.BY_MYSELF)
+    @Column("newsid")
     private String id;
     private int delivery;
     private String type;
@@ -31,6 +41,8 @@ public class NewBean {
     private String summary;
     private String detail;
     private String view;
+
+    @Mapping(Relation.OneToMany)
     private List<WithpicBean> withpic;
 
     public String getId() {
@@ -113,19 +125,19 @@ public class NewBean {
         this.withpic = withpic;
     }
 
-    public static class WithpicBean {
-        /**
-         * image : https://platform.idolx46.top/photo/646480/587454e923f04c96ed61cf5bfba280d5.jpg
-         */
-
-        private String image;
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
+    @Override
+    public String toString() {
+        return "NewBean{" +
+                "id='" + id + '\'' +
+                ", delivery=" + delivery +
+                ", type='" + type + '\'' +
+                ", title='" + title + '\'' +
+                ", subtitle='" + subtitle + '\'' +
+                ", provider='" + provider + '\'' +
+                ", summary='" + summary + '\'' +
+                ", detail='" + detail + '\'' +
+                ", view='" + view + '\'' +
+                ", withpic=" + withpic +
+                '}';
     }
 }

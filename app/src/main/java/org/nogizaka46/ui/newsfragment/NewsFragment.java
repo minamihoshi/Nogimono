@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.MyNewsAdapter;
+import org.nogizaka46.base.MyApplication;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.contract.Contract;
@@ -168,10 +169,11 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
 
     @Override
     public void onNewsLongClick(int position) {
+        itemposition =position;
         if(popupWindow==null){
             initPopup();
         }
-         itemposition =position;
+
         popupWindow.showAtLocation(recyclerview, Gravity.CENTER, 0, 0);
     }
 
@@ -207,11 +209,19 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
             }
         });
 
-        mbtn_save = (Button) view.findViewById(R.id.btn_share_main);
+        mbtn_save = (Button) view.findViewById(R.id.btn_save_main);
         mbtn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bean = list.get(itemposition);
                 popupWindow.dismiss();
+                long savecode = ((MyApplication) getActivity().getApplication()).liteOrm.insert(bean);
+                if(savecode>0){
+                    Toast.makeText(mContext,"收藏成功",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(mContext,"已经收藏过了~",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -222,7 +232,10 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
         bean = list.get(position);
         String preview = bean.getView();
         Intent intent = new Intent(getActivity(), WebPageActivity.class);
-        intent.putExtra("preview", preview);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constant.STARTWEB,bean);
+        intent.putExtras(bundle);
+        //intent.putExtra("preview", preview);
         startActivity(intent);
     }
 }

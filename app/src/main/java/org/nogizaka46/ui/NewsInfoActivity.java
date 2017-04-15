@@ -50,7 +50,7 @@ public class NewsInfoActivity extends BaseActivity {
     }
 
     private void initWebview() {
-        String url = UrlConfig.New_Base_Url1 + previews;
+        String url = UrlConfig.BASE_URL + previews;
         webView.loadUrl(url);
         WebSettings webSetting = webView.getSettings();
         webSetting.setJavaScriptEnabled(true);//设置WebView是否允许执行JavaScript脚本，默认false，不允许。

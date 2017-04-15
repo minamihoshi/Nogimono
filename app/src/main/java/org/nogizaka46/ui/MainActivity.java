@@ -1,6 +1,10 @@
 package org.nogizaka46.ui;
 
-import android.graphics.Color;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,23 +13,32 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
+import org.nogizaka46.bean.VersionBean;
+import org.nogizaka46.config.Constant;
+import org.nogizaka46.config.UrlConfig;
+import org.nogizaka46.contract.IApiService;
+import org.nogizaka46.http.HttpUtils;
+import org.nogizaka46.service.MyService;
 import org.nogizaka46.ui.fragment.Main1Frag;
 import org.nogizaka46.ui.fragment.Main2Frag;
 import org.nogizaka46.ui.fragment.Main3Frag;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -42,6 +55,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     Toolbar toolbar;
     private int INTERVAL_OF_TWO_CLICK_TO_QUIT = 1000;
     private long mLastPressBackTime;
+    private Subscription subscription;
+    private String download,versionName,versionMsg;
+
+    private int versionCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +194,79 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     }
 
+    void getNewVersionCode(){
+        IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
+        Observable<VersionBean> observable = retrofitInterface.getVersionCheck(UrlConfig.VERSION_CHECK);
 
+        subscription = observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<VersionBean>() {
+                    @Override
+                    public void onCompleted() {
+                        int versionCode = getVersionCode(MainActivity.this);
+                        if(versionCode<versionCode){
+                           // PreUtils.writeBoolean(MainActivity.this,Constant.NEADUPDATE,true);
+                           // PreUtils.writeString(MainActivity.this,Constant.KEY_NEWVERSION_URL,vsersion_url);
+                            showMyDialog();
+                        }else{
+                            //PreUtils.writeBoolean(MainActivity.this,Constant.NEADUPDATE,false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(VersionBean versionBean) {
+                        download =versionBean.getDownload();
+                        versionCode = versionBean.getVersionCode();
+                        versionName = versionBean.getVersionName();
+                        versionMsg = versionBean.getMsg() ;
+                       // PreUtils.writeString(MainActivity.this, Constant.KEY_NEWVERSION_URL, vsersion_url);
+                       // PreUtils.writeInt(MainActivity.this, Constant.KEY_NEWVERSION_CODE, version);
+                    }
+                });
+
+    }
+
+    public static int getVersionCode(Context context) {
+        int version = 0;
+        try {
+            PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pi.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("TAG", "Package name not found", e);
+        };
+        return version;
+    }
+    private void showMyDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("检测到新版本")
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .setMessage("是否更新")
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent  = new Intent(MainActivity.this, MyService.class);
+                        intent.putExtra(Constant.SERVICEDOWNLOAD,download);
+                        startService(intent);
+                    }
+                })
+                .setNegativeButton("none",null)
+                .create()
+                .show();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(!subscription.isUnsubscribed()){
+            subscription.unsubscribe();
+        }
+    }
 }
 
