@@ -279,7 +279,7 @@ public class WebPageActivity extends BaseActivity {
                // webview.scrollTo(0,0);
                 break;
             case R.id.save:
-                long savecode = ((MyApplication) getApplication()).liteOrm.insert(newBean);
+                long savecode = ((MyApplication) getApplication()).liteOrm.cascade().insert(newBean);
                 Log.e("TAG", "----------------------------------"+savecode);
 
                 if(savecode>0){
@@ -290,7 +290,7 @@ public class WebPageActivity extends BaseActivity {
                 break;
 
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override

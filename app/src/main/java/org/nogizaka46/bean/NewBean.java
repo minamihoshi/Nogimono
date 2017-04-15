@@ -8,6 +8,7 @@ import com.litesuits.orm.db.enums.AssignType;
 import com.litesuits.orm.db.enums.Relation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class NewBean implements Serializable{
     private String view;
 
     @Mapping(Relation.OneToMany)
-    private List<WithpicBean> withpic;
+    private ArrayList<WithpicBean> withpic;
 
     public String getId() {
         return id;
@@ -121,7 +122,7 @@ public class NewBean implements Serializable{
         return withpic;
     }
 
-    public void setWithpic(List<WithpicBean> withpic) {
+    public void setWithpic(ArrayList<WithpicBean> withpic) {
         this.withpic = withpic;
     }
 

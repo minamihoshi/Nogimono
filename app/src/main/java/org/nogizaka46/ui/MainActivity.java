@@ -31,6 +31,7 @@ import org.nogizaka46.service.MyService;
 import org.nogizaka46.ui.fragment.Main1Frag;
 import org.nogizaka46.ui.fragment.Main2Frag;
 import org.nogizaka46.ui.fragment.Main3Frag;
+import org.nogizaka46.utils.ToastHelper;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -93,11 +94,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                Log.e("TAG", "bbbbbbbbbbbbbbbbbb: "+itemId);
                 switch (itemId){
-                    case R.id.nav_main :
-                        Toast.makeText(MainActivity.this,"aaa",Toast.LENGTH_LONG).show();
+                    case R.id.nav_save :
+                        Intent intent = new Intent(MainActivity.this,SaveActivity.class);
+                        startActivity(intent);
 
+                        break;
+                    default:
+                        ToastHelper.showToast(MainActivity.this,"尚未开发");
                         break;
                 }
                 drawerLayout.closeDrawers();
@@ -264,7 +268,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(!subscription.isUnsubscribed()){
+        if(subscription!=null&&!subscription.isUnsubscribed()){
             subscription.unsubscribe();
         }
     }

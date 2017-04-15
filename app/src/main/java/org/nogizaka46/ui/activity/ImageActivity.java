@@ -28,7 +28,6 @@ public class ImageActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String image = intent.getStringExtra("image");
-        MyToast.showText(this,image, Toast.LENGTH_LONG);
         Glide.with(this).load(image).into(photoview);
     }
 }

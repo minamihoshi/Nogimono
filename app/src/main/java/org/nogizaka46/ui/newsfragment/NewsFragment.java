@@ -27,6 +27,7 @@ import org.nogizaka46.config.Constant;
 import org.nogizaka46.contract.Contract;
 import org.nogizaka46.ui.WebPageActivity;
 import org.nogizaka46.utils.DividerItemDecoration;
+import org.nogizaka46.utils.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +159,8 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
 
     @Override
     public void onLoadFailed(String errormsg) {
-        Toast.makeText(mContext, errormsg, Toast.LENGTH_LONG).show();
+        ToastHelper.showToast(mContext,errormsg);
+
     }
 
     @Override
@@ -215,7 +217,7 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
             public void onClick(View view) {
                 bean = list.get(itemposition);
                 popupWindow.dismiss();
-                long savecode = ((MyApplication) getActivity().getApplication()).liteOrm.insert(bean);
+                long savecode = ((MyApplication) getActivity().getApplication()).liteOrm.cascade().insert(bean);
                 if(savecode>0){
                     Toast.makeText(mContext,"收藏成功",Toast.LENGTH_SHORT).show();
                 }else{

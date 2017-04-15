@@ -52,6 +52,8 @@ public class Main2Frag extends Fragment {
     private void initView() {
         tabLayout= (TabLayout) view.findViewById(R.id.tabs);
         viewPager= (ViewPager) view.findViewById(R.id.tab_pager);
+        viewPager.setOffscreenPageLimit(3);
+        //viewPager.setPageTransformer();
     }
     private void initData() {
         mTitleList.add(getResources().getString(R.string.tab_1_txt));
