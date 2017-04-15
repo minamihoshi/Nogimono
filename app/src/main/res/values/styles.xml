@@ -78,6 +78,7 @@
         <item name="android:background">@color/gray</item>
         <item name="android:layout_marginLeft">15dp</item>
     </style>
+
     <style name="TextViewProfileToolbarTitle">
         <item name="android:textStyle">bold</item>
         <item name="android:layout_gravity">center</item>
@@ -107,8 +108,21 @@
         <item name="android:paddingRight">21dp</item>
         <item name="android:textColor">@color/button_text_color</item>
     </style>
+
     <style name="AppWelcome" parent="AppTheme">
         <item name="android:windowBackground">@mipmap/nogi17th</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

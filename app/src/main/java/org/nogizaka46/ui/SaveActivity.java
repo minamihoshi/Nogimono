@@ -75,7 +75,7 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
         list = ((MyApplication) getApplication()).liteOrm.cascade().query(NewBean.class);
         if (list ==null || list.size() == 0){
             tvSave.setVisibility(View.VISIBLE);
-            ToastHelper.showToast(SaveActivity.this,"dsfsd");
+
         }
 
 //        for (int i = 0; i <list.size() ; i++) {
@@ -173,6 +173,9 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
                 popupWindow.dismiss();
                 int delete = ((MyApplication) getApplication()).liteOrm.cascade().delete(bean);
                 list.remove(itemposition);
+                if(list!=null&&list.size()==0){
+                    tvSave.setVisibility(View.VISIBLE);
+                }
                 adpter.notifyDataSetChanged();
                 Log.e("TAG", "onClick: " );
 

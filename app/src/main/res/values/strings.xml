@@ -53,4 +53,8 @@
     <string name="navigation_drawer_open">open</string>
     <string name="title_saveactivity">收藏夹</string>
 
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

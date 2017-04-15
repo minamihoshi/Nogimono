@@ -12,7 +12,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         />
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <android.support.v7.widget.RecyclerView
     android:id="@+id/recyclerview_saveactivity"
     android:layout_width="match_parent"
@@ -24,8 +26,9 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="空空如也"
+        android:text="o(╯□╰)o"
         android:textSize="20dp"
         android:visibility="invisible"
         />
+</RelativeLayout>
 </LinearLayout>

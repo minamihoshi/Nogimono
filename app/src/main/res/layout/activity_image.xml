@@ -4,6 +4,7 @@
     android:id="@+id/activity_image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="org.nogizaka46.ui.activity.ImageActivity">
 <com.github.chrisbanes.photoview.PhotoView
     android:id="@+id/photoview"

@@ -141,7 +141,7 @@ public class WebPageActivity extends BaseActivity {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     clickdown = 1;
                     longclick = false;
-                } else if (!longclick && clickdown == 1 && motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (!longclick && clickdown == 1 && motionEvent.getAction() == MotionEvent.ACTION_UP && hitTestResult!=null) {
                     if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
                         Log.e("TAG", "onClick: ");
                         clickdown = 0;
