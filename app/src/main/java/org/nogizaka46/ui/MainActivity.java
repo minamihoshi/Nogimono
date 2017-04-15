@@ -1,16 +1,20 @@
 package org.nogizaka46.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -68,6 +72,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         ButterKnife.inject(this);
         initView();
         setDefaultFragment();
+        getNewVersionCode();
     }
 
     //设置默认的Fragment
@@ -98,6 +103,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     case R.id.nav_save :
                         Intent intent = new Intent(MainActivity.this,SaveActivity.class);
                         startActivity(intent);
+
+                        break;
+                    case  R.id.nav_main :
 
                         break;
                     default:
@@ -207,8 +215,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 .subscribe(new Subscriber<VersionBean>() {
                     @Override
                     public void onCompleted() {
-                        int versionCode = getVersionCode(MainActivity.this);
-                        if(versionCode<versionCode){
+                        int localVersionCode = getVersionCode(MainActivity.this);
+                        Log.e("TAG", "onCompleted: "+localVersionCode +versionCode );
+                        if(versionCode>localVersionCode){
                            // PreUtils.writeBoolean(MainActivity.this,Constant.NEADUPDATE,true);
                            // PreUtils.writeString(MainActivity.this,Constant.KEY_NEWVERSION_URL,vsersion_url);
                             showMyDialog();
@@ -254,12 +263,21 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent  = new Intent(MainActivity.this, MyService.class);
-                        intent.putExtra(Constant.SERVICEDOWNLOAD,download);
-                        startService(intent);
+
+                        if (Build.VERSION.SDK_INT >= 23){
+                            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                startDownloadService();
+                            } else {
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                            }
+
+                        }else{
+                            startDownloadService();
+                        }
+
                     }
                 })
-                .setNegativeButton("none",null)
+                .setNegativeButton("no",null)
                 .create()
                 .show();
 
@@ -271,6 +289,30 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         if(subscription!=null&&!subscription.isUnsubscribed()){
             subscription.unsubscribe();
         }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 用户授予权限
+                    startDownloadService();
+                } else {
+                    // 用户拒绝权限
+                    ToastHelper.showToast(MainActivity.this,"申请权限失败");
+                }
+                return;
+            }
+
+        }
+    }
+
+    private void startDownloadService(){
+        Intent intent  = new Intent(MainActivity.this, MyService.class);
+        intent.putExtra(Constant.SERVICEDOWNLOAD,download);
+        startService(intent);
     }
 }
 

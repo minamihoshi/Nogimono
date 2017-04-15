@@ -26,6 +26,7 @@ import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.WithpicBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.utils.DividerItemDecoration;
+import org.nogizaka46.utils.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
     @InjectView(R.id.recyclerview_saveactivity)
     RecyclerView recyclerview;
     @InjectView(R.id.tv_saveactivity)
-    TextView tvSaveactivity;
+    TextView tvSave;
 
     private List<NewBean> list ;
     private MyNewsAdapter adpter ;
@@ -72,21 +73,27 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
 
 
         list = ((MyApplication) getApplication()).liteOrm.cascade().query(NewBean.class);
-        for (int i = 0; i <list.size() ; i++) {
-
-            List<WithpicBean> withpic = list.get(i).getWithpic();
-            if(withpic !=null){
-                Log.e("TAG", "initData: " +withpic.size()  );
-            }else{
-                Log.e("TAG", "initData: nulllllllllllllll"  );
-            }
-
+        if (list ==null || list.size() == 0){
+            tvSave.setVisibility(View.VISIBLE);
+            ToastHelper.showToast(SaveActivity.this,"dsfsd");
         }
+
+//        for (int i = 0; i <list.size() ; i++) {
+//
+//            List<WithpicBean> withpic = list.get(i).getWithpic();
+//            if(withpic !=null){
+//                Log.e("TAG", "initData: " +withpic.size()  );
+//            }else{
+//                Log.e("TAG", "initData: nulllllllllllllll"  );
+//            }
+//
+//        }
 
     }
 
     private void initToolBar() {
         setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.title_saveactivity);
         toolbar.setTitleTextColor(Color.BLACK);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

@@ -51,5 +51,6 @@
     <string name="R.string.navigation_drawer_close">close</string>
     <string name="navigation_drawer_close">close</string>
     <string name="navigation_drawer_open">open</string>
+    <string name="title_saveactivity">收藏夹</string>
 
 </resources>
