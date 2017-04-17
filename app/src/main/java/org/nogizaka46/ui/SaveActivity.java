@@ -1,5 +1,6 @@
 package org.nogizaka46.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,12 +20,20 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.MyNewsAdapter;
 import org.nogizaka46.base.MyApplication;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.WithpicBean;
 import org.nogizaka46.config.Constant;
+import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.utils.DividerItemDecoration;
 import org.nogizaka46.utils.ToastHelper;
 
@@ -107,6 +116,7 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
     @Override
     public void onNewsLongClick(int position) {
          itemposition =position ;
+        bean =list.get(position);
         if(popupWindow==null){
             initPopup();
         }
@@ -158,10 +168,17 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
 
         btn_share = (Button) view.findViewById(R.id.btn_share);
         btn_share.setOnClickListener(new View.OnClickListener() {
+            String url = UrlConfig.BASE_FORMATWEB + bean.getView();
+            String title = bean.getTitle();
+            String summary = bean.getSummary();
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-
+                new ShareAction(SaveActivity.this).setPlatform(SHARE_MEDIA.QQ)
+                        .withText("hello")
+                        .withMedia(getUmengWeb(url,title,summary))
+                        .setDisplayList(SHARE_MEDIA.QQ)
+                        .setCallback(umShareListener).open();
             }
         });
 
@@ -184,6 +201,54 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
         });
 
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+    }
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            Toast.makeText(SaveActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(SaveActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if(t!=null){
+                com.umeng.socialize.utils.Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(SaveActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+    UMWeb getUmengWeb(String url, String title , String des){
+        UMWeb  web = new UMWeb(url);
+        web.setTitle(title);//标题
+        //web.setThumb();  //缩略图
+        web.setDescription(des);//描述
+        return  web ;
+    }
+
+    UMImage getUMimage(){
+
+        UMImage image = new UMImage(SaveActivity.this,R.mipmap.ic_launcher);
+        UMImage thumb =  new UMImage(SaveActivity.this, R.mipmap.ic_launcher);
+        image.setThumb(thumb);
+        return image ;
     }
 
 }

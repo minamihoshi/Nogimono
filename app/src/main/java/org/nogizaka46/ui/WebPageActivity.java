@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.base.MyApplication;
@@ -316,4 +317,6 @@ public class WebPageActivity extends BaseActivity {
 
         }
     }
+
+
 }
