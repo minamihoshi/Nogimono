@@ -1,14 +1,16 @@
 package org.nogizaka46.contract;
 
 
+import org.nogizaka46.bean.BlogBean;
+import org.nogizaka46.bean.MemberListBean;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.VersionBean;
+import org.nogizaka46.config.UrlConfig;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -52,5 +54,15 @@ public interface IApiService {
 
     @GET
     Observable<ResponseBody> getAPK(@Url String string);
+
+    @GET(UrlConfig.DATA_MEMBERLIST)
+    Observable<List<MemberListBean>> getMemberBean();
+
+    @GET(UrlConfig.PATH_BLOGS)
+    Observable<List<BlogBean>> getBlogBean(@Query("page") int page, @Query("size") int size);
+
+    @GET(UrlConfig.PATH_BLOGS)
+    Observable<List<BlogBean>> getBlogBean(@Query("member") String member,@Query("page") int page, @Query("size") int size);
+
 
 }

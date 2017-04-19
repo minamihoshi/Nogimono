@@ -24,6 +24,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.umeng.socialize.UMShareAPI;
+
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.bean.VersionBean;
@@ -32,7 +34,7 @@ import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.contract.IApiService;
 import org.nogizaka46.http.HttpUtils;
 import org.nogizaka46.service.MyService;
-import org.nogizaka46.ui.fragment.Main1Frag;
+import org.nogizaka46.ui.fragment.MemberFrag.Main1Frag;
 import org.nogizaka46.ui.fragment.Main2Frag;
 import org.nogizaka46.ui.fragment.Main3Frag;
 import org.nogizaka46.utils.ToastHelper;
@@ -289,7 +291,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         if(subscription!=null&&!subscription.isUnsubscribed()){
             subscription.unsubscribe();
         }
-
+        UMShareAPI.get(this).release();
+        //ButterKnife.reset(this);
     }
 
     @Override
@@ -314,5 +317,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         intent.putExtra(Constant.SERVICEDOWNLOAD,download);
         startService(intent);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+    }
+
 }
 

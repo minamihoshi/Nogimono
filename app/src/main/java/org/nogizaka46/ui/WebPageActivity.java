@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -64,7 +65,9 @@ public class WebPageActivity extends BaseActivity {
     private int clickdown = 0;
     private boolean longclick;
     private NewBean newBean ;
-
+    private boolean isBlog ;
+    private String []  titlestrings= new String []{};
+    private  String CookieStr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +85,28 @@ public class WebPageActivity extends BaseActivity {
        toolbar.setTitleTextColor(Color.BLACK);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
     private void initwebview() {
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            newBean = (NewBean) getIntent().getExtras().getSerializable(Constant.STARTWEB);
-            previews = newBean.getView();
-            url = UrlConfig.BASE_FORMATWEB + previews;
+        if(getIntent() != null){
+            if ( getIntent().getExtras() != null) {
+                newBean = (NewBean) getIntent().getExtras().getSerializable(Constant.STARTWEB);
+                if(newBean !=null){
+                    previews = newBean.getView();
+                    url = UrlConfig.BASE_FORMATWEB + previews;
+                    isBlog =false;
+                }else{
+                    String blogurl = getIntent().getStringExtra(Constant.STARTWEB_BLOG);
+                    url =blogurl ;
+                    isBlog =true;
+                }
+
+
+
+            }
         }
+
         webview.loadUrl(url);
         WebSettings webSetting = webview.getSettings();
         webSetting.setSupportZoom(true);
@@ -122,7 +139,11 @@ public class WebPageActivity extends BaseActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-
+                 toolbar.setTitle(view.getTitle());
+                CookieManager cookieManager = CookieManager.getInstance();
+                 CookieStr = cookieManager.getCookie(url);
+                Log.e("TAG", "onPageFinished: "+CookieStr );
+                super.onPageFinished(view, url);
             }
 
             @Override
@@ -131,14 +152,16 @@ public class WebPageActivity extends BaseActivity {
                 new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE).setTitleText(getResources().getString(R.string.web_error)).show();
 
             }
+
+
         });
 
+        if(!isBlog){
         webview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 Log.e("TAG", "onClick:1111111111111 ");
                 hitTestResult = webview.getHitTestResult();
-
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     clickdown = 1;
                     longclick = false;
@@ -154,13 +177,12 @@ public class WebPageActivity extends BaseActivity {
                 } else {
                     clickdown = 100;
                 }
-
                 return false;
             }
 
 
         });
-
+        }
         webview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -175,6 +197,7 @@ public class WebPageActivity extends BaseActivity {
 
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+
                             String url = hitTestResult.getExtra();
                             if (Build.VERSION.SDK_INT >= 23) {
 
@@ -209,7 +232,8 @@ public class WebPageActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                toolbar.setTitle(title);
+               toolbar.setTitle(title);
+
             }
 
             @Override
@@ -253,6 +277,7 @@ public class WebPageActivity extends BaseActivity {
 
     private void initDownloadManager(String urlstring) {
         MyToast.makeText(context, urlstring, Toast.LENGTH_LONG).show();
+        Log.e("TAG", "initDownloadManager: "+urlstring );
         mDownloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         mFileName = urlstring;
         String path = EncryptUtils.md5(urlstring) + ".jpg";
@@ -260,6 +285,7 @@ public class WebPageActivity extends BaseActivity {
 //        if (destFile.exists()) {
 //            destFile.delete();
 //        }
+
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlstring))
                 .setTitle("文件下载")
                 .setDescription(urlstring)
@@ -267,6 +293,10 @@ public class WebPageActivity extends BaseActivity {
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, path)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setMimeType("image/jpeg||image/png||image/gif");
+        if(isBlog){
+            request.addRequestHeader("Cookie",CookieStr);
+        }
+
         downloadId = mDownloadManager.enqueue(request);
 
     }
@@ -296,7 +326,9 @@ public class WebPageActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_web,menu);
+        if(!isBlog){
+            getMenuInflater().inflate(R.menu.menu_web,menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -318,5 +350,14 @@ public class WebPageActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
 
+        if(webview.canGoBack()){
+            webview.goBack();
+        }else{
+            super.onBackPressed();
+        }
+
+    }
 }

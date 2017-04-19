@@ -16,8 +16,11 @@ public  final static  String KEY_RECOMMEND_URL_KEY="KEY_RECOMMEND_URL_KEY";
      public  static  final  String KEY_NEWVERSION_CODE ="KEY_NEWVERSION_CODE";
      public static final  String SERVICEDOWNLOAD ="SERVICEDOWNLOAD";
      public static final  String STARTWEB ="STARTWEB";
+    public static final String STARTBLOG  ="STARTBLOG";
+    public static  final  String STARTWEB_BLOG ="STARTWEB_BLOG";
 
   public static final String DB_NAME ="nogi.db";
+    public static final  String ALLBLOGS ="ALLBLOGS";
 
      public static final String TYPE_ALL  ="TYPE_ALL";
      public static final String  TYPE_MAGAZINE ="magazine";

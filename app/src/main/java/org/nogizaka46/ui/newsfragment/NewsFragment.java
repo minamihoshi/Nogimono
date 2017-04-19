@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +20,19 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.utils.Log;
+
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.MyNewsAdapter;
 import org.nogizaka46.base.MyApplication;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.config.Constant;
+import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.contract.Contract;
 import org.nogizaka46.ui.WebPageActivity;
 import org.nogizaka46.utils.DividerItemDecoration;
@@ -172,6 +181,7 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
     @Override
     public void onNewsLongClick(int position) {
         itemposition =position;
+        bean = list.get(position);
         if(popupWindow==null){
             initPopup();
         }
@@ -206,7 +216,18 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
         mbtn_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String url = UrlConfig.BASE_FORMATWEB + bean.getView();
+                String title = bean.getTitle();
+                String summary = bean.getSummary();
                 popupWindow.dismiss();
+                new ShareAction((Activity) mContext).setPlatform(SHARE_MEDIA.QQ)
+                        .withText("分享")
+                        .withMedia(getUmengWeb(url,title,summary))
+                        .setDisplayList(SHARE_MEDIA.QQ)
+                        .setCallback(umShareListener).open();
+//                        .setCallback(umShareListener)
+//                        .share();
 
             }
         });
@@ -239,5 +260,48 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
         intent.putExtras(bundle);
         //intent.putExtra("preview", preview);
         startActivity(intent);
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            Toast.makeText(getActivity(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(getActivity(),platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if(t!=null){
+                Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(getActivity(),platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+     UMWeb getUmengWeb(String url,String title ,String des){
+         UMWeb  web = new UMWeb(url);
+         web.setTitle(title);//标题
+         //web.setThumb();  //缩略图
+         web.setDescription(des);//描述
+         return  web ;
+     }
+
+    UMImage getUMimage(){
+
+        UMImage image = new UMImage(getActivity(),R.mipmap.ic_launcher);
+        UMImage thumb =  new UMImage(getActivity(), R.mipmap.ic_launcher);
+        image.setThumb(thumb);
+     return image ;
     }
 }

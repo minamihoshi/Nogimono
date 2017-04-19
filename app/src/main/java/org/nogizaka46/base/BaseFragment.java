@@ -1,6 +1,7 @@
 package org.nogizaka46.base;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -15,7 +16,14 @@ import android.view.View;
  */
 
 public class BaseFragment extends Fragment {
-    public Toolbar toolbar;
+   public Context mContext ;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext =context;
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
