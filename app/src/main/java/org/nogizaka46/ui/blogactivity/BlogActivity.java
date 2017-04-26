@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import org.nogizaka46.R;
@@ -59,6 +60,7 @@ public class BlogActivity extends AppCompatActivity implements BlogAdapter.onBlo
         MemberListBean bean = (MemberListBean) intent.getSerializableExtra(Constant.STARTBLOG);
         title_toolbar =bean.getName();
          rome = bean.getRome();
+
 
         list = new ArrayList<>();
         initToolBar();

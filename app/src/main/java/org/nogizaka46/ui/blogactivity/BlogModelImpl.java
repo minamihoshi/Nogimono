@@ -1,5 +1,7 @@
 package org.nogizaka46.ui.blogactivity;
 
+import android.util.Log;
+
 import org.nogizaka46.bean.BlogBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.contract.Contract;
@@ -20,7 +22,7 @@ public class BlogModelImpl implements Contract.IBlogModel{
     @Override
     public Observable<List<BlogBean>> getData(String name, int page, int size) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
-        if(name == Constant.ALLBLOGS){
+        if(name.equals(Constant.ALLBLOGS)){
             return  retrofitInterface.getBlogBean(page, size);
 
         }else {
