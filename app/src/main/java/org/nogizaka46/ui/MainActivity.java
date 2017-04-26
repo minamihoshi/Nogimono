@@ -105,7 +105,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     case R.id.nav_save :
                         Intent intent = new Intent(MainActivity.this,SaveActivity.class);
                         startActivity(intent);
-
                         break;
                     case  R.id.nav_main :
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_gz"
-        android:icon="@drawable/zhuye2"
+        android:icon="@drawable/guanbo"
         android:title="@string/tab_mainpage_gz" />
     <item
         android:id="@+id/menu_home"
