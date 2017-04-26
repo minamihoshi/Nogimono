@@ -36,6 +36,7 @@ import org.nogizaka46.config.Constant;
 import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.utils.DividerItemDecoration;
 import org.nogizaka46.utils.ToastHelper;
+import org.nogizaka46.utils.UMShareUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,14 +172,21 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
             String url = UrlConfig.BASE_FORMATWEB + bean.getView();
             String title = bean.getTitle();
             String summary = bean.getSummary();
+            String image = null;
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                new ShareAction(SaveActivity.this).setPlatform(SHARE_MEDIA.QQ)
-                        .withText("hello")
-                        .withMedia(getUmengWeb(url,title,summary))
-                        .setDisplayList(SHARE_MEDIA.QQ)
-                        .setCallback(umShareListener).open();
+
+                List<WithpicBean> withpic = bean.getWithpic();
+                if(withpic!=null){
+                    WithpicBean withpicBean = withpic.get(0);
+                    image = withpicBean.getImage();
+                }
+                UMShareUtil.shareUrl(SaveActivity.this,url,title,summary,image,umShareListener);
+//                new ShareAction(SaveActivity.this).setPlatform(SHARE_MEDIA.QQ)
+//                        .withMedia(getUmengWeb(url,title,summary))
+//                        .setDisplayList(SHARE_MEDIA.QQ)
+//                        .setCallback(umShareListener).open();
             }
         });
 
@@ -235,20 +243,20 @@ public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onN
     };
 
 
-    UMWeb getUmengWeb(String url, String title , String des){
-        UMWeb  web = new UMWeb(url);
-        web.setTitle(title);//标题
-        //web.setThumb();  //缩略图
-        web.setDescription(des);//描述
-        return  web ;
-    }
-
-    UMImage getUMimage(){
-
-        UMImage image = new UMImage(SaveActivity.this,R.mipmap.ic_launcher);
-        UMImage thumb =  new UMImage(SaveActivity.this, R.mipmap.ic_launcher);
-        image.setThumb(thumb);
-        return image ;
-    }
+//    UMWeb getUmengWeb(String url, String title , String des){
+//        UMWeb  web = new UMWeb(url);
+//        web.setTitle(title);//标题
+//        //web.setThumb();  //缩略图
+//        web.setDescription(des);//描述
+//        return  web ;
+//    }
+//
+//    UMImage getUMimage(){
+//
+//        UMImage image = new UMImage(SaveActivity.this,R.mipmap.ic_launcher);
+//        UMImage thumb =  new UMImage(SaveActivity.this, R.mipmap.ic_launcher);
+//        image.setThumb(thumb);
+//        return image ;
+//    }
 
 }

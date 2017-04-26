@@ -35,15 +35,18 @@ public class BlogActivity extends AppCompatActivity implements BlogAdapter.onBlo
     @InjectView(R.id.recyclerview_blogs)
     RecyclerView recyclerview;
     @InjectView(R.id.swipeRefresh_blog)
-    SwipeRefreshLayout swipeRefreshBlog;
+    SwipeRefreshLayout swipeRefresh;
     private List<BlogBean> list;
-    private BlogAdapter adpter;
+    private BlogAdapter adapter;
     private LinearLayoutManager manager;
     private BlogBean bean;
     private BlogPresenter presenter ;
-    int page = 1 ;
-    int size =10 ;
+    private String rome;
+    private int page = 1 ;
+    private int size =10 ;
     private String title_toolbar ;
+    private int mLastVisibleItem;
+    private boolean NeadClear ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +54,61 @@ public class BlogActivity extends AppCompatActivity implements BlogAdapter.onBlo
         setContentView(R.layout.activity_blog);
         ButterKnife.inject(this);
 
-
+        NeadClear =true;
         Intent intent = getIntent();
         MemberListBean bean = (MemberListBean) intent.getSerializableExtra(Constant.STARTBLOG);
         title_toolbar =bean.getName();
-        String rome = bean.getRome();
+         rome = bean.getRome();
 
         list = new ArrayList<>();
         initToolBar();
         initRecycler();
+        initRefresh();
         presenter = new BlogPresenter(this);
         presenter.getData(rome,page,size);
 
     }
 
+    private void initRefresh() {
+        swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_light,android.R.color.holo_purple);
+        //  swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.color_red);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page =1 ;
+                NeadClear =true;
+                presenter.getData(rome,page,size);
+            }
+        });
+    }
+
+
     private void initRecycler() {
-        adpter = new BlogAdapter(this, list, this);
+        adapter = new BlogAdapter(this, list, this);
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerview.setLayoutManager(manager);
-        recyclerview.setAdapter(adpter);
+        recyclerview.setAdapter(adapter);
         recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //判断是否该加载更多数据（1.屏幕处于停止状态；2.屏幕已经滑动到了item的最底端）
+                if (mLastVisibleItem == adapter.getItemCount() - 1 && newState == RecyclerView
+                        .SCROLL_STATE_IDLE) {
+                    NeadClear =false;
+                    ++page;
+                    presenter.getData(rome,page,size);
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mLastVisibleItem = manager.findLastVisibleItemPosition();
+            }
+        });
     }
 
 
@@ -114,13 +152,15 @@ public class BlogActivity extends AppCompatActivity implements BlogAdapter.onBlo
 
     @Override
     public void getData(List<BlogBean> memberBeanList) {
-        list.addAll(memberBeanList);
-        adpter.notifyDataSetChanged();
+        adapter.reloadRecyclerView(memberBeanList, NeadClear);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaded() {
-
+        if(swipeRefresh !=null &&swipeRefresh.isRefreshing()){
+            swipeRefresh.setRefreshing(false);
+        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.nogizaka46.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,8 +12,8 @@ import com.bumptech.glide.Glide;
 import org.nogizaka46.R;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.WithpicBean;
-import org.nogizaka46.utils.TimeUtil;
 import org.nogizaka46.utils.RecyclerViewAdapterHelper;
+import org.nogizaka46.utils.TimeUtil;
 
 import java.util.List;
 
@@ -50,8 +49,8 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
 
         NewBean newBean = mList.get(position);
         List<WithpicBean> withpics = newBean.getWithpic();
-        if(withpics == null){
-            return  0;
+        if (withpics == null) {
+            return 0;
         }
         int size = withpics.size();
         switch (size) {
@@ -68,13 +67,13 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
         View view = null;
         switch (viewType) {
             case 0:
-                view = mInflater.inflate(R.layout.item_recycleview_hotfragment_no_pic, parent, false);
+                view = mInflater.inflate(R.layout.item_recycleview_no_pic, parent, false);
                 return new NoPicHolder(view);
             case 1:
-                view = mInflater.inflate(R.layout.item_recycleview_hotfragment_one_pic, parent, false);
+                view = mInflater.inflate(R.layout.item_recycleview_one_pic, parent, false);
                 return new OnePicHolder(view);
             case 3:
-                view = mInflater.inflate(R.layout.item_recycleview_hotfragment_more_pic, parent, false);
+                view = mInflater.inflate(R.layout.item_recycleview_more_pic, parent, false);
                 return new ThreePicHolder(view);
 
         }
@@ -86,41 +85,52 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
         NewBean newBean = mList.get(position);
         String title = newBean.getTitle();
         int delivery = newBean.getDelivery();
-        Log.e("TAG", "onBindMyViewHolder: "+delivery );
         String provider = newBean.getProvider();
         final String time = TimeUtil.timeToDate(delivery);
-        Log.e("TAG", "onBindMyViewHolder: "+time );
-        if (holder instanceof NoPicHolder){
+        String subtitle = newBean.getSubtitle();
+        String summary = newBean.getSummary();
 
-            ((NoPicHolder) holder).titleTextviewItemRecycleviewHotNopic.setText(title);
-            ((NoPicHolder) holder).timeTextviewItemRecycleviewHotNopic.setText(time);
-            ((NoPicHolder) holder).authorTextviewItemRecycleviewHotNopic.setText(provider);
+        if (holder instanceof NoPicHolder) {
+
+            ((NoPicHolder) holder).authorTvItemNopic.setText(provider);
+            // ((NoPicHolder) holder).sourceTvItemNopic.setText(subtitle);
+            ((NoPicHolder) holder).summaryTvItemNopic.setText(summary);
+            ((NoPicHolder) holder).timeTvNopic.setText(time);
+            ((NoPicHolder) holder).titleTvItemNopic.setText(title);
 
 
-        }else if(holder instanceof  OnePicHolder){
+        } else if (holder instanceof OnePicHolder) {
             List<WithpicBean> withpic = newBean.getWithpic();
             WithpicBean withpicBean = withpic.get(0);
             String image = withpicBean.getImage();
 
 
-            ((OnePicHolder) holder).titleTextviewItemRecycleviewHotOnepic.setText(title);
-            ((OnePicHolder) holder).timeTextviewItemRecycleviewHotOnepic.setText(time);
-            ((OnePicHolder) holder).authorTextviewItemRecycleviewHotOnepic.setText(provider);
+            ((OnePicHolder) holder).titleTvItemOnepic.setText(title);
+            ((OnePicHolder) holder).timeTvItemOnepic.setText(time);
+            ((OnePicHolder) holder).authorTvItemOnepic.setText(provider);
+            ((OnePicHolder) holder).tvSummary.setText(summary);
+
+            //((OnePicHolder) holder).sourceTvItemOnepic.setText(subtitle);
             ImageView imageView = ((OnePicHolder) holder).imageItemRecycleviewHotOnepic;
 
             Glide.with(mContext).load(image).placeholder(R.mipmap.ic_launcher).into(imageView);
 
-        }else{
+        } else {
             List<WithpicBean> withpic = newBean.getWithpic();
+
+
             String image1 = withpic.get(0).getImage();
             String image2 = withpic.get(1).getImage();
-            String image3= withpic.get(2).getImage();
+            String image3 = withpic.get(2).getImage();
 
 
             ((ThreePicHolder) holder).titleTextviewItemRecycleviewHotMorepic.setText(title);
-            Glide.with(mContext).load(image1).into( ((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image2).into( ((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image3).into( ((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image1).into(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image2).into(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image3).into(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
+            ((ThreePicHolder) holder).timeTvNopic.setText(time);
+            ((ThreePicHolder) holder).authorTvItemNopic.setText(provider);
+            // ((ThreePicHolder) holder).sourceTvItemNopic.setText(subtitle);
 
 
         }
@@ -135,19 +145,23 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
             @Override
             public boolean onLongClick(View view) {
                 listener.onNewsLongClick(position);
-                return  true;
+                return true;
             }
         });
 
     }
 
     static class NoPicHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.title_textview_item_recycleview_hot_nopic)
-        TextView titleTextviewItemRecycleviewHotNopic;
-        @InjectView(R.id.author_textview_item_recycleview_hot_nopic)
-        TextView authorTextviewItemRecycleviewHotNopic;
-        @InjectView(R.id.time_textview_item_recycleview_hot_nopic)
-        TextView timeTextviewItemRecycleviewHotNopic;
+        @InjectView(R.id.title_tv_item_nopic)
+        TextView titleTvItemNopic;
+        @InjectView(R.id.summary_tv_item_nopic)
+        TextView summaryTvItemNopic;
+        @InjectView(R.id.time_tv_nopic)
+        TextView timeTvNopic;
+        @InjectView(R.id.author_tv_item_nopic)
+        TextView authorTvItemNopic;
+        @InjectView(R.id.source_tv_item_nopic)
+        TextView sourceTvItemNopic;
 
         public NoPicHolder(View itemView) {
             super(itemView);
@@ -156,14 +170,19 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
     }
 
     static class OnePicHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.title_textview_item_recycleview_hot_onepic)
-        TextView titleTextviewItemRecycleviewHotOnepic;
-        @InjectView(R.id.author_textview_item_recycleview_hot_onepic)
-        TextView authorTextviewItemRecycleviewHotOnepic;
-        @InjectView(R.id.time_textview_item_recycleview_hot_onepic)
-        TextView timeTextviewItemRecycleviewHotOnepic;
+        @InjectView(R.id.title_tv_item_onepic)
+        TextView titleTvItemOnepic;
+        @InjectView(R.id.time_tv_item_onepic)
+        TextView timeTvItemOnepic;
+        @InjectView(R.id.author_tv_item_onepic)
+        TextView authorTvItemOnepic;
+        @InjectView(R.id.source_tv_item_onepic)
+        TextView sourceTvItemOnepic;
         @InjectView(R.id.image_item_recycleview_hot_onepic)
         ImageView imageItemRecycleviewHotOnepic;
+        @InjectView(R.id.tv_summary)
+        TextView tvSummary;
+
         public OnePicHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
@@ -179,6 +198,13 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
         ImageView image2ItemRecycleviewHotMorepic;
         @InjectView(R.id.image3_item_recycleview_hot_morepic)
         ImageView image3ItemRecycleviewHotMorepic;
+        @InjectView(R.id.time_tv_nopic)
+        TextView timeTvNopic;
+        @InjectView(R.id.author_tv_item_nopic)
+        TextView authorTvItemNopic;
+        @InjectView(R.id.source_tv_item_nopic)
+        TextView sourceTvItemNopic;
+
         public ThreePicHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
@@ -186,5 +212,6 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
     }
 
 
-
 }
+
+

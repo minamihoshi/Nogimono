@@ -1,6 +1,6 @@
 <resources>
     <!--其他-->
-    <string name="app_name">乃木物</string>
+    <string name="app_name">爱乃团</string>
     <string name="intentent_slow">网络似乎开小差</string>
     <string name="web_error">网页加载错误</string>
     <!--对话框-->

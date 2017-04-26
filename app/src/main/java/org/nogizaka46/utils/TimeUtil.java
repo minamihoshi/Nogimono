@@ -24,7 +24,7 @@ public class TimeUtil {
      * @param millis 毫秒时间戳
      * @return 时间字符串
      */
-    public static String millis2String(long millis) {
+    private  static String millis2String(long millis) {
         return new SimpleDateFormat(DEFAULT_PATTERN, Locale.getDefault()).format(new Date(millis));
     }
 

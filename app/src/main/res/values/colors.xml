@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">#812990</color>
+    <color name="colorPrimaryDark">#812990</color>
+    <color name="colorAccent">#FF4081</color>
     <color name="main_bg_color">#08a9f8</color>
     <color name="main_tab_bg">#fcfcfc</color>
     <color name="LightGray_tab">#9B9B9B</color>
@@ -44,4 +47,6 @@
     <color name="material_deep_teal_50">#ff009688</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="ngzkpurple">#AA812990</color>
 </resources>

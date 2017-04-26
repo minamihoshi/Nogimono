@@ -32,18 +32,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.base.MyApplication;
 import org.nogizaka46.bean.NewBean;
+import org.nogizaka46.bean.WithpicBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.ui.activity.ImageActivity;
 import org.nogizaka46.utils.EncryptUtils;
+import org.nogizaka46.utils.UMShareUtil;
 import org.nogizaka46.view.MyToast;
 import org.nogizaka46.view.SweetAlertDialog;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -121,9 +128,12 @@ public class WebPageActivity extends BaseActivity {
         DecimalFormat format = new DecimalFormat("0.00");
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-        String formatResult = format.format((float) (outMetrics.widthPixels) / (float) 668); //668为html页面的宽度
-        //设置初始缩放大小  100%   屏幕宽度 / 网页设置的宽度
-        webview.setInitialScale((int) (Float.valueOf(formatResult) * 100));
+        if(!isBlog){
+            String formatResult = format.format((float) (outMetrics.widthPixels) / (float) 668); //668为html页面的宽度
+            //设置初始缩放大小  100%   屏幕宽度 / 网页设置的宽度
+            webview.setInitialScale((int) (Float.valueOf(formatResult) * 100));
+        }
+
         webview.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -319,6 +329,21 @@ public class WebPageActivity extends BaseActivity {
                     Toast.makeText(this,"已经收藏过了~",Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.share:
+                if (newBean!=null) {
+                    String title = newBean.getTitle();
+                    String summary = newBean.getSummary();
+                    String url = UrlConfig.BASE_FORMATWEB + newBean.getView();
+                    String image = null;
+                    List<WithpicBean> withpic = newBean.getWithpic();
+                    if(withpic!=null){
+                        WithpicBean withpicBean = withpic.get(0);
+                        image = withpicBean.getImage();
+                    }
+                    UMShareUtil.shareUrl(WebPageActivity.this,url,title,summary,image,umShareListener);
+                }
+
+                break;
 
         }
         return true;
@@ -360,4 +385,36 @@ public class WebPageActivity extends BaseActivity {
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            Toast.makeText(WebPageActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(WebPageActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if(t!=null){
+                com.umeng.socialize.utils.Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(WebPageActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
 }

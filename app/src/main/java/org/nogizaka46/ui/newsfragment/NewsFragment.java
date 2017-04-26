@@ -31,12 +31,15 @@ import org.nogizaka46.R;
 import org.nogizaka46.adapter.MyNewsAdapter;
 import org.nogizaka46.base.MyApplication;
 import org.nogizaka46.bean.NewBean;
+import org.nogizaka46.bean.WithpicBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.contract.Contract;
 import org.nogizaka46.ui.WebPageActivity;
 import org.nogizaka46.utils.DividerItemDecoration;
+import org.nogizaka46.utils.SpacesItemDecoration;
 import org.nogizaka46.utils.ToastHelper;
+import org.nogizaka46.utils.UMShareUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +110,7 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
         presenter = new NewsPresenter(this);
         presenter.getData(category, page, size);
         mLayoutManager =new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        recyclerview.addItemDecoration(new DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
+        recyclerview.addItemDecoration(new SpacesItemDecoration(1));
         recyclerview.setLayoutManager(mLayoutManager);
         recyclerview.setAdapter(adapter);
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -220,12 +223,19 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
                 String url = UrlConfig.BASE_FORMATWEB + bean.getView();
                 String title = bean.getTitle();
                 String summary = bean.getSummary();
+                String image = null;
+                List<WithpicBean> withpic = bean.getWithpic();
+                if(withpic!=null){
+                    WithpicBean withpicBean = withpic.get(0);
+                    image = withpicBean.getImage();
+                }
                 popupWindow.dismiss();
-                new ShareAction((Activity) mContext).setPlatform(SHARE_MEDIA.QQ)
-                        .withText("分享")
-                        .withMedia(getUmengWeb(url,title,summary))
-                        .setDisplayList(SHARE_MEDIA.QQ)
-                        .setCallback(umShareListener).open();
+                UMShareUtil.shareUrl((Activity) mContext,url,title,summary,image,umShareListener);
+//                new ShareAction((Activity) mContext).setPlatform(SHARE_MEDIA.QQ)
+//                        .withText("分享")
+//                        .withMedia(getUmengWeb(url,title,summary))
+//                        .setDisplayList(SHARE_MEDIA.QQ)
+//                        .setCallback(umShareListener).open();
 //                        .setCallback(umShareListener)
 //                        .share();
 

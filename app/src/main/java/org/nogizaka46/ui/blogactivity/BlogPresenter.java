@@ -3,8 +3,11 @@ package org.nogizaka46.ui.blogactivity;
 import org.nogizaka46.bean.BlogBean;
 import org.nogizaka46.contract.Contract;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.List;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,7 +40,23 @@ public class BlogPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        view.onLoadFailed("");
+                        if (e instanceof HttpException) {
+                            HttpException httpException = (HttpException) e;
+                            //httpException.response().errorBody().string()
+                            int code = httpException.code();
+                            if (code == 500 ) {
+                                view.onLoadFailed("服务器出错");
+                            }
+                            else if(code ==404){
+                                view.onLoadFailed("没有更多了");
+                            }
+                        } else if (e instanceof ConnectException) {
+                            view.onLoadFailed("网络断开,请打开网络!");
+                        } else if (e instanceof SocketTimeoutException) {
+                            view.onLoadFailed("网络连接超时!!");
+                        } else {
+                            view.onLoadFailed("发生未知错误" + e.getMessage());
+                        }
                     }
 
                     @Override
