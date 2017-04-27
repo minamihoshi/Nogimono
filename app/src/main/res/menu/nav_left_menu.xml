@@ -10,14 +10,16 @@
             android:id="@+id/nav_save"
             android:icon="@drawable/ic_menu_gallery"
             android:title="收藏夹" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/code"
-            android:title="二维码" />
+
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/history"
             android:title="历史记录" />
+
+        <item
+            android:id="@+id/cleaer_cache"
+            android:icon="@drawable/clear_cache"
+            android:title="清理缓存" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
@@ -34,20 +36,7 @@
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_menu_send"
                 android:title="关于我们" />
-            <item
-                android:id="@+id/menu_left_1"
-                android:icon="@drawable/left_menu1"
-                android:title="@string/left_menu_txt1" />
-            <item
-                android:id="@+id/menu_left_2"
 
-                android:icon="@drawable/left_menu2"
-                android:title="@string/left_menu_txt2" />
-            <item
-                android:id="@+id/menu_left_3"
-
-                android:icon="@drawable/left_menu3"
-                android:title="@string/left_menu_txt3" />
         </menu>
     </item>
 

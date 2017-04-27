@@ -22,24 +22,23 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.umeng.socialize.UMShareAPI;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
-import org.nogizaka46.bean.MemberListBean;
 import org.nogizaka46.bean.VersionBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.contract.IApiService;
 import org.nogizaka46.http.HttpUtils;
 import org.nogizaka46.service.MyService;
-import org.nogizaka46.ui.blogactivity.BlogActivity;
+import org.nogizaka46.ui.activity.AboutActivity;
 import org.nogizaka46.ui.fragment.MemberFrag.Main1Frag;
 import org.nogizaka46.ui.fragment.Main2Frag;
 import org.nogizaka46.ui.fragment.Main3Frag;
+import org.nogizaka46.utils.ClearCacheUtils;
 import org.nogizaka46.utils.ToastHelper;
 
 import butterknife.ButterKnife;
@@ -99,24 +98,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         toolbar.setTitle(getResources().getString(R.string.tab_mainpage));
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (System.currentTimeMillis() - mLastPressBackTime < INTERVAL_OF_TWO_CLICK_TO_QUIT) {
-                    Intent intent = new Intent(MainActivity.this, BlogActivity.class);
-                    MemberListBean listbean = new MemberListBean();
-                    listbean.setRome(Constant.ALLBLOGS);
-                    listbean.setName("全部");
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(Constant.STARTBLOG,listbean);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                } else {
-
-                    mLastPressBackTime = System.currentTimeMillis();
-                }
-            }
-        });
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -126,9 +107,19 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     case R.id.nav_save :
                         Intent intent = new Intent(MainActivity.this,SaveActivity.class);
                         startActivity(intent);
+
                         break;
                     case  R.id.nav_main :
 
+                        break;
+
+                    case  R.id.cleaer_cache :
+                        ClearCacheUtils.clearAllCache(MainActivity.this);
+                        break;
+
+                    case  R.id.nav_about :
+                        Intent intent1= new Intent(MainActivity.this,AboutActivity.class);
+                        startActivity(intent1);
                         break;
                     default:
                         ToastHelper.showToast(MainActivity.this,"尚未开发");

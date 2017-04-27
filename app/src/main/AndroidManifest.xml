@@ -91,6 +91,13 @@
             android:value="58f2565aaed1794325000617"></meta-data>
 
         <activity android:name=".ui.blogactivity.BlogActivity"></activity>
+
+        <!-- 关于-->
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
     </application>
 
 </manifest>

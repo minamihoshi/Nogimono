@@ -1,6 +1,6 @@
 <resources>
     <!--其他-->
-    <string name="app_name">爱乃团</string>
+    <string name="app_name">乃木物</string>
     <string name="intentent_slow">网络似乎开小差</string>
     <string name="web_error">网页加载错误</string>
     <!--对话框-->
@@ -57,5 +57,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="wangluowenti">网络不给力哦</string>
-
+    <!-- 关于 -->
+    <string name="about">当前版本</string>
+    <string name="copyright_txt">版权所有</string>
+    <string name="copyright_txt1">Copyright@2017–2018  All Rights Reserved</string>
 </resources>
