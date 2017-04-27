@@ -62,4 +62,5 @@ dependencies {
     compile files('libs/libs/SocialSDK_QQ_Simplify.jar')
     compile files('libs/libs/umeng_shareboard_widget.jar')
     compile files('libs/libs/umeng_social_shareboard.jar')
+    compile project(':PushSDK')
 }

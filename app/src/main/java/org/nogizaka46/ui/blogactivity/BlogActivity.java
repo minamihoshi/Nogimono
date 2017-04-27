@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.BlogAdapter;
+import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.bean.BlogBean;
 import org.nogizaka46.bean.MemberListBean;
 import org.nogizaka46.config.Constant;
@@ -28,7 +29,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class BlogActivity extends AppCompatActivity implements BlogAdapter.onBlogClicklistener ,Contract.IBlogView{
+public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClicklistener ,Contract.IBlogView{
 
 
     @InjectView(R.id.toolbar_blogs)

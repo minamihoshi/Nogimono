@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.umeng.message.PushAgent;
 
 import org.nogizaka46.R;
 
@@ -27,6 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
         mSelfData = new ArrayList<Map<String, Object>>();
         // 修改状态栏颜色，4.4+生效
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

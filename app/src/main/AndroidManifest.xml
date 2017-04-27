@@ -90,6 +90,11 @@
             android:name="UMENG_APPKEY"
             android:value="58f2565aaed1794325000617"></meta-data>
 
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="0bea6cba16ac1f7de972208856cca21f">
+        </meta-data>
+
         <activity android:name=".ui.blogactivity.BlogActivity"></activity>
 
         <!-- 关于-->

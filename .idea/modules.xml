@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/NogiZaka46.iml" filepath="$PROJECT_DIR$/NogiZaka46.iml" />
       <module fileurl="file://$PROJECT_DIR$/NogiZaka468.iml" filepath="$PROJECT_DIR$/NogiZaka468.iml" />
       <module fileurl="file://$PROJECT_DIR$/NogiZaka46s.iml" filepath="$PROJECT_DIR$/NogiZaka46s.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PushSDK/PushSDK.iml" filepath="$PROJECT_DIR$/PushSDK/PushSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

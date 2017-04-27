@@ -22,12 +22,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
+import org.nogizaka46.bean.MemberListBean;
 import org.nogizaka46.bean.VersionBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.config.UrlConfig;
@@ -35,11 +39,13 @@ import org.nogizaka46.contract.IApiService;
 import org.nogizaka46.http.HttpUtils;
 import org.nogizaka46.service.MyService;
 import org.nogizaka46.ui.activity.AboutActivity;
+import org.nogizaka46.ui.blogactivity.BlogActivity;
 import org.nogizaka46.ui.fragment.MemberFrag.Main1Frag;
 import org.nogizaka46.ui.fragment.Main2Frag;
 import org.nogizaka46.ui.fragment.Main3Frag;
 import org.nogizaka46.utils.ClearCacheUtils;
 import org.nogizaka46.utils.ToastHelper;
+import org.nogizaka46.utils.UMShareUtil;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -98,6 +104,25 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         toolbar.setTitle(getResources().getString(R.string.tab_mainpage));
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (System.currentTimeMillis() - mLastPressBackTime < INTERVAL_OF_TWO_CLICK_TO_QUIT) {
+                    Intent intent = new Intent(MainActivity.this, BlogActivity.class);
+                    Bundle bundle = new Bundle();
+                    MemberListBean memberListBean = new MemberListBean();
+                    memberListBean.setRome(Constant.ALLBLOGS);
+                    memberListBean.setName("全部");
+                    bundle.putSerializable(Constant.STARTBLOG,memberListBean);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, "双击有惊喜", Toast.LENGTH_SHORT).show();
+
+                    mLastPressBackTime = System.currentTimeMillis();
+                }
+            }
+        });
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -115,11 +140,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
                     case  R.id.cleaer_cache :
                         ClearCacheUtils.clearAllCache(MainActivity.this);
+                        item.setTitle("清除缓存"+"   1");
                         break;
 
                     case  R.id.nav_about :
                         Intent intent1= new Intent(MainActivity.this,AboutActivity.class);
                         startActivity(intent1);
+                        break;
+                    case R.id.nav_share :
+                        UMShareUtil.shareUrl(MainActivity.this,download,"我在使用乃木物","乃团咨询app",null,umShareListener);
                         break;
                     default:
                         ToastHelper.showToast(MainActivity.this,"尚未开发");
@@ -335,6 +364,32 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
 
     }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            Toast.makeText(MainActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(MainActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if(t!=null){
+                com.umeng.socialize.utils.Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(MainActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }
 

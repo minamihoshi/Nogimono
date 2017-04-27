@@ -29,6 +29,7 @@ import com.umeng.socialize.media.UMWeb;
 
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.MyNewsAdapter;
+import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.base.MyApplication;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.WithpicBean;
@@ -44,7 +45,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SaveActivity extends AppCompatActivity implements MyNewsAdapter.onNewsClickListener {
+public class SaveActivity extends BaseActivity implements MyNewsAdapter.onNewsClickListener {
 
     @InjectView(R.id.toolbar_saveactivity)
     Toolbar toolbar;
