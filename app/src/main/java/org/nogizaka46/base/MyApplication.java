@@ -8,6 +8,7 @@ import android.util.Log;
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBaseConfig;
 import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -65,7 +66,11 @@ public class MyApplication extends Application{
             liteOrm = LiteOrm.newCascadeInstance(config);// cascade
         }
         PushAgent mPushAgent = PushAgent.getInstance(this);
-//注册推送服务，每次调用register方法都会回调该接口
+        //mPushAgent.setNoDisturbMode(0, 0, 0, 0);
+        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SERVER); //声音
+        mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SERVER);//呼吸灯
+        mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SERVER);//振动
+        //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
 
             @Override

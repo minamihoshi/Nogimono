@@ -35,7 +35,23 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
         android:layout_weight="1.0" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="应用开发反馈群"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="480242179"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="https://github.com/Lemonade56/NogiZaka46"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +79,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/copyright_txt" />
         </LinearLayout>
-        
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -76,9 +92,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/copyright_txt1" />
 
-         
+
         </LinearLayout>
-        
+
     </LinearLayout>
 
 </LinearLayout>

@@ -89,8 +89,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        main2Frag = new Main2Frag();
-        transaction.replace(R.id.fragment_container, main2Frag);
+        //if(main2Frag!=null&&main1Frag!=null&&main3Frag!=null){
+//            transaction.show(main2Frag);
+//            transaction.hide(main1Frag);
+//            transaction.hide(main3Frag);
+        //}else{
+            main2Frag = new Main2Frag();
+            transaction.replace(R.id.fragment_container, main2Frag);
+        //}
+
         transaction.commit();
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
@@ -135,6 +142,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
                         break;
                     case  R.id.nav_main :
+
 
                         break;
 

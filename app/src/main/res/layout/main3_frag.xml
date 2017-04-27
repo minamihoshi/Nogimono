@@ -29,6 +29,7 @@
                 android:src="@drawable/icon_im_setting" />
 
             <TextView
+                android:id="@+id/settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0.9dp"
@@ -76,6 +77,7 @@
                 android:src="@drawable/icon_item_user" />
 
             <TextView
+                android:id="@+id/about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0.9dp"
