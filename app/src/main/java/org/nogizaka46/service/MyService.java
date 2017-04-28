@@ -84,7 +84,7 @@ public class MyService extends Service {
                                 int progress = (int) ((lenplus / (float) totallen) * 100);
                                  manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                  builder = new NotificationCompat.Builder(MyService.this);
-                                Notification notification = builder.setSmallIcon(R.mipmap.ic_launcher)
+                                Notification notification = builder.setSmallIcon(R.drawable.logo)
                                         .setProgress(100, progress, false)
 
                                         .setContentTitle("正在下载")

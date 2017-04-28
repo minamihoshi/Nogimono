@@ -111,6 +111,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         toolbar.setTitle(getResources().getString(R.string.tab_mainpage));
+        toolbar.setSubtitle("");
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,7 +125,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(MainActivity.this, "双击有惊喜", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(MainActivity.this, "双击有惊喜", Toast.LENGTH_SHORT).show();
 
                     mLastPressBackTime = System.currentTimeMillis();
                 }
@@ -148,7 +149,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
                     case  R.id.cleaer_cache :
                         ClearCacheUtils.clearAllCache(MainActivity.this);
-                        item.setTitle("清除缓存"+"   1");
+                       // item.setTitle("清除缓存");
                         break;
 
                     case  R.id.nav_about :
@@ -156,7 +157,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                         startActivity(intent1);
                         break;
                     case R.id.nav_share :
-                        UMShareUtil.shareUrl(MainActivity.this,download,"我在使用乃木物","乃团咨询app",null,umShareListener);
+                        UMShareUtil.shareUrl(MainActivity.this,download,"我在使用乃木物","乃木坂46综合资讯app 一起来用吧~",null,umShareListener);
                         break;
                     default:
                         ToastHelper.showToast(MainActivity.this,"尚未开发");
@@ -195,6 +196,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 }
 
                 toolbar.setTitle(getResources().getString(R.string.tab_mainpage_gz));
+                toolbar.setSubtitle("双击有惊喜");
                 break;
 
             case R.id.menu_home:
@@ -205,6 +207,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     transaction.show(main2Frag);
                 }
                 toolbar.setTitle(getResources().getString(R.string.tab_mainpage));
+                toolbar.setSubtitle("");
 
                 break;
 
@@ -217,6 +220,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 }
 
                 toolbar.setTitle(getResources().getString(R.string.tab_mainpage_me));
+                toolbar.setSubtitle("");
                 break;
         }
 
@@ -307,7 +311,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     private void showMyDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("检测到新版本")
-                .setIcon(R.mipmap.ic_launcher)
+                .setIcon(R.drawable.logo)
                 .setCancelable(false)
                 .setMessage("是否更新")
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {

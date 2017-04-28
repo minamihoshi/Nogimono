@@ -114,7 +114,7 @@
     </style>
 
     <style name="AppWelcome" parent="AppTheme">
-        <item name="android:windowBackground">@mipmap/nogi17th</item>
+        <item name="android:windowBackground">@mipmap/naimuwu</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
