@@ -233,7 +233,7 @@ public class WebPageActivity extends BaseActivity {
                         }
                     }).show();
                 }
-                return true;
+                return false;
             }
         });
 

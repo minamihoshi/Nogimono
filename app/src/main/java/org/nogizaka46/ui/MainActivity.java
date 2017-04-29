@@ -196,7 +196,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 }
 
                 toolbar.setTitle(getResources().getString(R.string.tab_mainpage_gz));
-                toolbar.setSubtitle("双击有惊喜");
+                toolbar.setSubtitle("双击进入全部");
                 break;
 
             case R.id.menu_home:

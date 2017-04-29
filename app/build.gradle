@@ -63,4 +63,6 @@ dependencies {
     compile files('libs/libs/umeng_shareboard_widget.jar')
     compile files('libs/libs/umeng_social_shareboard.jar')
     compile project(':PushSDK')
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
 }

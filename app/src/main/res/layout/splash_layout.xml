@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="@mipmap/shouping"
+    android:background="@drawable/umeng_push_default_splash_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

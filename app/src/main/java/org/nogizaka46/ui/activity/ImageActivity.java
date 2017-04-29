@@ -49,7 +49,7 @@ public class ImageActivity extends BaseActivity {
         mContext =ImageActivity.this;
         Intent intent = getIntent();
         imagepath = intent.getStringExtra("image");
-        Glide.with(this).load(imagepath).placeholder(R.drawable.ic_menu_gallery).into(photoview);
+        Glide.with(this).load(imagepath).thumbnail(0.1f).crossFade().placeholder(R.drawable.loading).into(photoview);
 
         photoview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

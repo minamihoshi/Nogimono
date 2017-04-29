@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
+
     <application
         android:name=".base.MyApplication"
         android:allowBackup="true"
@@ -22,7 +23,8 @@
         <activity android:name=".base.BaseActivity" />
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/AppWelcome">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme_Umeng_Push_Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -94,6 +96,8 @@
             android:name="UMENG_MESSAGE_SECRET"
             android:value="0bea6cba16ac1f7de972208856cca21f">
         </meta-data>
+
+        <meta-data android:value="minami" android:name="UMENG_CHANNEL"/>
 
         <activity android:name=".ui.blogactivity.BlogActivity"></activity>
 

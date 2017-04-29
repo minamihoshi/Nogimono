@@ -113,7 +113,7 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
             //((OnePicHolder) holder).sourceTvItemOnepic.setText(subtitle);
             ImageView imageView = ((OnePicHolder) holder).imageItemRecycleviewHotOnepic;
 
-            Glide.with(mContext).load(image).placeholder(R.mipmap.ic_launcher).into(imageView);
+            Glide.with(mContext).load(image).placeholder(R.drawable.loading).crossFade().into(imageView);
 
         } else {
             List<WithpicBean> withpic = newBean.getWithpic();
@@ -125,9 +125,9 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
 
 
             ((ThreePicHolder) holder).titleTextviewItemRecycleviewHotMorepic.setText(title);
-            Glide.with(mContext).load(image1).into(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image2).into(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image3).into(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image1).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image2).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
+            Glide.with(mContext).load(image3).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
             ((ThreePicHolder) holder).timeTvNopic.setText(time);
             ((ThreePicHolder) holder).authorTvItemNopic.setText(provider);
             // ((ThreePicHolder) holder).sourceTvItemNopic.setText(subtitle);

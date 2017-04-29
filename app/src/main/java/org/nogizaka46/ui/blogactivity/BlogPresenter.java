@@ -55,7 +55,7 @@ public class BlogPresenter {
                         } else if (e instanceof SocketTimeoutException) {
                             view.onLoadFailed("网络连接超时!!");
                         } else {
-                            view.onLoadFailed("发生未知错误" + e.getMessage());
+                            view.onLoadFailed("网络断开" + e.getMessage());
                         }
                     }
 
