@@ -54,7 +54,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="https://github.com/minamihoshi/ngzk46"/>
+            android:text="https://github.com/minamihoshi/Nogimono"/>
 
     </LinearLayout>
 
