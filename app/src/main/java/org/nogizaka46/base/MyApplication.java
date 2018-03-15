@@ -2,6 +2,7 @@ package org.nogizaka46.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
@@ -13,6 +14,7 @@ import com.umeng.message.PushAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+
 
 import org.nogizaka46.config.Constant;
 
@@ -27,9 +29,9 @@ public class MyApplication extends Application{
     public static LiteOrm liteOrm;
 
     {
-        Config.DEBUG =true;
+       // Config.DEBUG =true;
         PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
-        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+        PlatformConfig.setQQZone("1106775372", "UJGmoo8s6KmidsOm");
     }
 
     @Override
@@ -86,4 +88,7 @@ public class MyApplication extends Application{
         });
 
     }
+
+
+
 }

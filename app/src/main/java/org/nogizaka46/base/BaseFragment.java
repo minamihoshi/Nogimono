@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.PopupWindow;
 
 /**
  * Created by acer on 2016/11/15.
@@ -17,7 +18,7 @@ import android.view.View;
 
 public class BaseFragment extends Fragment {
    public Context mContext ;
-
+    protected PopupWindow popupWindow ;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

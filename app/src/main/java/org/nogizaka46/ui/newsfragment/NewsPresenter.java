@@ -86,12 +86,15 @@ public class NewsPresenter {
                           } else {
                               view.onLoadFailed("网络断开" + e.getMessage());
                           }
+                          onCompleted();
                       }
 
                       @Override
                       public void onNext(List<NewBean> newBeen) {
                           view.getData(newBeen);
                       }
+
+
                   });
 
     }

@@ -56,10 +56,10 @@ public interface IApiService {
     Observable<ResponseBody> getAPK(@Url String string);
 
     @GET(UrlConfig.DATA_MEMBERLIST)
-    Observable<List<MemberListBean>> getMemberBean();
+    Observable<List<MemberListBean>> getMemberBean(@Query("group") String group);
 
     @GET(UrlConfig.PATH_BLOGS)
-    Observable<List<BlogBean>> getBlogBean(@Query("page") int page, @Query("size") int size);
+    Observable<List<BlogBean>> getBlogBean(@Query("page") int page, @Query("size") int size,@Query("group") String group);
 
     @GET(UrlConfig.PATH_BLOGS)
     Observable<List<BlogBean>> getBlogBean(@Query("member") String member,@Query("page") int page, @Query("size") int size);

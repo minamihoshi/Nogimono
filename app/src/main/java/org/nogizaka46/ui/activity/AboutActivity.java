@@ -23,7 +23,7 @@ public class AboutActivity extends BaseActivity {
 		TextView textView=(TextView) findViewById(R.id.title);
 		textView.setText(R.string.about);
 		show_version=(TextView) findViewById(R.id.show_version);
-		show_version.setText("V"+getVersionCode(AboutActivity.this));
+		show_version.setText("V"+getVersionname(AboutActivity.this));
 		
 	}
 
@@ -33,11 +33,11 @@ public class AboutActivity extends BaseActivity {
 	public void doActionRight(View view){
 		
 	}
-	public static int getVersionCode(Context context) {
-		int version = 0;
+	public static String getVersionname(Context context) {
+		String version = null;
 		try {
 			PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-			version = pi.versionCode;
+			version = pi.versionName;
 		} catch (PackageManager.NameNotFoundException e) {
 			Log.e("TAG", "Package name not found", e);
 		};

@@ -26,7 +26,7 @@ public class Contract {
     }
 
     public interface  IBlogModel extends  IBaseModel{
-        Observable<List<BlogBean>> getData(String name , int page , int size);
+        Observable<List<BlogBean>> getData(String name , int page , int size ,String group);
     }
 
     public interface  IBlogView extends  IBaseView {

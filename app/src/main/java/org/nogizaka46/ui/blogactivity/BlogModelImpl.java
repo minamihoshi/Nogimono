@@ -20,10 +20,10 @@ public class BlogModelImpl implements Contract.IBlogModel{
 
 
     @Override
-    public Observable<List<BlogBean>> getData(String name, int page, int size) {
+    public Observable<List<BlogBean>> getData(String name, int page, int size,String group) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
         if(name.equals(Constant.ALLBLOGS)){
-            return  retrofitInterface.getBlogBean(page, size);
+            return  retrofitInterface.getBlogBean(page, size,group);
 
         }else {
             return  retrofitInterface.getBlogBean(name,page,size);

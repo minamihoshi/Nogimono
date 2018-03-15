@@ -41,6 +41,7 @@ public class MyService extends Service {
     private Subscription subscription ;
     private NotificationCompat.Builder builder;
     private NotificationManager manager ;
+    Notification notification;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -76,14 +77,16 @@ public class MyService extends Service {
                             OutputStream os = new FileOutputStream(filePath);
                             bos = new BufferedOutputStream(os);
                             int len = 0;
-                            byte[] temp = new byte[1024 * 8];
+                            byte[] temp = new byte[1024 * 16];
                             while ((len = bis.read(temp)) != -1) {
                                 bos.write(temp, 0, len);
                                 lenplus += len;
                                 Log.e("TAG", "onservice "+lenplus );
+                                Log.e("TAG", "onNext: "+totallen );
                                 int progress = (int) ((lenplus / (float) totallen) * 100);
                                  manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                  builder = new NotificationCompat.Builder(MyService.this);
+
                                 Notification notification = builder.setSmallIcon(R.drawable.logo)
                                         .setProgress(100, progress, false)
 
@@ -117,7 +120,7 @@ public class MyService extends Service {
                                 .setContentIntent(pendingIntent)
                                 .build();
                         manager.notify(0,notification);
-
+                        Log.e("TAG", "onserviceaaaaaaa: finish" );
 
                     }
                 });

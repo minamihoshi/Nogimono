@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/rela_sel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
+
+  <TextView
+      android:id="@+id/tv_area"
+      android:textColor="@drawable/footer_text_color"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:textSize="14sp"
+      android:layout_margin="5dp"
+      android:text="节操选项"
+      />
+
+  <ImageView
+      android:id="@+id/iv_areaselect"
+      android:layout_width="14dp"
+      android:layout_height="14dp"
+
+      android:layout_centerVertical="true"
+      android:layout_toEndOf="@+id/tv_area"
+      android:layout_toRightOf="@+id/tv_area"
+      android:src="@drawable/area1" />
+</RelativeLayout>

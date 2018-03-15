@@ -2,6 +2,7 @@ package org.nogizaka46.ui;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +25,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -75,6 +78,10 @@ public class WebPageActivity extends BaseActivity {
     private boolean isBlog ;
     private String []  titlestrings= new String []{};
     private  String CookieStr;
+    private  float downX ;
+    private float downY;
+    private WebSettings webSetting ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +102,20 @@ public class WebPageActivity extends BaseActivity {
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    public void onResume() {
+        super.onResume();
+        webSetting.setJavaScriptEnabled(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        webSetting.setJavaScriptEnabled(false);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
     private void initwebview() {
         if(getIntent() != null){
             if ( getIntent().getExtras() != null) {
@@ -113,10 +134,11 @@ public class WebPageActivity extends BaseActivity {
 
             }
         }
-
+        Log.e("TAG", "initwebview: " + url );
         webview.loadUrl(url);
-        WebSettings webSetting = webview.getSettings();
+         webSetting = webview.getSettings();
         webSetting.setSupportZoom(true);
+        webSetting.setDomStorageEnabled(true);
         webSetting.setBuiltInZoomControls(true);
         webSetting.setSupportMultipleWindows(true);//设置WebView是否支持多窗口。如果设置为true
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);//让JavaScript自动打开窗口，默认false
@@ -125,6 +147,13 @@ public class WebPageActivity extends BaseActivity {
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSetting.setUseWideViewPort(true);//为图片添加放大缩小功能
         webSetting.setLoadWithOverviewMode(true);
+        webSetting.setJavaScriptEnabled(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webview.getSettings()
+                    .setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         DecimalFormat format = new DecimalFormat("0.00");
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -143,8 +172,20 @@ public class WebPageActivity extends BaseActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+
+               view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                super.onReceivedSslError(view, handler, error);
+                Log.e("TAG", "onReceivedSslError: ");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    webview.getSettings()
+                            .setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+                }
+                handler.proceed();
             }
 
             @Override
@@ -170,22 +211,39 @@ public class WebPageActivity extends BaseActivity {
         webview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.e("TAG", "onClick:1111111111111 ");
+                Log.e("TAG", "onClick:touch ");
                 hitTestResult = webview.getHitTestResult();
+                Log.e("TAG", "onTouch: " + hitTestResult.toString()  );
+                Log.e("TAG", "onTouch: " + clickdown  );
+
+
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     clickdown = 1;
                     longclick = false;
-                } else if (!longclick && clickdown == 1 && motionEvent.getAction() == MotionEvent.ACTION_UP && hitTestResult!=null) {
-                    if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-                        Log.e("TAG", "onClick: ");
-                        clickdown = 0;
-                        String url = hitTestResult.getExtra();
-                        Intent intent = new Intent(WebPageActivity.this, ImageActivity.class);
-                        intent.putExtra("image", url);
-                        startActivity(intent);
+
+                     downX = motionEvent.getX();
+                     downY = motionEvent.getY();
+                    Log.e("TAG", "onClick:down ");
+                } else if ( motionEvent.getAction() == MotionEvent.ACTION_UP ) {
+                    if(!longclick && clickdown == 1 && hitTestResult!=null){
+                        if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                            Log.e("TAG", "onClick:goto ");
+                            clickdown = 0;
+                            String url = hitTestResult.getExtra();
+                            Intent intent = new Intent(WebPageActivity.this, ImageActivity.class);
+                            intent.putExtra("image", url);
+                            startActivity(intent);
+                        }
                     }
-                } else {
-                    clickdown = 100;
+                } else if( motionEvent.getAction() ==MotionEvent.ACTION_MOVE){
+
+                    float v = Math.abs(motionEvent.getX() - downX) + Math.abs(motionEvent.getY() - downY);
+                    Log.e("TAG", "onClick:else "+v);
+                    if(v>10.0f){
+                        clickdown = 100;
+                    }
+
+
                 }
                 return false;
             }

@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         />
+
+    <include layout="@layout/layout_areaselect"></include>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh_blog"
         android:layout_width="match_parent"

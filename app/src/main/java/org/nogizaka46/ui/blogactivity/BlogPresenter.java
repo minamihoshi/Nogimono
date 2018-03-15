@@ -27,9 +27,9 @@ public class BlogPresenter {
         this.view = view;
     }
 
-    void getData(String name , int page , int size){
+    void getData(String name , int page , int size,String group){
         view.onLoading();
-        Observable<List<BlogBean>> observable = model.getData(name, page, size);
+        Observable<List<BlogBean>> observable = model.getData(name, page, size,group);
         observable.subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<BlogBean>>() {
@@ -57,6 +57,7 @@ public class BlogPresenter {
                         } else {
                             view.onLoadFailed("网络断开" + e.getMessage());
                         }
+                        onCompleted();
                     }
 
                     @Override

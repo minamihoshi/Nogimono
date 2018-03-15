@@ -9,14 +9,16 @@ android {
         useNewCruncher = false
 
     }
-
+    configurations {
+        all*.exclude  module: 'glide'  //去除重复依赖库
+    }
     dexOptions {
         javaMaxHeapSize "4g"
     }
 
     defaultConfig {
         applicationId "org.nogizaka46"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -47,9 +49,9 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+   compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+   compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
@@ -64,5 +66,11 @@ dependencies {
     compile files('libs/libs/umeng_social_shareboard.jar')
     compile project(':PushSDK')
     compile 'com.umeng.analytics:analytics:latest.integration'
-
+//    compile ('com.github.xingxing-yan:BLImage:1.0.0'){
+//        exclude group: 'com.github.bumptech.glide', module: 'glide'
+//    }
+    compile project(':beautifylib')
+//            {
+//        exclude group: 'com.github.bumptech.glide', module: 'glide'
+//    }
 }

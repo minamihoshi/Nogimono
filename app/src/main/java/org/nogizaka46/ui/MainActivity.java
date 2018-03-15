@@ -1,13 +1,16 @@
 package org.nogizaka46.ui;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -291,6 +294,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                         versionCode = versionBean.getVersionCode();
                         versionName = versionBean.getVersionName();
                         versionMsg = versionBean.getMsg() ;
+                        Log.e("TAG", "onNext: " + download  );
                        // PreUtils.writeString(MainActivity.this, Constant.KEY_NEWVERSION_URL, vsersion_url);
                        // PreUtils.writeInt(MainActivity.this, Constant.KEY_NEWVERSION_CODE, version);
                     }
@@ -320,13 +324,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
                         if (Build.VERSION.SDK_INT >= 23){
                             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                startDownloadService();
+                               // startDownloadService();
+                                startDownload();
                             } else {
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                             }
 
                         }else{
-                            startDownloadService();
+                            //startDownloadService();
+                            startDownload();
                         }
 
                     }
@@ -336,6 +342,28 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 .show();
 
     }
+
+    private void startDownload() {
+        DownloadManager mDownloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
+
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(download))
+                .setTitle("文件下载")
+                .setDescription("乃木物")
+                .setVisibleInDownloadsUi(true)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "nogimono")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+
+                .setMimeType("application/vnd.android"+".package-archive");
+
+
+        mDownloadManager.enqueue(request);
+
+    }
+
+
+
 
     @Override
     protected void onDestroy() {

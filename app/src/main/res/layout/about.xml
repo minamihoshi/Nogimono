@@ -50,8 +50,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="https://github.com/Lemonade56/NogiZaka46"/>
+            android:text="https://github.com/nondanee/platform"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="https://github.com/minamihoshi/ngzk46"/>
 
     </LinearLayout>
 
@@ -59,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="15dp"
+
          >
 
         <LinearLayout

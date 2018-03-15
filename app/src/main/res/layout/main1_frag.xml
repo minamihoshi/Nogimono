@@ -6,6 +6,8 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:orientation="vertical">
+
+    <include layout="@layout/layout_areaselect"></include>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_member"
         android:layout_width="match_parent"
