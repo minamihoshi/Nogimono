@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/ngzkpurple" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选择性别"
+        android:textColor="@color/black"
+        android:layout_margin="10dp"
+
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/ngzkpurple" />
+    <TextView
+        android:layout_margin="10dp"
+        android:id="@+id/male"
+        android:text="男"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/ngzkpurple" />
+    <TextView
+
+        android:id="@+id/female"
+        android:text="女"
+        android:textSize="18sp"
+       android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/ngzkpurple" />
+
+    <TextView
+        android:id="@+id/cancel_pop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+        android:textSize="18sp"
+        android:text="取消"
+        />
+</LinearLayout>
