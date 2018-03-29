@@ -6,6 +6,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <include layout="@layout/layout_minehead"></include>
     <LinearLayout
         android:id="@+id/layout1"
         style="@style/my_info"
@@ -51,7 +52,7 @@
     <View
         style="@style/info_row_line"
         android:layout_width="fill_parent"
-        android:layout_height="1px" />
+        android:layout_height="1dp" />
 
 
     <LinearLayout
@@ -99,7 +100,7 @@
     <View
         style="@style/info_row_line"
         android:layout_width="fill_parent"
-        android:layout_height="1px" />
+        android:layout_height="1dp" />
 
     <LinearLayout
         android:id="@+id/layout3"

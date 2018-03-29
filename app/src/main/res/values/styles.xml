@@ -10,7 +10,7 @@
     </style>
 
     <style name="Theme_Umeng_Push_Splash" parent="android:Theme.NoTitleBar.Fullscreen">
-        <item name="android:windowBackground">@drawable/umeng_push_default_splash_bg</item>
+        <item name="android:windowBackground">@mipmap/umeng_push_default_splash_bg</item>
     </style>
 
     <style name="Radiobutton">

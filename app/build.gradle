@@ -11,6 +11,7 @@ android {
     }
     configurations {
         all*.exclude  module: 'glide'  //去除重复依赖库
+        //all*.exclude  module: 'ucrop'
     }
     dexOptions {
         javaMaxHeapSize "4g"
@@ -18,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "org.nogizaka46"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -39,6 +40,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     compile files('libs/glide-3.6.1.jar')
     compile files('libs/systembartint-1.0.4.jar')
     compile files('libs/lite-orm-1.9.1.jar')
@@ -66,6 +68,7 @@ dependencies {
     compile files('libs/libs/umeng_social_shareboard.jar')
     compile project(':PushSDK')
     compile 'com.umeng.analytics:analytics:latest.integration'
+
 //    compile ('com.github.xingxing-yan:BLImage:1.0.0'){
 //        exclude group: 'com.github.bumptech.glide', module: 'glide'
 //    }

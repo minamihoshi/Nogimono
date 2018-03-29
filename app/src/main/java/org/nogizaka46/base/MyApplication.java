@@ -23,7 +23,7 @@ import org.nogizaka46.config.Constant;
  * Created by acer on 2016/11/15.
  */
 
-public class MyApplication extends Application{
+public class MyApplication extends CrashApplication{
 
     public static MyApplication app;
     public static LiteOrm liteOrm;

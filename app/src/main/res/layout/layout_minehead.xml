@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/userbackimg"
+            android:adjustViewBounds="true"
+      />
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/morenhead"
+            android:layout_margin="20dp"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_denglu"
+            android:text="未登录"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_head"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/entergaryright"
+            android:adjustViewBounds="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_denglu"
+            android:layout_toEndOf="@+id/tv_denglu" />
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

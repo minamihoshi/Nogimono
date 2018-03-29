@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    >
+
+  <include layout="@layout/headtoolbar" ></include>
+
+
+    <ImageView
+
+        android:layout_marginTop="20dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+       android:src="@drawable/logo"
+        android:layout_gravity="center"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_et">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:text="+86"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            android:background="@color/gray" />
+
+        <EditText
+            android:id="@+id/ed_username"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="请输入您的用户名"
+            android:inputType="text"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="14dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_et">
+
+        <EditText
+
+            android:id="@+id/ed_psw"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="14dp"
+            android:hint="请输入密码"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:inputType="textPassword"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_yanzhengma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/btn_bgselector"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:text="点我注册哦~"
+            android:textColor="@color/white"
+            android:clickable="true"
+            />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lin_pswcommit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:background="@drawable/shape_et">
+
+
+        <EditText
+            android:id="@+id/ed_pswcommit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="请确认您的密码"
+            android:inputType="textPassword"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="14dp" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_commit"
+        android:layout_width="match_parent"
+        android:text="登录"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@drawable/btn_bggray"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp"
+        >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="10sp"
+           android:text="点击登录，即表示您同意"
+           />
+       <TextView
+           android:id="@+id/tv_xieyi"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="《用户协议》"
+           android:textSize="10sp"
+           android:textColor="@color/colorPrimary"
+           />
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></View>
+
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+       android:src="@drawable/quicklog"
+        android:scaleType="centerCrop"
+        ></ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+
+        >
+
+        <ImageView
+            android:id="@+id/iv_wechat"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/weixinthird"
+            android:scaleType="centerCrop"
+            android:layout_height="60dp" />
+        <ImageView
+            android:id="@+id/iv_qq"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/qqthird"
+            android:scaleType="centerCrop"
+            android:layout_height="60dp" />
+
+        <ImageView
+            android:id="@+id/iv_weibo"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/weibothird" />
+
+    </LinearLayout>
+</LinearLayout>
+

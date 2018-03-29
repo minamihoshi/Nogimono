@@ -65,4 +65,10 @@ public class BaseActivity extends AppCompatActivity {
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
+    public void setBackgroundAlpha(float bgalpha) {
+        WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+        lp.alpha = bgalpha;
+        this.getWindow().setAttributes(lp);
+    }
 }

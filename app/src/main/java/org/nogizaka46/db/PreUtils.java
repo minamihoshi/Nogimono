@@ -15,7 +15,7 @@ public class PreUtils {
      * @param context
      * @return
      */
-    public static SharedPreferences getSharedPreferences(Context context) {
+    private  static SharedPreferences getSharedPreferences(Context context) {
         return  PreferenceManager.getDefaultSharedPreferences(context);
     }
 

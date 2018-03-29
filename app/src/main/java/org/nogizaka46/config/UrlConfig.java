@@ -20,5 +20,13 @@ public class UrlConfig {
     public static final String PATH_NEWS_MAGAZINE = "getmagazine";
 
 
+    public static final String PATH_REGISTER ="/api/user/new";
+    public static final String PATH_LOGIN_PHONE ="/api/user/login/phone";
+    public static final String PATH_LOGIN_EMAIL ="/api/user/login/email";
+    public static final String  PATH_LOGIN_NICKNAME = "/api/user/login/nickname";
+    public static final String PATH_USERINFO ="/api/user/get";
+    public static final String  PATH_USERSET ="/api/user/userset";
+
+
 
 }

@@ -110,6 +110,10 @@
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
+        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.SettingActivity"></activity>
+        <activity android:name=".ui.EditUserInfoNeedActivity"></activity>
+
     </application>
 
 </manifest>

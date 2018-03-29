@@ -27,7 +27,6 @@
             android:layout_marginTop="1dp"
             android:background="@drawable/back_bg"
             android:clickable="false"
-            android:visibility="gone"
             android:focusable="false"
             android:gravity="center_vertical"
             android:paddingBottom="5dp"

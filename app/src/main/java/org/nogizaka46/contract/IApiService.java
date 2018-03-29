@@ -2,8 +2,11 @@ package org.nogizaka46.contract;
 
 
 import org.nogizaka46.bean.BlogBean;
+import org.nogizaka46.bean.LzyResponse;
 import org.nogizaka46.bean.MemberListBean;
 import org.nogizaka46.bean.NewBean;
+import org.nogizaka46.bean.RegisterSuccessBean;
+import org.nogizaka46.bean.UserInfoBean;
 import org.nogizaka46.bean.VersionBean;
 import org.nogizaka46.config.UrlConfig;
 
@@ -11,6 +14,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -64,5 +68,27 @@ public interface IApiService {
     @GET(UrlConfig.PATH_BLOGS)
     Observable<List<BlogBean>> getBlogBean(@Query("member") String member,@Query("page") int page, @Query("size") int size);
 
+
+    @POST(UrlConfig.PATH_REGISTER)
+    Observable<LzyResponse<RegisterSuccessBean>> UserRegiter(@Query("nickname") String nickname ,@Query("password") String psw);
+
+    @POST(UrlConfig.PATH_LOGIN_PHONE)
+    Observable<LzyResponse<RegisterSuccessBean>> UserLoginPhone(@Query("phone") String phone ,@Query("password")String psw);
+
+    @POST(UrlConfig.PATH_LOGIN_EMAIL)
+    Observable<LzyResponse<RegisterSuccessBean>> UserLoginEmail(@Query("email") String phone ,@Query("password")String psw);
+
+    @POST(UrlConfig.PATH_LOGIN_NICKNAME)
+    Observable<LzyResponse<RegisterSuccessBean>> UserLoginNickname(@Query("nickname") String nickname ,@Query("password")String psw);
+
+
+    @POST(UrlConfig.PATH_USERINFO)
+    Observable<LzyResponse<UserInfoBean>> getUserInfo(@Query("id") String userid , @Query("token") String token);
+
+    @POST(UrlConfig.PATH_USERSET)
+    Observable<LzyResponse<String>> UserSet(@Query("id") String userid, @Query("token")String toke
+            ,@Query("nickname") String nickname ,@Query("phone") String phone,
+            @Query("email")String email , @Query("introduction")String introduction
+    );
 
 }

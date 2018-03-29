@@ -26,4 +26,8 @@ public  final static  String KEY_RECOMMEND_URL_KEY="KEY_RECOMMEND_URL_KEY";
      public static final String  TYPE_MAGAZINE ="magazine";
      public static final String TYPE_NEWS ="news";
      public static final String TYPE_BLOG ="blog";
+
+
+     public static final String USER_ID = "user_id";
+     public static final String  USER_TOKEN = "user_token";
 }

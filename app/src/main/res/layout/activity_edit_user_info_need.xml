@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    >
+  <include layout="@layout/main_header4"/>
+  <View
+      android:background="@color/gray"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"></View>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <EditText
+
+            android:paddingLeft="15dp"
+
+            android:textSize="14sp"
+            android:background="@color/white"
+            android:id="@+id/editText"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:focusable="true"
+            android:maxLength = "200"
+            android:hint="请输入昵称"
+            />
+    </LinearLayout>
+
+    <View
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+</LinearLayout>

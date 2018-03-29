@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ import com.yyx.beautifylib.model.BLResultParam;
 import com.yyx.beautifylib.utils.ToastUtils;
 
 import org.nogizaka46.R;
+import org.nogizaka46.ui.LoginActivity;
+import org.nogizaka46.ui.SettingActivity;
 import org.nogizaka46.ui.activity.AboutActivity;
 import org.nogizaka46.utils.ToastHelper;
 
@@ -23,7 +26,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -45,6 +47,12 @@ public class Main3Frag extends Fragment {
     LinearLayout layout2;
     @InjectView(R.id.layout3)
     LinearLayout layout3;
+    @InjectView(R.id.iv_head)
+    ImageView ivHead;
+    @InjectView(R.id.tv_denglu)
+    TextView tvDenglu;
+    @InjectView(R.id.imagesel)
+    TextView imagesel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,8 +91,8 @@ public class Main3Frag extends Fragment {
         layout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastHelper.showToast(getActivity(), "暂未开发");
-
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -92,6 +100,14 @@ public class Main3Frag extends Fragment {
             @Override
             public void onClick(View v) {
                 gotoPhotoPickActivity();
+            }
+        });
+
+        tvDenglu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity() , LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -131,7 +147,6 @@ public class Main3Frag extends Fragment {
         }
 
     }
-
 
 
 }
