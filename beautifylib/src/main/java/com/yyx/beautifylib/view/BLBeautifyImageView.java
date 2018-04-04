@@ -15,9 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.muzhi.camerasdk.library.filter.GPUImageView;
 import com.muzhi.camerasdk.library.filter.util.ImageFilterTools;
 import com.yyx.beautifylib.R;
@@ -71,26 +68,7 @@ public class BLBeautifyImageView extends FrameLayout {
         FilterUtils.addFilter(mContext, filterType, mGpuImageView);
     }
 
-    /**
-     * 设置网络加载图片
-     *
-     * @param url
-     */
-    public void setImageUrl(String url) {
-        Glide.with(mContext)
-                .load(url)
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        float width = (float) resource.getWidth();
-                        float height = (float) resource.getHeight();
-                        float ratio = width / height;
-                        mGpuImageView.setRatio(ratio);
-                        setImage(resource);
-                    }
-                });
-    }
+
 
     /**
      * 设置本地路径图片

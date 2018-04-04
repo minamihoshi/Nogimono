@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.yyx.beautifylib.R;
 import com.yyx.beautifylib.model.ImageInfo;
 import com.yyx.beautifylib.utils.BLConfigManager;
@@ -322,12 +323,16 @@ public class BLImageGridAdapter extends BaseAdapter {
             File imageFile = new File(data.path);
             if (mItemSize > 0) {
                 // 显示图片
+//                Glide.with(mContext)
+//                        .load(imageFile)
+//                        .placeholder(R.drawable.camerasdk_pic_loading)
+//                        .error(R.drawable.camerasdk_pic_loading)
+//                        .override(mItemSize, mItemSize)
+//                        .centerCrop()
+//                        .into(ivPicture);
                 Glide.with(mContext)
                         .load(imageFile)
-                        .placeholder(R.drawable.camerasdk_pic_loading)
-                        .error(R.drawable.camerasdk_pic_loading)
-                        .override(mItemSize, mItemSize)
-                        .centerCrop()
+                        .apply(new RequestOptions().placeholder(R.drawable.camerasdk_pic_loading).error(R.drawable.camerasdk_pic_loading).centerCrop().override(mItemSize, mItemSize))
                         .into(ivPicture);
             }
         }

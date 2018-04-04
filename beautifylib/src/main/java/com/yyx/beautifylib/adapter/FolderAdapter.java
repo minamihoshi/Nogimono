@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.yyx.beautifylib.R;
 import com.yyx.beautifylib.model.FolderInfo;
 
@@ -80,11 +81,17 @@ public class FolderAdapter extends BaseAdapter {
                 holder.size.setText(getTotalImageSize()+"张");
                 if(mFolders.size()>0){
                     FolderInfo f = mFolders.get(0);
+//                    Glide.with(mContext)
+//                            .load(new File(f.cover.path))
+//                            .error(R.drawable.camerasdk_pic_loading)
+//                            .override(mImageSize, mImageSize)
+//                            .centerCrop()
+//                            .into(holder.cover);
+
+
                     Glide.with(mContext)
                             .load(new File(f.cover.path))
-                            .error(R.drawable.camerasdk_pic_loading)
-                            .override(mImageSize, mImageSize)
-                            .centerCrop()
+                            .apply(new RequestOptions().placeholder(R.drawable.camerasdk_pic_loading).centerCrop().override(mImageSize, mImageSize))
                             .into(holder.cover);
 
                 }
@@ -139,11 +146,15 @@ public class FolderAdapter extends BaseAdapter {
             name.setText(data.name);
             size.setText(data.imageInfos.size()+"张");
             // 显示图片
+//            Glide.with(mContext)
+//                    .load(new File(data.cover.path))
+//                    .placeholder(R.drawable.camerasdk_pic_loading)
+//                    .override(mImageSize, mImageSize)
+//                    .centerCrop()
+//                    .into(cover);
             Glide.with(mContext)
                     .load(new File(data.cover.path))
-                    .placeholder(R.drawable.camerasdk_pic_loading)
-                    .override(mImageSize, mImageSize)
-                    .centerCrop()
+                    .apply(new RequestOptions().placeholder(R.drawable.camerasdk_pic_loading).centerCrop().override(mImageSize, mImageSize))
                     .into(cover);
             // TODO 选择标识
         }
