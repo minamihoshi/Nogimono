@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import org.nogizaka46.R;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.WithpicBean;
+import org.nogizaka46.utils.ImageLoader;
 import org.nogizaka46.utils.RecyclerViewAdapterHelper;
 import org.nogizaka46.utils.TimeUtil;
 
@@ -113,8 +114,9 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
             //((OnePicHolder) holder).sourceTvItemOnepic.setText(subtitle);
             ImageView imageView = ((OnePicHolder) holder).imageItemRecycleviewHotOnepic;
 
-            Glide.with(mContext).load(image).placeholder(R.drawable.loading).crossFade().into(imageView);
+//            Glide.with(mContext).load(image).placeholder(R.drawable.loading).crossFade().into(imageView);
 
+            new ImageLoader.Builder(mContext).setImageUrl(image).setLoadResourceId(R.drawable.loading).setImageView(imageView).show();
         } else {
             List<WithpicBean> withpic = newBean.getWithpic();
 
@@ -125,9 +127,13 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
 
 
             ((ThreePicHolder) holder).titleTextviewItemRecycleviewHotMorepic.setText(title);
-            Glide.with(mContext).load(image1).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image2).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
-            Glide.with(mContext).load(image3).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
+//            Glide.with(mContext).load(image1).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
+//            Glide.with(mContext).load(image2).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
+//            Glide.with(mContext).load(image3).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
+            new ImageLoader.Builder(mContext).setImageUrl(image1).setLoadResourceId(R.drawable.loading).setCircleCrop(true).setImageView(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic).show();
+            new ImageLoader.Builder(mContext).setImageUrl(image2).setLoadResourceId(R.drawable.loading).setCircleCrop(true).setImageView(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic).show();
+            new ImageLoader.Builder(mContext).setImageUrl(image3).setLoadResourceId(R.drawable.loading).setCircleCrop(true).setImageView(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic).show();
+
             ((ThreePicHolder) holder).timeTvNopic.setText(time);
             ((ThreePicHolder) holder).authorTvItemNopic.setText(provider);
             // ((ThreePicHolder) holder).sourceTvItemNopic.setText(subtitle);

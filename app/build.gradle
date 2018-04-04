@@ -41,7 +41,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile files('libs/glide-3.6.1.jar')
+    compile files('libs/glide-full-4.6.1.jar')
     compile files('libs/systembartint-1.0.4.jar')
     compile files('libs/lite-orm-1.9.1.jar')
     compile 'com.android.support:recyclerview-v7:25.3.1'

@@ -26,6 +26,7 @@ import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.ui.WebPageActivity;
 import org.nogizaka46.utils.EncryptUtils;
+import org.nogizaka46.utils.ImageLoader;
 import org.nogizaka46.view.MyToast;
 import org.nogizaka46.view.SweetAlertDialog;
 
@@ -49,8 +50,9 @@ public class ImageActivity extends BaseActivity {
         mContext =ImageActivity.this;
         Intent intent = getIntent();
         imagepath = intent.getStringExtra("image");
-        Glide.with(this).load(imagepath).thumbnail(0.1f).crossFade().placeholder(R.drawable.loading).into(photoview);
+//        Glide.with(this).load(imagepath).thumbnail(0.1f).crossFade().placeholder(R.drawable.loading).into(photoview);
 
+        new ImageLoader.Builder(this).setImageUrl(imagepath).setLoadResourceId(R.drawable.loading).setImageView(photoview).setCrossFade(true).setSizeMultiplie(0.1f).show();
         photoview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

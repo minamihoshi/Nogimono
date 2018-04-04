@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 
 import org.nogizaka46.R;
 import org.nogizaka46.bean.MemberListBean;
-import org.nogizaka46.utils.BitmapCircleTransformation;
+import org.nogizaka46.utils.ImageLoader;
 import org.nogizaka46.utils.RecyclerViewAdapterHelper;
 
 import java.util.List;
@@ -57,9 +57,10 @@ public class MemberAdapter extends RecyclerViewAdapterHelper<MemberListBean> {
         String portrait = memberBean.getPortrait();
         ImageView iv_member = ((MyViewHolder) holder).iv_member;
         ((MyViewHolder)holder).membername.setText(name);
-        Glide.with(mContext).load(portrait).transform(new BitmapCircleTransformation(mContext)).into(iv_member);
+        //Glide.with(mContext).load(portrait).transform(new BitmapCircleTransformation(mContext)).into(iv_member);
 
 
+        new ImageLoader.Builder(mContext).setImageUrl(portrait).setImageView(iv_member).setCircleCrop(true).show();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
