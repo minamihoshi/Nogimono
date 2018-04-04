@@ -130,9 +130,9 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
 //            Glide.with(mContext).load(image1).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic);
 //            Glide.with(mContext).load(image2).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic);
 //            Glide.with(mContext).load(image3).placeholder(R.drawable.loading).crossFade().into(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic);
-            new ImageLoader.Builder(mContext).setImageUrl(image1).setLoadResourceId(R.drawable.loading).setCircleCrop(true).setImageView(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic).show();
-            new ImageLoader.Builder(mContext).setImageUrl(image2).setLoadResourceId(R.drawable.loading).setCircleCrop(true).setImageView(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic).show();
-            new ImageLoader.Builder(mContext).setImageUrl(image3).setLoadResourceId(R.drawable.loading).setCircleCrop(true).setImageView(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic).show();
+            new ImageLoader.Builder(mContext).setImageUrl(image1).setLoadResourceId(R.drawable.loading).setCrossFade(true).setImageView(((ThreePicHolder) holder).image1ItemRecycleviewHotMorepic).show();
+            new ImageLoader.Builder(mContext).setImageUrl(image2).setLoadResourceId(R.drawable.loading).setCrossFade(true).setImageView(((ThreePicHolder) holder).image2ItemRecycleviewHotMorepic).show();
+            new ImageLoader.Builder(mContext).setImageUrl(image3).setLoadResourceId(R.drawable.loading).setCrossFade(true).setImageView(((ThreePicHolder) holder).image3ItemRecycleviewHotMorepic).show();
 
             ((ThreePicHolder) holder).timeTvNopic.setText(time);
             ((ThreePicHolder) holder).authorTvItemNopic.setText(provider);
