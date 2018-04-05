@@ -19,7 +19,7 @@ import org.nogizaka46.utils.TimeUtil;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * Created by acer on 2017/4/12.
@@ -158,62 +158,62 @@ public class MyNewsAdapter extends RecyclerViewAdapterHelper<NewBean> {
     }
 
     static class NoPicHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.title_tv_item_nopic)
+        @BindView(R.id.title_tv_item_nopic)
         TextView titleTvItemNopic;
-        @InjectView(R.id.summary_tv_item_nopic)
+        @BindView(R.id.summary_tv_item_nopic)
         TextView summaryTvItemNopic;
-        @InjectView(R.id.time_tv_nopic)
+        @BindView(R.id.time_tv_nopic)
         TextView timeTvNopic;
-        @InjectView(R.id.author_tv_item_nopic)
+        @BindView(R.id.author_tv_item_nopic)
         TextView authorTvItemNopic;
-        @InjectView(R.id.source_tv_item_nopic)
+        @BindView(R.id.source_tv_item_nopic)
         TextView sourceTvItemNopic;
 
         public NoPicHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     static class OnePicHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.title_tv_item_onepic)
+        @BindView(R.id.title_tv_item_onepic)
         TextView titleTvItemOnepic;
-        @InjectView(R.id.time_tv_item_onepic)
+        @BindView(R.id.time_tv_item_onepic)
         TextView timeTvItemOnepic;
-        @InjectView(R.id.author_tv_item_onepic)
+        @BindView(R.id.author_tv_item_onepic)
         TextView authorTvItemOnepic;
-        @InjectView(R.id.source_tv_item_onepic)
+        @BindView(R.id.source_tv_item_onepic)
         TextView sourceTvItemOnepic;
-        @InjectView(R.id.image_item_recycleview_hot_onepic)
+        @BindView(R.id.image_item_recycleview_hot_onepic)
         ImageView imageItemRecycleviewHotOnepic;
-        @InjectView(R.id.tv_summary)
+        @BindView(R.id.tv_summary)
         TextView tvSummary;
 
         public OnePicHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     static class ThreePicHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.title_textview_item_recycleview_hot_morepic)
+        @BindView(R.id.title_textview_item_recycleview_hot_morepic)
         TextView titleTextviewItemRecycleviewHotMorepic;
-        @InjectView(R.id.image1_item_recycleview_hot_morepic)
+        @BindView(R.id.image1_item_recycleview_hot_morepic)
         ImageView image1ItemRecycleviewHotMorepic;
-        @InjectView(R.id.image2_item_recycleview_hot_morepic)
+        @BindView(R.id.image2_item_recycleview_hot_morepic)
         ImageView image2ItemRecycleviewHotMorepic;
-        @InjectView(R.id.image3_item_recycleview_hot_morepic)
+        @BindView(R.id.image3_item_recycleview_hot_morepic)
         ImageView image3ItemRecycleviewHotMorepic;
-        @InjectView(R.id.time_tv_nopic)
+        @BindView(R.id.time_tv_nopic)
         TextView timeTvNopic;
-        @InjectView(R.id.author_tv_item_nopic)
+        @BindView(R.id.author_tv_item_nopic)
         TextView authorTvItemNopic;
-        @InjectView(R.id.source_tv_item_nopic)
+        @BindView(R.id.source_tv_item_nopic)
         TextView sourceTvItemNopic;
 
         public ThreePicHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

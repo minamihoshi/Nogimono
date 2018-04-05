@@ -19,7 +19,8 @@ import java.util.Map;
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.AllListAdapter;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 import org.nogizaka46.ui.WebPageActivity;
 import org.nogizaka46.view.SweetAlertDialog;
@@ -29,17 +30,17 @@ import org.nogizaka46.view.WaveSwipeRefreshLayout;
 public class Main2Frag_Tab1 extends Fragment {
     View view;
     AllListAdapter adapter;
-    @InjectView(R.id.recyclerview) RecyclerView recyclerview;
-    @InjectView(R.id.swipeRefresh) WaveSwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.recyclerview) RecyclerView recyclerview;
+    @BindView(R.id.swipeRefresh) WaveSwipeRefreshLayout swipeRefresh;
     private Handler handler;
     private List<Map<String, Object>> mSelfData;
-
+    Unbinder bind;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.main2frag_tab1, container, false);
         }
-        ButterKnife.inject(this, view);
+         bind = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -73,7 +74,7 @@ public class Main2Frag_Tab1 extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+        bind.unbind();
     }
 
     private class SwipeRefreshListener implements WaveSwipeRefreshLayout.OnRefreshListener {

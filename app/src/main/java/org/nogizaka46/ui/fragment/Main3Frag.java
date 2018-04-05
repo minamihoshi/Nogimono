@@ -25,7 +25,8 @@ import org.nogizaka46.utils.ToastHelper;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -35,29 +36,29 @@ import static android.app.Activity.RESULT_OK;
 public class Main3Frag extends Fragment {
     View view;
     Button btn;
-    @InjectView(R.id.settings)
+    @BindView(R.id.settings)
     TextView settings;
-    @InjectView(R.id.about)
+    @BindView(R.id.about)
     TextView about;
-    @InjectView(R.id.exit_btn)
+    @BindView(R.id.exit_btn)
     Button exitBtn;
-    @InjectView(R.id.layout1)
+    @BindView(R.id.layout1)
     LinearLayout layout1;
-    @InjectView(R.id.layout2)
+    @BindView(R.id.layout2)
     LinearLayout layout2;
-    @InjectView(R.id.layout3)
+    @BindView(R.id.layout3)
     LinearLayout layout3;
-    @InjectView(R.id.iv_head)
+    @BindView(R.id.iv_head)
     ImageView ivHead;
-    @InjectView(R.id.tv_denglu)
+    @BindView(R.id.tv_denglu)
     TextView tvDenglu;
-    @InjectView(R.id.imagesel)
+    @BindView(R.id.imagesel)
     TextView imagesel;
-
+    Unbinder bind;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.main3_frag, container, false);
-        ButterKnife.inject(this, view);
+         bind = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -116,7 +117,8 @@ public class Main3Frag extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
+        bind.unbind();
     }
 
 

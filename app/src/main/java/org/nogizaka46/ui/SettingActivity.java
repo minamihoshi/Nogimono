@@ -16,6 +16,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.bean.LzyResponse;
@@ -24,64 +29,67 @@ import org.nogizaka46.config.Constant;
 import org.nogizaka46.db.PreUtils;
 import org.nogizaka46.http.HttpUtils;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class SettingActivity extends BaseActivity {
 
 
-    @InjectView(R.id.login_back)
+    @BindView(R.id.login_back)
     ImageView loginBack;
-    @InjectView(R.id.main_header)
+    @BindView(R.id.main_header)
     TextView mainHeader;
-    @InjectView(R.id.register)
+    @BindView(R.id.register)
     TextView register;
-    @InjectView(R.id.iv_avater)
+    @BindView(R.id.iv_avater)
     ImageView ivAvater;
-    @InjectView(R.id.linear_avater)
+    @BindView(R.id.linear_avater)
     LinearLayout linearAvater;
-    @InjectView(R.id.tv_nickname)
+    @BindView(R.id.tv_nickname)
     TextView tvNickname;
-    @InjectView(R.id.linear_nickname)
+    @BindView(R.id.linear_nickname)
     LinearLayout linearNickname;
-    @InjectView(R.id.tv_gender)
+    @BindView(R.id.tv_gender)
     TextView tvGender;
-    @InjectView(R.id.imageView2)
+    @BindView(R.id.imageView2)
     ImageView imageView2;
-    @InjectView(R.id.linear_gender)
+    @BindView(R.id.linear_gender)
     LinearLayout linearGender;
-    @InjectView(R.id.tv_born)
+    @BindView(R.id.tv_born)
     TextView tvBorn;
-    @InjectView(R.id.linear_3)
+    @BindView(R.id.linear_3)
     LinearLayout linear3;
-    @InjectView(R.id.tv_loca)
+    @BindView(R.id.tv_loca)
     TextView tvLoca;
-    @InjectView(R.id.linear_location)
+    @BindView(R.id.linear_location)
     LinearLayout linearLocation;
-    @InjectView(R.id.tv_introduce)
+    @BindView(R.id.tv_introduce)
     TextView tvIntroduce;
-    @InjectView(R.id.linear_introduce)
+    @BindView(R.id.linear_introduce)
     LinearLayout linearIntroduce;
-    @InjectView(R.id.tv_phone)
+    @BindView(R.id.tv_phone)
     TextView tvPhone;
-    @InjectView(R.id.linear_phone)
+    @BindView(R.id.linear_phone)
     LinearLayout linearPhone;
-    @InjectView(R.id.tv_email)
+    @BindView(R.id.tv_email)
     TextView tvEmail;
-    @InjectView(R.id.linear_email)
+    @BindView(R.id.linear_email)
     LinearLayout linearEmail;
-    @InjectView(R.id.tv_pingfen)
+    @BindView(R.id.tv_pingfen)
     TextView tvPingfen;
-    @InjectView(R.id.linear_pingfen)
+    @BindView(R.id.linear_pingfen)
     LinearLayout linearPingfen;
-    @InjectView(R.id.linearexit)
+    @BindView(R.id.linearexit)
     LinearLayout linearexit;
-    @InjectView(R.id.linear_content)
+    @BindView(R.id.linear_content)
     LinearLayout linearContent;
     private PopupWindow popupwindow_sex;
 
@@ -89,7 +97,7 @@ public class SettingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         mainHeader.setText("设置");
         loginBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,14 +126,21 @@ public class SettingActivity extends BaseActivity {
         HttpUtils.getInstance().getRetrofitInterface().getUserInfo(userid,usertoken)
                  .subscribeOn(Schedulers.io())
                  .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(new Subscriber<LzyResponse<UserInfoBean>>() {
+                 .subscribe(new Observer<LzyResponse<UserInfoBean>>() {
+
+
                      @Override
-                     public void onCompleted() {
+                     public void onError(Throwable e) {
 
                      }
 
                      @Override
-                     public void onError(Throwable e) {
+                     public void onComplete() {
+
+                     }
+
+                     @Override
+                     public void onSubscribe(Disposable d) {
 
                      }
 
@@ -161,11 +176,8 @@ public class SettingActivity extends BaseActivity {
                 .UserSet(userid,usertoken,nickname,phone,email,intro)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LzyResponse<String>>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(new Observer<LzyResponse<String>>() {
 
-                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -173,6 +185,16 @@ public class SettingActivity extends BaseActivity {
                        tvPhone.setText("");
                        tvEmail.setText("");
                        tvIntroduce.setText("");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
@@ -308,22 +330,22 @@ public class SettingActivity extends BaseActivity {
 
     private void openPhoto() {
 
-//        PictureSelector.create(this)
-//                .openGallery(PictureMimeType.ofImage())
-//                .maxSelectNum(1)
-//                .imageSpanCount(4)
-//                .selectionMode(PictureConfig.SINGLE)
-//                .previewImage(true)
-//                .isCamera(true)
-//                // .imageFormat(PictureMimeType.PNG)
-//                .enableCrop(true)
-//                .compress(true)
-//                .withAspectRatio(1, 1)
-//                .hideBottomControls(false)
-//                .freeStyleCropEnabled(true)
-//                .rotateEnabled(true)
-//                .scaleEnabled(true)
-//                .forResult(PictureConfig.CHOOSE_REQUEST);
+        PictureSelector.create(this)
+                .openGallery(PictureMimeType.ofImage())
+                .maxSelectNum(1)
+                .imageSpanCount(4)
+                .selectionMode(PictureConfig.SINGLE)
+                .previewImage(true)
+                .isCamera(true)
+                // .imageFormat(PictureMimeType.PNG)
+                .enableCrop(true)
+                .compress(true)
+                .withAspectRatio(1, 1)
+                .hideBottomControls(false)
+                .freeStyleCropEnabled(true)
+                .rotateEnabled(true)
+                .scaleEnabled(true)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
 
     }
 
@@ -397,29 +419,27 @@ public class SettingActivity extends BaseActivity {
                 case 3:
                     tvEmail.setText(text);
                     break;
-//                case PictureConfig.CHOOSE_REQUEST:
-//                    // 图片选择结果回调
-//                    // selectList =
-//                    Log.e("TAG", "onActivityResult: " + "aaaaaaaaaa");
-//                    List<LocalMedia> localMedias = PictureSelector.obtainMultipleResult(data);
-//                    // 例如 LocalMedia 里面返回三种path
-//                    // 1.media.getPath(); 为原图path
-//                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-//                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-//                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-//                    LocalMedia localMedia = localMedias.get(0);
-//                    Log.e("TAG", "onActivityResult: " + "1" + localMedia.getCompressPath() + "2" + localMedia.getCutPath() + "3" + localMedia.getPath());
-//                    if (localMedia.isCompressed()) {
-//                        String compressPath = localMedia.getCompressPath();
-//                        uploadAvater(compressPath);
-//
-//                    } else {
-//                        String cutPath = localMedia.getCutPath();
-//                        uploadAvater(cutPath);
-//                    }
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    // selectList =
+                    Log.e("TAG", "onActivityResult: " + "aaaaaaaaaa");
+                    List<LocalMedia> localMedias = PictureSelector.obtainMultipleResult(data);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    LocalMedia localMedia = localMedias.get(0);
+                    Log.e("TAG", "onActivityResult: " + "1" + localMedia.getCompressPath() + "2" + localMedia.getCutPath() + "3" + localMedia.getPath());
+                    if (localMedia.isCompressed()) {
+                        String compressPath = localMedia.getCompressPath();
+                        uploadAvater(compressPath);
+                    } else {
+                        String cutPath = localMedia.getCutPath();
+                        uploadAvater(cutPath);
+                    }
 
-
-                // break;
+                 break;
             }
         }
     }
@@ -430,6 +450,7 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void uploadAvater(String compressPath) {
+
 
 
     }

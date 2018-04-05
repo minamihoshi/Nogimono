@@ -10,7 +10,8 @@ import org.nogizaka46.http.HttpUtils;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by acer on 2017/4/19.
@@ -20,7 +21,7 @@ public class BlogModelImpl implements Contract.IBlogModel{
 
 
     @Override
-    public Observable<List<BlogBean>> getData(String name, int page, int size,String group) {
+    public Observable<List<BlogBean>> getData(String name, int page, int size, String group) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
         if(name.equals(Constant.ALLBLOGS)){
             return  retrofitInterface.getBlogBean(page, size,group);

@@ -43,15 +43,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class SaveActivity extends BaseActivity implements MyNewsAdapter.onNewsClickListener {
 
-    @InjectView(R.id.toolbar_saveactivity)
+    @BindView(R.id.toolbar_saveactivity)
     Toolbar toolbar;
-    @InjectView(R.id.recyclerview_saveactivity)
+    @BindView(R.id.recyclerview_saveactivity)
     RecyclerView recyclerview;
-    @InjectView(R.id.tv_saveactivity)
+    @BindView(R.id.tv_saveactivity)
     TextView tvSave;
 
     private List<NewBean> list ;
@@ -65,7 +65,7 @@ public class SaveActivity extends BaseActivity implements MyNewsAdapter.onNewsCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         initToolBar();
         initData();

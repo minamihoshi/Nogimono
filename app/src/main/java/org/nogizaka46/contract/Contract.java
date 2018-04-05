@@ -7,7 +7,8 @@ import org.nogizaka46.bean.NewBean;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by acer on 2017/4/5.
@@ -17,7 +18,7 @@ public class Contract {
 
     public interface INewsModel extends IBaseModel{
        // Observable<NewsBean> getData(String string);
-        Observable<List<NewBean>> getData(String type ,int page,int size);
+        Observable<List<NewBean>> getData(String type , int page, int size);
     }
 
     public interface  INewsView extends IBaseView{

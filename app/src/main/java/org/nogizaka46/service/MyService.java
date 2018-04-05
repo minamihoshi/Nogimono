@@ -17,6 +17,8 @@ import org.nogizaka46.R;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.contract.IApiService;
 import org.nogizaka46.http.HttpUtils;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -26,19 +28,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+
+
 
 /**
  * Created by acer on 2016/11/30.
  */
 
 public class MyService extends Service {
-    private Subscription subscription ;
+    //private Subscription subscription ;
     private NotificationCompat.Builder builder;
     private NotificationManager manager ;
     Notification notification;
@@ -49,18 +53,28 @@ public class MyService extends Service {
         Log.e("TAG", "onHandleIntent: "+urlstring );
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
         Observable<ResponseBody> observable = retrofitInterface.getAPK(urlstring);
-         subscription = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
+        // subscription =
 
-                    }
+                 observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBody>() {
+
 
                     @Override
                     public void onError(Throwable e) {
                         //stopSelf();
                         Log.e("TAG", "onError:service "+e );
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
@@ -130,10 +144,9 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-
-        }
+//        if (!subscription.isUnsubscribed()) {
+//            subscription.unsubscribe();
+//        }
     }
 
     @Nullable

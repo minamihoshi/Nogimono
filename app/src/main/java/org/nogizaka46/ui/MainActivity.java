@@ -51,29 +51,29 @@ import org.nogizaka46.utils.ToastHelper;
 import org.nogizaka46.utils.UMShareUtil;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     Main1Frag main1Frag;
     Main2Frag main2Frag;
     Main3Frag main3Frag;
-    @InjectView(R.id.bottom_navigation_view)
+    @BindView(R.id.bottom_navigation_view)
     BottomNavigationView bottomNavigationView;
-    @InjectView(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @InjectView(R.id.navigation)
+    @BindView(R.id.navigation)
     NavigationView navigation;
-    @InjectView(R.id.toolbar_main)
+    @BindView(R.id.toolbar_main)
     Toolbar toolbar;
     private int INTERVAL_OF_TWO_CLICK_TO_QUIT = 1000;
     private long mLastPressBackTime;
-    private Subscription subscription;
+    //private Subscription subscription;
     private String download,versionName,versionMsg;
 
     private int versionCode;
@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initView();
         setDefaultFragment();
         getNewVersionCode();
@@ -267,16 +267,24 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
         Observable<VersionBean> observable = retrofitInterface.getVersionCheck(UrlConfig.VERSION_CHECK);
 
-        subscription = observable.subscribeOn(Schedulers.io())
+       // subscription =
+
+                observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<VersionBean>() {
+                .subscribe(new Observer<VersionBean>() {
+
                     @Override
-                    public void onCompleted() {
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
                         int localVersionCode = getVersionCode(MainActivity.this);
                         Log.e("TAG", "onCompleted: "+localVersionCode +versionCode );
                         if(versionCode>localVersionCode){
-                           // PreUtils.writeBoolean(MainActivity.this,Constant.NEADUPDATE,true);
-                           // PreUtils.writeString(MainActivity.this,Constant.KEY_NEWVERSION_URL,vsersion_url);
+                            // PreUtils.writeBoolean(MainActivity.this,Constant.NEADUPDATE,true);
+                            // PreUtils.writeString(MainActivity.this,Constant.KEY_NEWVERSION_URL,vsersion_url);
                             showMyDialog();
                         }else{
                             //PreUtils.writeBoolean(MainActivity.this,Constant.NEADUPDATE,false);
@@ -284,7 +292,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onSubscribe(Disposable d) {
 
                     }
 
@@ -368,9 +376,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(subscription!=null&&!subscription.isUnsubscribed()){
-            subscription.unsubscribe();
-        }
+//        if(subscription!=null&&!subscription.isUnsubscribed()){
+//            subscription.unsubscribe();
+//        }
         UMShareAPI.get(this).release();
         //ButterKnife.reset(this);
     }

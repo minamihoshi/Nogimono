@@ -8,7 +8,8 @@ import org.nogizaka46.http.HttpUtils;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by acer on 2017/4/5.

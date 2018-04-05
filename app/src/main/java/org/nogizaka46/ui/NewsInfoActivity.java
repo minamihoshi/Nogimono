@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
@@ -29,17 +29,17 @@ public class NewsInfoActivity extends BaseActivity {
     String previews;
     Context context = NewsInfoActivity.this;
     View view;
-    @InjectView(R.id.top_button_back)  ImageButton topButtonBack;
-    @InjectView(R.id.title)  TextView title;
-    @InjectView(R.id.news_layout)  LinearLayout newsLayout;
-    @InjectView(R.id.webView) WebView webView;
+    @BindView(R.id.top_button_back)  ImageButton topButtonBack;
+    @BindView(R.id.title)  TextView title;
+    @BindView(R.id.news_layout)  LinearLayout newsLayout;
+    @BindView(R.id.webView) WebView webView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_info);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             previews = getIntent().getStringExtra("preview");
         }

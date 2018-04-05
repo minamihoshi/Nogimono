@@ -29,30 +29,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import butterknife.Unbinder;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberClickListener {
     View view;
-    @InjectView(R.id.recyclerview_member)
+    @BindView(R.id.recyclerview_member)
     RecyclerView recyclerview;
-    @InjectView(R.id.tv_area)
+    @BindView(R.id.tv_area)
     TextView tvArea;
-    @InjectView(R.id.iv_areaselect)
+    @BindView(R.id.iv_areaselect)
     ImageView ivAreaselect;
 
     private GridLayoutManager manager;
     private MemberAdapter adapter;
     private List<MemberListBean> list;
-    private Subscription subscription;
+  //  private Subscription subscription;
     private boolean isShowSelect;
     private String group;
-
+    Unbinder bind;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -63,7 +64,7 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.main1_frag, container, false);
-        ButterKnife.inject(this, view);
+         bind = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -83,18 +84,26 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     }
 
     private void initData() {
-        subscription = HttpUtils.getInstance().getRetrofitInterface().getMemberBean(group)
+        //subscription =
+                HttpUtils.getInstance().getRetrofitInterface().getMemberBean(group)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<MemberListBean>>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(new Observer<List<MemberListBean>>() {
 
-                    }
 
                     @Override
                     public void onError(Throwable e) {
                         ToastHelper.showToast(mContext, getString(R.string.wangluowenti));
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
                     }
 
@@ -113,10 +122,10 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
-        if (!subscription.isUnsubscribed() && subscription != null) {
-            subscription.unsubscribe();
-        }
+      bind.unbind();
+//        if (!subscription.isUnsubscribed() && subscription != null) {
+//            subscription.unsubscribe();
+//        }
     }
 
     @Override

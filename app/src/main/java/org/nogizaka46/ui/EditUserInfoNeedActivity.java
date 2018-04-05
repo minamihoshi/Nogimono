@@ -12,7 +12,7 @@ import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 
@@ -20,20 +20,20 @@ import butterknife.OnClick;
 public class EditUserInfoNeedActivity extends BaseActivity {
 
 
-    @InjectView(R.id.login_back)
+    @BindView(R.id.login_back)
     ImageView loginBack;
-    @InjectView(R.id.main_header)
+    @BindView(R.id.main_header)
     TextView mainHeader;
-    @InjectView(R.id.register)
+    @BindView(R.id.register)
     TextView register;
-    @InjectView(R.id.editText)
+    @BindView(R.id.editText)
     EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_info_need);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
 
         init();

@@ -2,16 +2,20 @@ package org.nogizaka46.ui.blogactivity;
 
 import org.nogizaka46.bean.BlogBean;
 import org.nogizaka46.contract.Contract;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
+
 
 /**
  * Created by acer on 2017/4/19.
@@ -32,12 +36,7 @@ public class BlogPresenter {
         Observable<List<BlogBean>> observable = model.getData(name, page, size,group);
         observable.subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<BlogBean>>() {
-                    @Override
-                    public void onCompleted() {
-                        view.onLoaded();
-                    }
-
+                  .subscribe(new Observer<List<BlogBean>>() {
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof HttpException) {
@@ -57,7 +56,17 @@ public class BlogPresenter {
                         } else {
                             view.onLoadFailed("网络断开" + e.getMessage());
                         }
-                        onCompleted();
+                        onComplete();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                          view.onLoaded();
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override

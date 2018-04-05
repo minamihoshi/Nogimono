@@ -35,25 +35,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClicklistener, Contract.IBlogView {
 
 
-    @InjectView(R.id.toolbar_blogs)
+    @BindView(R.id.toolbar_blogs)
     Toolbar toolbar;
-    @InjectView(R.id.recyclerview_blogs)
+    @BindView(R.id.recyclerview_blogs)
     RecyclerView recyclerview;
-    @InjectView(R.id.swipeRefresh_blog)
+    @BindView(R.id.swipeRefresh_blog)
     SwipeRefreshLayout swipeRefresh;
-    @InjectView(R.id.tv_area)
+    @BindView(R.id.tv_area)
     TextView tvArea;
-    @InjectView(R.id.iv_areaselect)
+    @BindView(R.id.iv_areaselect)
     ImageView ivAreaselect;
-    @InjectView(R.id.activity_blog)
+    @BindView(R.id.activity_blog)
     LinearLayout activityBlog;
-    @InjectView(R.id.rela_sel)
+    @BindView(R.id.rela_sel)
     RelativeLayout relaSel;
     private List<BlogBean> list;
     private BlogAdapter adapter;
@@ -69,12 +70,12 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
     private PopupWindow popupWindow;
     private boolean isShowSelect;
     private String group = "all";
-
+    Unbinder bind;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog);
-        ButterKnife.inject(this);
+         bind = ButterKnife.bind(this);
 
         NeadClear = true;
         Intent intent = getIntent();
@@ -146,7 +147,7 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.reset(this);
+        bind.unbind();
     }
 
     @Override

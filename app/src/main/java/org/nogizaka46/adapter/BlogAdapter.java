@@ -13,8 +13,9 @@ import org.nogizaka46.utils.TimeUtil;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 
 /**
  * Created by acer on 2017/4/19.
@@ -76,16 +77,16 @@ public class BlogAdapter extends RecyclerViewAdapterHelper<BlogBean> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        @InjectView(R.id.tv_time)
+        @BindView(R.id.tv_time)
         TextView tvTime;
-        @InjectView(R.id.tv_title)
+        @BindView(R.id.tv_title)
         TextView tvTitle;
-        @InjectView(R.id.tv_name)
+        @BindView(R.id.tv_name)
         TextView tvName;
 
         ViewHolder(View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

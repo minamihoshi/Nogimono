@@ -45,16 +45,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class NewsFragment extends Fragment implements Contract.INewsView, MyNewsAdapter.onNewsClickListener {
 
-    @InjectView(R.id.recyclerview)
+    @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @InjectView(R.id.swipeRefresh)
+    @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefresh;
     private List<NewBean> list;
     private Context mContext;
@@ -70,6 +71,7 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
     private PopupWindow popupWindow;
     private Button mbtn_openweb,mbtn_share,mbtn_save;
     private int itemposition;
+    Unbinder bind;
     public NewsFragment() {
         // Required empty public constructor
     }
@@ -87,7 +89,7 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
         Bundle bundle = getArguments();
         category = bundle.getString(Constant.NEWS_CATEGORY);
         View view = inflater.inflate(R.layout.fragment_news, container, false);
-        ButterKnife.inject(this, view);
+         bind = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -195,7 +197,7 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+      bind.unbind();
     }
 
     private void initPopup() {

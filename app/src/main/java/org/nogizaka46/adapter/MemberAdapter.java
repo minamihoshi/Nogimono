@@ -17,7 +17,7 @@ import org.nogizaka46.utils.RecyclerViewAdapterHelper;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * Created by acer on 2017/4/18.
@@ -80,14 +80,14 @@ public class MemberAdapter extends RecyclerViewAdapterHelper<MemberListBean> {
 
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
-        @InjectView(R.id.membername)
+        @BindView(R.id.membername)
         TextView membername;
-        @InjectView(R.id.iv_member)
+        @BindView(R.id.iv_member)
         ImageView iv_member;
 
         MyViewHolder(View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

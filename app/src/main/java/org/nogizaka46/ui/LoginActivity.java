@@ -34,41 +34,40 @@ import org.nogizaka46.http.HttpUtils;
 import org.nogizaka46.view.DropBounceInterpolator;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class LoginActivity extends BaseActivity {
 
 
-    @InjectView(R.id.ed_username)
+    @BindView(R.id.ed_username)
     EditText edUsername;
-    @InjectView(R.id.ed_psw)
+    @BindView(R.id.ed_psw)
     EditText edPsw;
-    @InjectView(R.id.tv_yanzhengma)
+    @BindView(R.id.tv_yanzhengma)
     TextView tvYanzhengma;
-    @InjectView(R.id.btn_commit)
+    @BindView(R.id.btn_commit)
     Button btnCommit;
-    @InjectView(R.id.tv_xieyi)
+    @BindView(R.id.tv_xieyi)
     TextView tvXieyi;
-    @InjectView(R.id.iv_wechat)
+    @BindView(R.id.iv_wechat)
     ImageView ivWechat;
-    @InjectView(R.id.iv_qq)
+    @BindView(R.id.iv_qq)
     ImageView ivQq;
-    @InjectView(R.id.iv_weibo)
+    @BindView(R.id.iv_weibo)
     ImageView ivWeibo;
-    @InjectView(R.id.top_button_back)
+    @BindView(R.id.top_button_back)
     ImageButton topButtonBack;
-    @InjectView(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @InjectView(R.id.ed_pswcommit)
+    @BindView(R.id.ed_pswcommit)
     EditText edPswcommit;
-    @InjectView(R.id.lin_pswcommit)
+    @BindView(R.id.lin_pswcommit)
     LinearLayout linPswcommit;
 
     private boolean isLogin =true ;
@@ -77,7 +76,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         init();
 
@@ -165,18 +164,29 @@ public class LoginActivity extends BaseActivity {
 
     private void userRegister(String username ,String userpsw) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
-        Subscription subscribe = retrofitInterface.UserRegiter(username, userpsw)
+        //Subscription subscribe =
+
+                retrofitInterface.UserRegiter(username, userpsw)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LzyResponse<RegisterSuccessBean>>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(new Observer<LzyResponse<RegisterSuccessBean>>() {
 
-                    }
+
                     @Override
                     public void onError(Throwable e) {
 
                     }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
                     @Override
                     public void onNext(LzyResponse<RegisterSuccessBean> registerSuccessBeanLzyResponse) {
                       switch (registerSuccessBeanLzyResponse.code){
@@ -201,14 +211,14 @@ public class LoginActivity extends BaseActivity {
 
     private void userlogin(String username ,String userpsw) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
-     Subscription subscribe = retrofitInterface.UserLoginNickname(username, userpsw)
+     //Subscription subscribe =
+
+
+             retrofitInterface.UserLoginNickname(username, userpsw)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LzyResponse<RegisterSuccessBean>>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(new Observer<LzyResponse<RegisterSuccessBean>>() {
 
-                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -217,7 +227,16 @@ public class LoginActivity extends BaseActivity {
 
                     }
 
+                    @Override
+                    public void onComplete() {
 
+                    }
+
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
 
                     @Override
                     public void onNext(LzyResponse<RegisterSuccessBean> registerSuccessBeanLzyResponse) {

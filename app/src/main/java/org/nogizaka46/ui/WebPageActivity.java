@@ -55,18 +55,19 @@ import org.nogizaka46.view.SweetAlertDialog;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 
 
 public class WebPageActivity extends BaseActivity {
 
-    @InjectView(R.id.webview)
+    @BindView(R.id.webview)
     WebView webview;
     String previews;
     String url;
     Context context;
-    @InjectView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
     private DownloadManager mDownloadManager = null;
     private String mFileName = "";
@@ -86,7 +87,7 @@ public class WebPageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webpager);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
        // img_left_layout.setVisibility(View.VISIBLE);
         context = WebPageActivity.this;
         initToolBar();

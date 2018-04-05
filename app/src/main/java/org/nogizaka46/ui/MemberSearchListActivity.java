@@ -11,20 +11,20 @@ import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import pulltorefresh.PullToRefreshBase;
 import pulltorefresh.PullToRefreshListView;
 
 public class MemberSearchListActivity extends BaseActivity {
     Context context = MemberSearchListActivity.this;
-    @InjectView(R.id.listview)
+    @BindView(R.id.listview)
     PullToRefreshListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_member_list);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initData();
         initHandler();
 

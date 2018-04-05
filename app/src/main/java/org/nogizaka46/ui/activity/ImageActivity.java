@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
@@ -32,7 +32,7 @@ import org.nogizaka46.view.SweetAlertDialog;
 
 public class ImageActivity extends BaseActivity {
 
-    @InjectView(R.id.photoview)
+    @BindView(R.id.photoview)
     PhotoView photoview;
 
     private DownloadManager mDownloadManager = null;
@@ -45,7 +45,7 @@ public class ImageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         mContext =ImageActivity.this;
         Intent intent = getIntent();

@@ -11,17 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.nogizaka46.R;
+
 import java.util.List;
 import java.util.Map;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-public class AllListAdapter extends Adapter<ViewHolder>{
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+
+public class AllListAdapter extends Adapter<ViewHolder> {
+
     private Context context;
     private List<Map<String, Object>> mData;
 
     public AllListAdapter(Context context, List<Map<String, Object>> data) {
-        this.context=context;
+        this.context = context;
         this.mData = data;
     }
 
@@ -33,37 +37,38 @@ public class AllListAdapter extends Adapter<ViewHolder>{
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            Map<String,?>item=mData.get(position);
-            itemViewHolder.name.setText(item.get("title").toString());
-            itemViewHolder.summary.setText(item.get("summary").toString());
-            //itemViewHolder.created_time.setText(TimeUtil.timeToDate(item.get("delivery").toString()));
-            if (onItemClickListener != null) {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int position = holder.getLayoutPosition();
-                        onItemClickListener.onItemClick(holder.itemView, position);
+        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+        Map<String, ?> item = mData.get(position);
+        itemViewHolder.name.setText(item.get("title").toString());
+        itemViewHolder.summary.setText(item.get("summary").toString());
+        //itemViewHolder.created_time.setText(TimeUtil.timeToDate(item.get("delivery").toString()));
+        if (onItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getLayoutPosition();
+                    onItemClickListener.onItemClick(holder.itemView, position);
 
-                    }
-                });
+                }
+            });
 
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        int position = holder.getLayoutPosition();
-                        onItemClickListener.onItemLongClick(holder.itemView, position);
-                        return false;
-                    }
-                });
-            }
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int position = holder.getLayoutPosition();
+                    onItemClickListener.onItemLongClick(holder.itemView, position);
+                    return false;
+                }
+            });
+        }
 
     }
-   
+
     @Override
     public int getItemCount() {
         return mData.size();
     }
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
 
@@ -75,19 +80,20 @@ public class AllListAdapter extends Adapter<ViewHolder>{
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-    static class ItemViewHolder extends ViewHolder {
-        @InjectView(R.id.news_images)
-        ImageView images;
-        @InjectView(R.id.name)
-        TextView name;
-        @InjectView(R.id.summary)
-        TextView summary;
-        @InjectView(R.id.created_time)
-        TextView created_time;
 
+    static class ItemViewHolder extends ViewHolder {
+
+        @BindView(R.id.news_images)
+        ImageView newsImages;
+        @BindView(R.id.name)
+        TextView name;
+        @BindView(R.id.created_time)
+        TextView createdTime;
+        @BindView(R.id.summary)
+        TextView summary;
         public ItemViewHolder(View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
 
         }
     }

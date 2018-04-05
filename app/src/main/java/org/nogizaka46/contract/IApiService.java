@@ -1,6 +1,7 @@
 package org.nogizaka46.contract;
 
 
+import org.nogizaka46.bean.AvatarSucBean;
 import org.nogizaka46.bean.BlogBean;
 import org.nogizaka46.bean.LzyResponse;
 import org.nogizaka46.bean.MemberListBean;
@@ -12,12 +13,16 @@ import org.nogizaka46.config.UrlConfig;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import rx.Observable;
+
 
 
 /**
@@ -90,5 +95,13 @@ public interface IApiService {
             ,@Query("nickname") String nickname ,@Query("phone") String phone,
             @Query("email")String email , @Query("introduction")String introduction
     );
+
+
+    @Multipart
+    @POST(UrlConfig.PATH_USER_AVATAR)
+    Observable<LzyResponse<AvatarSucBean>> uploadAvatar(@Query("uid") int uid , @Query("token") String token ,@Part("photo")MultipartBody.Part part );
+
+
+
 
 }

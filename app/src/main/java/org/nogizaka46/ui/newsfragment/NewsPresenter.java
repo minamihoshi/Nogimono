@@ -9,11 +9,13 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
+
 
 /**
  * Created by acer on 2017/4/5.
@@ -61,11 +63,8 @@ public class NewsPresenter {
         Observable<List<NewBean>> observable = model.getData(type, page, size);
         observable.subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(new Subscriber<List<NewBean>>() {
-                      @Override
-                      public void onCompleted() {
-                          view.onLoaded();
-                      }
+                  .subscribe(new Observer<List<NewBean>>() {
+
 
                       @Override
                       public void onError(Throwable e) {
@@ -86,7 +85,17 @@ public class NewsPresenter {
                           } else {
                               view.onLoadFailed("网络断开" + e.getMessage());
                           }
-                          onCompleted();
+                          onComplete();
+                      }
+
+                      @Override
+                      public void onComplete() {
+                          view.onLoaded();
+                      }
+
+                      @Override
+                      public void onSubscribe(Disposable d) {
+
                       }
 
                       @Override
