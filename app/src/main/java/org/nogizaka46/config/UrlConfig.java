@@ -27,14 +27,14 @@ public class UrlConfig {
     public static final String PATH_USERINFO ="/api/user/get";
     public static final String  PATH_USERSET ="/api/user/userset";
 
-    public static final String PATH_COMMENT_ALL = "/comment/get";
-    public static final String PATH_COMMENT_NEW  ="/comment/new";
-    public static final String PATH_OTHERUSER ="/user/getother";
+    public static final String PATH_COMMENT_ALL = "/api/comment/get";
+    public static final String PATH_COMMENT_NEW  ="/api/comment/new";
+    public static final String PATH_OTHERUSER ="/api/user/getother";
 
-    public static final String PATH_COMMENT_DEL ="/comment/delete";
-    public static final String PATH_COMMENT_UNREAD ="/comment/unread";
-    public static final String PATH_COMMENT_READ ="/comment/read";
-    public static final String PATH_USER_AVATAR = "/user/avater";
+    public static final String PATH_COMMENT_DEL ="/api/comment/delete";
+    public static final String PATH_COMMENT_UNREAD ="/api/comment/unread";
+    public static final String PATH_COMMENT_READ ="/api/comment/read";
+    public static final String PATH_USER_AVATAR = "/api/user/avatar";
 
 
 

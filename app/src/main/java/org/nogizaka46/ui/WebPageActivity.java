@@ -17,12 +17,16 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.TextureView;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
@@ -30,34 +34,45 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-
 
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.nogizaka46.R;
+import org.nogizaka46.adapter.CommentAdapter;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.base.MyApplication;
+import org.nogizaka46.bean.CommentBean;
+import org.nogizaka46.bean.LzyResponse;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.WithpicBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.config.UrlConfig;
+import org.nogizaka46.db.PreUtils;
+import org.nogizaka46.http.HttpUtils;
 import org.nogizaka46.ui.activity.ImageActivity;
+import org.nogizaka46.utils.DividerItemDecoration;
 import org.nogizaka46.utils.EncryptUtils;
 import org.nogizaka46.utils.UMShareUtil;
 import org.nogizaka46.view.MyToast;
 import org.nogizaka46.view.SweetAlertDialog;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.http.HTTP;
 
 
 public class WebPageActivity extends BaseActivity {
@@ -69,35 +84,56 @@ public class WebPageActivity extends BaseActivity {
     Context context;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.rv_comment)
+    RecyclerView rvComment;
+    @BindView(R.id.edit_comment)
+    EditText editComment;
+    @BindView(R.id.btn_send)
+    Button btnSend;
     private DownloadManager mDownloadManager = null;
     private String mFileName = "";
     private long downloadId;
     private WebView.HitTestResult hitTestResult;
     private int clickdown = 0;
     private boolean longclick;
-    private NewBean newBean ;
-    private boolean isBlog ;
-    private String []  titlestrings= new String []{};
-    private  String CookieStr;
-    private  float downX ;
+    private NewBean newBean;
+    private boolean isBlog;
+    private String news_id;
+    private String[] titlestrings = new String[]{};
+    private String CookieStr;
+    private float downX;
     private float downY;
-    private WebSettings webSetting ;
-
+    private WebSettings webSetting;
+    private String father ;
+    private String touid ;
+    private CommentAdapter commentAdapter ;
+  private List<CommentBean> list ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webpager);
         ButterKnife.bind(this);
-       // img_left_layout.setVisibility(View.VISIBLE);
+        // img_left_layout.setVisibility(View.VISIBLE);
         context = WebPageActivity.this;
         initToolBar();
         initwebview();
+        initRv();
+    }
+
+    private void initRv() {
+        list = new ArrayList<>();
+        commentAdapter = new CommentAdapter(list);
+        rvComment.setAdapter(commentAdapter);
+        rvComment.setLayoutManager(new LinearLayoutManager(WebPageActivity.this,LinearLayoutManager.VERTICAL,false));
+        rvComment.addItemDecoration(new DividerItemDecoration(WebPageActivity.this,DividerItemDecoration.VERTICAL_LIST));
+
+
     }
 
     private void initToolBar() {
         setSupportActionBar(toolbar);
 
-       toolbar.setTitleTextColor(Color.BLACK);
+        toolbar.setTitleTextColor(Color.BLACK);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -108,6 +144,8 @@ public class WebPageActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         webSetting.setJavaScriptEnabled(true);
+
+        getAllComment();
     }
 
     @Override
@@ -118,26 +156,25 @@ public class WebPageActivity extends BaseActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initwebview() {
-        if(getIntent() != null){
-            if ( getIntent().getExtras() != null) {
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null) {
                 newBean = (NewBean) getIntent().getExtras().getSerializable(Constant.STARTWEB);
-                if(newBean !=null){
+                if (newBean != null) {
                     previews = newBean.getView();
                     url = UrlConfig.BASE_FORMATWEB + previews;
-                    isBlog =false;
-                }else{
+                    news_id = newBean.getId();
+                    isBlog = false;
+                } else {
                     String blogurl = getIntent().getStringExtra(Constant.STARTWEB_BLOG);
-                    url =blogurl ;
-                    isBlog =true;
+                    url = blogurl;
+                    isBlog = true;
                 }
-
-
 
             }
         }
-        Log.e("TAG", "initwebview: " + url );
+        Log.e("TAG", "initwebview: " + url);
         webview.loadUrl(url);
-         webSetting = webview.getSettings();
+        webSetting = webview.getSettings();
         webSetting.setSupportZoom(true);
         webSetting.setDomStorageEnabled(true);
         webSetting.setBuiltInZoomControls(true);
@@ -158,7 +195,7 @@ public class WebPageActivity extends BaseActivity {
         DecimalFormat format = new DecimalFormat("0.00");
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-        if(!isBlog){
+        if (!isBlog) {
             String formatResult = format.format((float) (outMetrics.widthPixels) / (float) 668); //668为html页面的宽度
             //设置初始缩放大小  100%   屏幕宽度 / 网页设置的宽度
             webview.setInitialScale((int) (Float.valueOf(formatResult) * 100));
@@ -174,7 +211,7 @@ public class WebPageActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-               view.loadUrl(url);
+                view.loadUrl(url);
                 return true;
             }
 
@@ -191,10 +228,10 @@ public class WebPageActivity extends BaseActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                 toolbar.setTitle(view.getTitle());
+                toolbar.setTitle(view.getTitle());
                 CookieManager cookieManager = CookieManager.getInstance();
-                 CookieStr = cookieManager.getCookie(url);
-                Log.e("TAG", "onPageFinished: "+CookieStr );
+                CookieStr = cookieManager.getCookie(url);
+                Log.e("TAG", "onPageFinished: " + CookieStr);
                 super.onPageFinished(view, url);
             }
 
@@ -208,49 +245,49 @@ public class WebPageActivity extends BaseActivity {
 
         });
 
-        if(!isBlog){
-        webview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.e("TAG", "onClick:touch ");
-                hitTestResult = webview.getHitTestResult();
-                Log.e("TAG", "onTouch: " + hitTestResult.toString()  );
-                Log.e("TAG", "onTouch: " + clickdown  );
+        if (!isBlog) {
+            webview.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Log.e("TAG", "onClick:touch ");
+                    hitTestResult = webview.getHitTestResult();
+                    Log.e("TAG", "onTouch: " + hitTestResult.toString());
+                    Log.e("TAG", "onTouch: " + clickdown);
 
 
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    clickdown = 1;
-                    longclick = false;
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        clickdown = 1;
+                        longclick = false;
 
-                     downX = motionEvent.getX();
-                     downY = motionEvent.getY();
-                    Log.e("TAG", "onClick:down ");
-                } else if ( motionEvent.getAction() == MotionEvent.ACTION_UP ) {
-                    if(!longclick && clickdown == 1 && hitTestResult!=null){
-                        if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-                            Log.e("TAG", "onClick:goto ");
-                            clickdown = 0;
-                            String url = hitTestResult.getExtra();
-                            Intent intent = new Intent(WebPageActivity.this, ImageActivity.class);
-                            intent.putExtra("image", url);
-                            startActivity(intent);
+                        downX = motionEvent.getX();
+                        downY = motionEvent.getY();
+                        Log.e("TAG", "onClick:down ");
+                    } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        if (!longclick && clickdown == 1 && hitTestResult != null) {
+                            if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                                Log.e("TAG", "onClick:goto ");
+                                clickdown = 0;
+                                String url = hitTestResult.getExtra();
+                                Intent intent = new Intent(WebPageActivity.this, ImageActivity.class);
+                                intent.putExtra("image", url);
+                                startActivity(intent);
+                            }
                         }
+                    } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+
+                        float v = Math.abs(motionEvent.getX() - downX) + Math.abs(motionEvent.getY() - downY);
+                        Log.e("TAG", "onClick:else " + v);
+                        if (v > 10.0f) {
+                            clickdown = 100;
+                        }
+
+
                     }
-                } else if( motionEvent.getAction() ==MotionEvent.ACTION_MOVE){
-
-                    float v = Math.abs(motionEvent.getX() - downX) + Math.abs(motionEvent.getY() - downY);
-                    Log.e("TAG", "onClick:else "+v);
-                    if(v>10.0f){
-                        clickdown = 100;
-                    }
-
-
+                    return false;
                 }
-                return false;
-            }
 
 
-        });
+            });
         }
         webview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -301,7 +338,7 @@ public class WebPageActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-               toolbar.setTitle(title);
+                toolbar.setTitle(title);
 
             }
 
@@ -346,7 +383,7 @@ public class WebPageActivity extends BaseActivity {
 
     private void initDownloadManager(String urlstring) {
         MyToast.makeText(context, urlstring, Toast.LENGTH_LONG).show();
-        Log.e("TAG", "initDownloadManager: "+urlstring );
+        Log.e("TAG", "initDownloadManager: " + urlstring);
         mDownloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         mFileName = urlstring;
         String path = EncryptUtils.md5(urlstring) + ".jpg";
@@ -362,8 +399,8 @@ public class WebPageActivity extends BaseActivity {
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, path)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setMimeType("image/jpeg||image/png||image/gif");
-        if(isBlog){
-            request.addRequestHeader("Cookie",CookieStr);
+        if (isBlog) {
+            request.addRequestHeader("Cookie", CookieStr);
         }
 
         downloadId = mDownloadManager.enqueue(request);
@@ -372,34 +409,34 @@ public class WebPageActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
-            case android.R.id.home :
+            case android.R.id.home:
                 finish();
-               // webview.scrollTo(0,0);
+                // webview.scrollTo(0,0);
                 break;
             case R.id.save:
                 long savecode = ((MyApplication) getApplication()).liteOrm.cascade().insert(newBean);
-                Log.e("TAG", "----------------------------------"+savecode);
+                Log.e("TAG", "----------------------------------" + savecode);
 
-                if(savecode>0){
-                    Toast.makeText(this,"收藏成功",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(this,"已经收藏过了~",Toast.LENGTH_SHORT).show();
+                if (savecode > 0) {
+                    Toast.makeText(this, "收藏成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "已经收藏过了~", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.share:
-                if (newBean!=null) {
+                if (newBean != null) {
                     String title = newBean.getTitle();
                     String summary = newBean.getSummary();
                     String url = UrlConfig.BASE_FORMATWEB + newBean.getView();
                     String image = null;
                     List<WithpicBean> withpic = newBean.getWithpic();
-                    if(withpic!=null){
+                    if (withpic != null) {
                         WithpicBean withpicBean = withpic.get(0);
                         image = withpicBean.getImage();
                     }
-                    UMShareUtil.shareUrl(WebPageActivity.this,url,title,summary,image,umShareListener);
+                    UMShareUtil.shareUrl(WebPageActivity.this, url, title, summary, image, umShareListener);
                 }
 
                 break;
@@ -410,8 +447,8 @@ public class WebPageActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(!isBlog){
-            getMenuInflater().inflate(R.menu.menu_web,menu);
+        if (!isBlog) {
+            getMenuInflater().inflate(R.menu.menu_web, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -437,9 +474,9 @@ public class WebPageActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        if(webview.canGoBack()){
+        if (webview.canGoBack()) {
             webview.goBack();
-        }else{
+        } else {
             super.onBackPressed();
         }
 
@@ -456,6 +493,7 @@ public class WebPageActivity extends BaseActivity {
         public void onStart(SHARE_MEDIA platform) {
             //分享开始的回调
         }
+
         @Override
         public void onResult(SHARE_MEDIA platform) {
 
@@ -465,15 +503,99 @@ public class WebPageActivity extends BaseActivity {
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(WebPageActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            if(t!=null){
-                com.umeng.socialize.utils.Log.d("throw","throw:"+t.getMessage());
+            Toast.makeText(WebPageActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if (t != null) {
+                com.umeng.socialize.utils.Log.d("throw", "throw:" + t.getMessage());
             }
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(WebPageActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(WebPageActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
         }
     };
+
+
+    @OnClick({R.id.toolbar, R.id.edit_comment, R.id.btn_send})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.toolbar:
+                break;
+            case R.id.edit_comment:
+                break;
+            case R.id.btn_send:
+
+                sendComment();
+                break;
+        }
+    }
+
+
+
+
+    private void getAllComment(){
+        HttpUtils.getInstance().getRetrofitInterface().getAllComment(news_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LzyResponse<List<CommentBean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LzyResponse<List<CommentBean>> commentBeanLzyResponse) {
+
+                        list.clear();
+                        list.addAll(commentBeanLzyResponse.data) ;
+                        commentAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("TAG", "onError: "+e.getMessage() );
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
+    private void sendComment() {
+        String userid = PreUtils.readStrting(WebPageActivity.this, Constant.USER_ID);
+        String token = PreUtils.readStrting(WebPageActivity.this, Constant.USER_TOKEN);
+        String msg = editComment.getText().toString();
+        if(TextUtils.isEmpty(msg)){
+            Toast.makeText(WebPageActivity.this,"评论不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        HttpUtils.getInstance().getRetrofitInterface().sendComment(news_id,userid,token,msg,39+"",37+"")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LzyResponse<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+                    @Override
+                    public void onNext(LzyResponse<String> stringLzyResponse) {
+
+                        Toast.makeText(WebPageActivity.this ,"评论成功" ,Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(WebPageActivity.this ,e.getMessage() ,Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
 }

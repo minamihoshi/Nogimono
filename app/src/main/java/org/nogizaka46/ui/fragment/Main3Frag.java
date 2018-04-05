@@ -12,9 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.yyx.beautifylib.model.BLPickerParam;
-import com.yyx.beautifylib.model.BLResultParam;
-import com.yyx.beautifylib.utils.ToastUtils;
+
 
 import org.nogizaka46.R;
 import org.nogizaka46.ui.LoginActivity;
@@ -27,8 +25,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.Unbinder;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
+
 
 import static android.app.Activity.RESULT_OK;
 
@@ -100,7 +97,7 @@ public class Main3Frag extends Fragment {
         layout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoPhotoPickActivity();
+              //  gotoPhotoPickActivity();
             }
         });
 
@@ -122,31 +119,31 @@ public class Main3Frag extends Fragment {
     }
 
 
-    //跳转图片选择页面
-    @AfterPermissionGranted(0)
-    private void gotoPhotoPickActivity() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-            BLPickerParam.startActivity(getActivity());
-        } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问读写权限", 0, perms);
-        }
-    }
+//    //跳转图片选择页面
+//    @AfterPermissionGranted(0)
+//    private void gotoPhotoPickActivity() {
+//        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+//        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
+//            BLPickerParam.startActivity(getActivity());
+//        } else {
+//            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问读写权限", 0, perms);
+//        }
+//    }
 
     //获取返回结果数据
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == BLPickerParam.REQUEST_CODE_PHOTO_PICKER) {
-            BLResultParam param = data.getParcelableExtra(BLResultParam.KEY);
-            List<String> imageList = param.getImageList();
-            StringBuilder sb = new StringBuilder();
-            for (String path : imageList) {
-                sb.append(path);
-                sb.append("\n");
-            }
-            ToastUtils.toast(getActivity(), sb.toString());
-        }
+//        if (resultCode == RESULT_OK && requestCode == BLPickerParam.REQUEST_CODE_PHOTO_PICKER) {
+//            BLResultParam param = data.getParcelableExtra(BLResultParam.KEY);
+//            List<String> imageList = param.getImageList();
+//            StringBuilder sb = new StringBuilder();
+//            for (String path : imageList) {
+//                sb.append(path);
+//                sb.append("\n");
+//            }
+//            ToastUtils.toast(getActivity(), sb.toString());
+//        }
 
     }
 

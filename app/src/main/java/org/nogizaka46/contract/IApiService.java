@@ -3,6 +3,7 @@ package org.nogizaka46.contract;
 
 import org.nogizaka46.bean.AvatarSucBean;
 import org.nogizaka46.bean.BlogBean;
+import org.nogizaka46.bean.CommentBean;
 import org.nogizaka46.bean.LzyResponse;
 import org.nogizaka46.bean.MemberListBean;
 import org.nogizaka46.bean.NewBean;
@@ -15,7 +16,9 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -102,6 +105,23 @@ public interface IApiService {
     Observable<LzyResponse<AvatarSucBean>> uploadAvatar(@Query("uid") int uid , @Query("token") String token ,@Part("photo")MultipartBody.Part part );
 
 
+    @POST(UrlConfig.PATH_USER_AVATAR)
+    Observable<LzyResponse<AvatarSucBean>> uploadAvatar(@Body RequestBody requestBody);
+//    RequestBody requestBody = new MultipartBody.Builder()
+//            .setType(MultipartBody.FORM)
+//            .addFormDataPart("name", name)
+//            .addFormDataPart("psd", psd)
+//            .addFormDataPart("file", file.getName(),
+//                    RequestBody.create(MediaType.parse("image/*"), file))
+//            .build();
+
+    @POST(UrlConfig.PATH_COMMENT_NEW)
+    Observable<LzyResponse<String>> sendComment(@Query("fid") String fid ,@Query("uid") String uid ,@Query("token")String token,
+    @Query("message") String message ,@Query("father") String father,@Query("touid") String touid
+    );
+
+   @POST(UrlConfig.PATH_COMMENT_ALL)
+    Observable<LzyResponse<List<CommentBean>>> getAllComment(@Query("fid") String fid);
 
 
 }

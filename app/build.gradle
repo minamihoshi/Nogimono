@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
 
     aaptOptions {
         cruncherEnabled = false
@@ -32,8 +32,8 @@ android {
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 configurations {
-    all*.exclude  module: 'glide'  //去除重复依赖库
-    all*.exclude  module: 'ucrop'
+    //all*.exclude  module: 'glide'  //去除重复依赖库
+    //all*.exclude  module: 'ucrop'
    // exclude 'META-INF/rxjava.properties'
 }
 dependencies {
@@ -41,21 +41,22 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile  'com.github.bumptech.glide:glide:4.0.0'
     compile files('libs/systembartint-1.0.4.jar')
     compile files('libs/lite-orm-1.9.1.jar')
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:recyclerview-v7:27.0.1'
+    compile 'com.android.support:appcompat-v7:27.0.1'
+    compile 'com.android.support:design:27.0.1'
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:cardview-v7:27.0.1'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-v4:27.0.1'
     compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/libs/umeng_social_tool.jar')
@@ -69,11 +70,12 @@ dependencies {
     compile files('libs/libs/umeng_social_shareboard.jar')
     compile project(':PushSDK')
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.3'
+    compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.6'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
 //    compile ('com.github.xingxing-yan:BLImage:1.0.0'){
 //        exclude group: 'com.github.bumptech.glide', module: 'glide'
 //    }
-    compile project(':beautifylib')
+    //compile project(':beautifylib')
 //            {
 //        exclude group: 'com.github.bumptech.glide', module: 'glide'
 //    }

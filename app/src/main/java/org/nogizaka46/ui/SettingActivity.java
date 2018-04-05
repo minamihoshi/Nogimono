@@ -1,6 +1,7 @@
 package org.nogizaka46.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -20,15 +21,18 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.umeng.message.common.Const;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
+import org.nogizaka46.bean.AvatarSucBean;
 import org.nogizaka46.bean.LzyResponse;
 import org.nogizaka46.bean.UserInfoBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.db.PreUtils;
 import org.nogizaka46.http.HttpUtils;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -38,6 +42,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 public class SettingActivity extends BaseActivity {
@@ -177,8 +184,6 @@ public class SettingActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<String>>() {
-
-
                     @Override
                     public void onError(Throwable e) {
                        tvNickname.setText("");
@@ -345,6 +350,7 @@ public class SettingActivity extends BaseActivity {
                 .freeStyleCropEnabled(true)
                 .rotateEnabled(true)
                 .scaleEnabled(true)
+                .cropWH(120,120)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
 
     }
@@ -450,7 +456,45 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void uploadAvater(String compressPath) {
+        String uid = PreUtils.readStrting(SettingActivity.this, Constant.USER_ID);
+        String token = PreUtils.readStrting(SettingActivity.this, Constant.USER_TOKEN);
+        File file = new File(compressPath);
 
+        RequestBody requestBody = new MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("uid", uid)
+            .addFormDataPart("token", token)
+            .addFormDataPart("photo", file.getName(),
+                    RequestBody.create(MediaType.parse("image/*"), file))
+            .build();
+        HttpUtils.getInstance().getRetrofitInterface().uploadAvatar(requestBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LzyResponse<AvatarSucBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LzyResponse<AvatarSucBean> avatarSucBeanLzyResponse) {
+                        AvatarSucBean data = avatarSucBeanLzyResponse.data;
+
+                        Toast.makeText(SettingActivity.this ,data.toString() ,Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                          Toast.makeText(SettingActivity.this ,e.getMessage(),Toast.LENGTH_SHORT).show();
+
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
 
     }

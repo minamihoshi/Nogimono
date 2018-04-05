@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+
 
 import org.nogizaka46.R;
 import org.nogizaka46.bean.MemberListBean;
@@ -58,6 +58,7 @@ public class MemberAdapter extends RecyclerViewAdapterHelper<MemberListBean> {
         ImageView iv_member = ((MyViewHolder) holder).iv_member;
         ((MyViewHolder)holder).membername.setText(name);
         //Glide.with(mContext).load(portrait).transform(new BitmapCircleTransformation(mContext)).into(iv_member);
+
 
 
         new ImageLoader.Builder(mContext).setImageUrl(portrait).setImageView(iv_member).setCircleCrop(true).show();
