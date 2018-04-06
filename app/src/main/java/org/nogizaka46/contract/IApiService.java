@@ -3,11 +3,13 @@ package org.nogizaka46.contract;
 
 import org.nogizaka46.bean.AvatarSucBean;
 import org.nogizaka46.bean.BlogBean;
+import org.nogizaka46.bean.ComFloorBean;
 import org.nogizaka46.bean.CommentBean;
 import org.nogizaka46.bean.LzyResponse;
 import org.nogizaka46.bean.MemberListBean;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.bean.RegisterSuccessBean;
+import org.nogizaka46.bean.UnreadComBean;
 import org.nogizaka46.bean.UserInfoBean;
 import org.nogizaka46.bean.VersionBean;
 import org.nogizaka46.config.UrlConfig;
@@ -123,5 +125,18 @@ public interface IApiService {
    @POST(UrlConfig.PATH_COMMENT_ALL)
     Observable<LzyResponse<List<CommentBean>>> getAllComment(@Query("fid") String fid);
 
+   @POST(UrlConfig.PATH_COMMENT_UNREAD)
+   Observable<LzyResponse<List<UnreadComBean>>> getUnreadComment(@Query("uid") String uid ,@Query("token") String token);
+
+
+   @POST(UrlConfig.PATH_COMMENT_READ)
+    Observable<LzyResponse<String>> setCommentRead(@Query("uid") String uid ,@Query("token") String token,@Query("cid") String cid);
+
+
+   @POST(UrlConfig.PATH_COMMENT_DEL)
+    Observable<LzyResponse<String>> delComment(@Query("uid") String uid ,@Query("token") String token,@Query("cid") String cid);
+
+   @POST(UrlConfig.PATH_COMMENT_FLOOR)
+    Observable<LzyResponse<ComFloorBean>> getCommentByFloor(@Query("cid") String cid);
 
 }

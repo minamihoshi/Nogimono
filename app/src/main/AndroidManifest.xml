@@ -13,17 +13,13 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
-
     <application
         android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        >
-        <activity android:name=".base.BaseActivity"
-
-            />
+        android:theme="@style/AppTheme">
+        <activity android:name=".base.BaseActivity" />
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
@@ -93,27 +89,26 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58f2565aaed1794325000617"></meta-data>
-
+            android:value="58f2565aaed1794325000617" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="0bea6cba16ac1f7de972208856cca21f">
-        </meta-data>
+            android:value="0bea6cba16ac1f7de972208856cca21f" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="minami" />
 
-        <meta-data android:value="minami" android:name="UMENG_CHANNEL"/>
+        <activity android:name=".ui.blogactivity.BlogActivity" />
 
-        <activity android:name=".ui.blogactivity.BlogActivity"></activity>
-
-        <!-- 关于-->
+        <!-- 关于 -->
         <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <activity android:name=".ui.LoginActivity"></activity>
-        <activity android:name=".ui.SettingActivity"></activity>
-        <activity android:name=".ui.EditUserInfoNeedActivity"></activity>
-
+        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.EditUserInfoNeedActivity" />
+        <activity android:name=".ui.UnreadActivity" />
+        <activity android:name=".ui.CommentDetailActivity"></activity>
     </application>
 
 </manifest>

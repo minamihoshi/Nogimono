@@ -7,6 +7,54 @@
     android:orientation="vertical">
 
     <include layout="@layout/layout_minehead"></include>
+
+    <LinearLayout
+        android:id="@+id/layout_unread"
+        style="@style/my_info"
+        android:background="@drawable/list_click_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="7dp">
+
+        <LinearLayout
+            style="@style/work_info_left"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="9dp"
+                android:src="@drawable/icon_im_setting" />
+
+            <TextView
+                android:id="@+id/tv_unread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0.9dp"
+                android:layout_marginLeft="11dp"
+                android:text="未读消息"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="14dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/arrow_right2" />
+
+
+    </LinearLayout>
+
+    <View
+        style="@style/info_row_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp" />
+
     <LinearLayout
         android:id="@+id/layout1"
         style="@style/my_info"

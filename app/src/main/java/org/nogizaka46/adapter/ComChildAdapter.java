@@ -30,7 +30,7 @@ public class ComChildAdapter extends BaseQuickAdapter<CommentBean.ChildBean,Base
 
         helper.setText(R.id.tv_nicknama_comchild,item.getUser().getNickname())
                 .setText(R.id.tv_time_comchild ,item.getTime())
-                .setText(R.id.tv_floor_comchild ,item.getFloor()+"");
+                .setText(R.id.tv_floor_comchild ,"#"+item.getFloor());
 
         String nickname=null;
         String s = null ;
@@ -40,10 +40,13 @@ public class ComChildAdapter extends BaseQuickAdapter<CommentBean.ChildBean,Base
               SpannableStringBuilder builder = new SpannableStringBuilder();
               builder.append("回复" +nickname +":" );
               s = builder.toString();
+            helper .setText(R.id.tv_content_comchild ,s+item.getMsg());
+        }else{
+            helper .setText(R.id.tv_content_comchild ,item.getMsg());
         }
 
 
-        helper .setText(R.id.tv_content_comchild ,s+item.getMsg());
+
         new ImageLoader.Builder(mContext).setImageUrl(item.getUser().getAvatar()).setImageView((ImageView) helper.getView(R.id.iv_avatar_comchild));
 
 

@@ -1,6 +1,5 @@
 package org.nogizaka46.ui.fragment;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,22 +11,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-
 import org.nogizaka46.R;
 import org.nogizaka46.ui.LoginActivity;
 import org.nogizaka46.ui.SettingActivity;
+import org.nogizaka46.ui.UnreadActivity;
 import org.nogizaka46.ui.activity.AboutActivity;
-import org.nogizaka46.utils.ToastHelper;
 
-import java.util.List;
-
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class Main3Frag extends Fragment {
@@ -52,10 +44,15 @@ public class Main3Frag extends Fragment {
     @BindView(R.id.imagesel)
     TextView imagesel;
     Unbinder bind;
+    @BindView(R.id.tv_unread)
+    TextView tvUnread;
+    @BindView(R.id.layout_unread)
+    LinearLayout layoutUnread;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.main3_frag, container, false);
-         bind = ButterKnife.bind(this, view);
+        bind = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -97,14 +94,22 @@ public class Main3Frag extends Fragment {
         layout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  gotoPhotoPickActivity();
+                //  gotoPhotoPickActivity();
             }
         });
 
         tvDenglu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity() , LoginActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        layoutUnread.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity() , UnreadActivity.class);
                 startActivity(intent);
             }
         });

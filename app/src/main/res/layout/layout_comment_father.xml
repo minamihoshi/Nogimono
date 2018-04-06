@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -33,12 +33,13 @@
 
     <TextView
         android:id="@+id/tv_floor_comfather"
-        android:layout_toLeftOf="@id/tv_time_comfather"
-        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="10dp"
         tools:text="#1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/tv_time_comfather" />
+        />
     <TextView
         android:id="@+id/tv_msg_comfather"
         android:layout_width="wrap_content"

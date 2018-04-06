@@ -35,7 +35,7 @@ public class UrlConfig {
     public static final String PATH_COMMENT_UNREAD ="/api/comment/unread";
     public static final String PATH_COMMENT_READ ="/api/comment/read";
     public static final String PATH_USER_AVATAR = "/api/user/avatar";
-
+    public static final String PATH_COMMENT_FLOOR ="/api/comment/floor";
 
 
 }

@@ -22,9 +22,18 @@ import java.util.List;
 
 public class CommentAdapter extends BaseQuickAdapter<CommentBean ,BaseViewHolder> {
 
+    private  onItemClickLintener lintener;
+    public interface  onItemClickLintener{
 
-    public CommentAdapter(@Nullable List<CommentBean> data) {
+        void onClick(CommentBean item ,int childposition);
+
+        void onLongClick(CommentBean item ,int childposition);
+    }
+
+
+    public CommentAdapter(@Nullable List<CommentBean> data,onItemClickLintener lintener) {
         super(R.layout.layout_comment_father, data);
+        this.lintener = lintener ;
     }
 
     @Override
@@ -32,7 +41,7 @@ public class CommentAdapter extends BaseQuickAdapter<CommentBean ,BaseViewHolder
            helper.setText(R.id.tv_nickname_comfather,item.getUser().getNickname())
                    .setText(R.id.tv_msg_comfather,item.getMsg())
                    .setText(R.id.tv_time_comfather,item.getTime())
-                   .setText(R.id.tv_floor_comfather,item.getFloor()+"");
+                   .setText(R.id.tv_floor_comfather,"#"+item.getFloor());
         new ImageLoader.Builder(mContext).setImageUrl(item.getUser().getAvatar()).setImageView((ImageView) helper.getView(R.id.iv_avatar_comfather));
 
 
@@ -57,10 +66,21 @@ public class CommentAdapter extends BaseQuickAdapter<CommentBean ,BaseViewHolder
                     int layoutPosition = helper.getLayoutPosition();
                     String msg = item.getMsg();
                     String msg1 = item.getChild().get(position).getMsg();
-                    Log.e(TAG, "onItemClick: " +msg  + "----" +msg1 );
+                   // Log.e(TAG, "onItemClick: " +msg  + "----" +msg1 );
+
+                    lintener.onClick(item ,position);
 
 
+                }
+            });
 
+
+            childAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+
+                    lintener.onLongClick(item,position);
+                    return true;
                 }
             });
         }

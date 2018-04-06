@@ -26,8 +26,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.TextureView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -36,8 +36,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.sina.weibo.sdk.api.WebpageObject;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -72,7 +75,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.http.HTTP;
+import okhttp3.OkHttpClient;
 
 
 public class WebPageActivity extends BaseActivity {
@@ -90,6 +93,8 @@ public class WebPageActivity extends BaseActivity {
     EditText editComment;
     @BindView(R.id.btn_send)
     Button btnSend;
+    @BindView(R.id.tv_huifu)
+    TextView tvHuifu;
     private DownloadManager mDownloadManager = null;
     private String mFileName = "";
     private long downloadId;
@@ -104,10 +109,11 @@ public class WebPageActivity extends BaseActivity {
     private float downX;
     private float downY;
     private WebSettings webSetting;
-    private String father ;
-    private String touid ;
-    private CommentAdapter commentAdapter ;
-  private List<CommentBean> list ;
+    private String father;
+    private String touid;
+    private CommentAdapter commentAdapter;
+    private List<CommentBean> list;
+  private InputMethodManager inputMethodManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,17 +124,119 @@ public class WebPageActivity extends BaseActivity {
         initToolBar();
         initwebview();
         initRv();
+        initSoft();
+
+    }
+
+    private void initSoft() {
+
+         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+
     }
 
     private void initRv() {
         list = new ArrayList<>();
-        commentAdapter = new CommentAdapter(list);
+        commentAdapter = new CommentAdapter(list, new CommentAdapter.onItemClickLintener() {
+            @Override
+            public void onClick(CommentBean item, int childposition) {
+                //点击子评论
+                int cid = item.getCid(); //主评论cid
+                String nickname = item.getChild().get(childposition).getUser().getNickname();//要回复的nickname
+                int id = item.getChild().get(childposition).getUser().getId(); //要回复的id
+                father = String.valueOf(cid);
+                touid = String.valueOf(id);
+                tvHuifu.setVisibility(View.VISIBLE);
+                tvHuifu.setText("回复"+nickname+":");
+                editComment.requestFocus();
+                inputMethodManager.toggleSoftInput(0,0);
+            }
+
+            @Override
+            public void onLongClick(CommentBean item, int childposition) {
+                showCommetDelDialog(String.valueOf(item.getChild().get(childposition).getCid()));
+            }
+        });
+
+
+        commentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //点击主评论
+                String nickname = list.get(position).getUser().getNickname(); //楼主名
+                int cid = list.get(position).getCid(); //评论cid
+                father = String.valueOf(cid);
+                touid = null;
+                tvHuifu.setVisibility(View.GONE);
+                tvHuifu.setText("");
+                editComment.requestFocus();
+                inputMethodManager.toggleSoftInput(0,0);
+
+            }
+        });
+        commentAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+
+                showCommetDelDialog(String.valueOf(list.get(position).getCid()));
+                return true;
+            }
+        });
         rvComment.setAdapter(commentAdapter);
-        rvComment.setLayoutManager(new LinearLayoutManager(WebPageActivity.this,LinearLayoutManager.VERTICAL,false));
-        rvComment.addItemDecoration(new DividerItemDecoration(WebPageActivity.this,DividerItemDecoration.VERTICAL_LIST));
+        rvComment.setLayoutManager(new LinearLayoutManager(WebPageActivity.this, LinearLayoutManager.VERTICAL, false));
+        rvComment.addItemDecoration(new DividerItemDecoration(WebPageActivity.this, DividerItemDecoration.VERTICAL_LIST));
 
 
     }
+
+    private void showCommetDelDialog(final String cid) {
+
+        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE).setTitleText(getResources().getString(R.string.dialog_titles))
+                .setContentText("是否删除这条评论").setConfirmText(getResources().getString(R.string.ok)).setCancelText(getResources().getString(R.string.cancel)).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                deleteComment(cid);
+                sweetAlertDialog.dismissWithAnimation();
+
+
+            }
+        }).show();
+
+    }
+
+    void deleteComment(String cid){
+        String userid = PreUtils.readStrting(WebPageActivity.this, Constant.USER_ID);
+        String token = PreUtils.readStrting(WebPageActivity.this, Constant.USER_TOKEN);
+        HttpUtils.getInstance().getRetrofitInterface().delComment(userid,token,cid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LzyResponse<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+                    @Override
+                    public void onNext(LzyResponse<String> stringLzyResponse) {
+                        if(stringLzyResponse.code==200){
+                            Toast.makeText(WebPageActivity.this ,"删除成功",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(WebPageActivity.this ,stringLzyResponse.message,Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                            Toast.makeText(WebPageActivity.this ,e.getMessage() ,Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onComplete() {
+                        getAllComment();
+                    }
+                });
+
+    }
+
 
     private void initToolBar() {
         setSupportActionBar(toolbar);
@@ -531,9 +639,7 @@ public class WebPageActivity extends BaseActivity {
     }
 
 
-
-
-    private void getAllComment(){
+    private void getAllComment() {
         HttpUtils.getInstance().getRetrofitInterface().getAllComment(news_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -547,14 +653,14 @@ public class WebPageActivity extends BaseActivity {
                     public void onNext(LzyResponse<List<CommentBean>> commentBeanLzyResponse) {
 
                         list.clear();
-                        list.addAll(commentBeanLzyResponse.data) ;
+                        list.addAll(commentBeanLzyResponse.data);
                         commentAdapter.notifyDataSetChanged();
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("TAG", "onError: "+e.getMessage() );
+                        Log.e("TAG", "onError: " + e.getMessage());
                     }
 
                     @Override
@@ -569,32 +675,36 @@ public class WebPageActivity extends BaseActivity {
         String userid = PreUtils.readStrting(WebPageActivity.this, Constant.USER_ID);
         String token = PreUtils.readStrting(WebPageActivity.this, Constant.USER_TOKEN);
         String msg = editComment.getText().toString();
-        if(TextUtils.isEmpty(msg)){
-            Toast.makeText(WebPageActivity.this,"评论不能为空",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(msg)) {
+            Toast.makeText(WebPageActivity.this, "评论不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
 
-
-        HttpUtils.getInstance().getRetrofitInterface().sendComment(news_id,userid,token,msg,39+"",37+"")
+        HttpUtils.getInstance().getRetrofitInterface().sendComment(news_id, userid, token, msg, father, touid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<String>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
+
                     @Override
                     public void onNext(LzyResponse<String> stringLzyResponse) {
 
-                        Toast.makeText(WebPageActivity.this ,"评论成功" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WebPageActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(WebPageActivity.this ,e.getMessage() ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WebPageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
+                        editComment.setText("");
+                        tvHuifu.setVisibility(View.GONE);
+                        inputMethodManager.toggleSoftInput(0,0);
+                        getAllComment();
                     }
                 });
     }
