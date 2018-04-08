@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,12 +127,12 @@ public class WebPageActivity extends BaseActivity {
         initRv();
         initSoft();
 
+
     }
 
     private void initSoft() {
 
          inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
 
     }
 
@@ -189,8 +190,9 @@ public class WebPageActivity extends BaseActivity {
 
     }
 
-    private void showCommetDelDialog(final String cid) {
 
+
+    private void showCommetDelDialog(final String cid) {
         new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE).setTitleText(getResources().getString(R.string.dialog_titles))
                 .setContentText("是否删除这条评论").setConfirmText(getResources().getString(R.string.ok)).setCancelText(getResources().getString(R.string.cancel)).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override

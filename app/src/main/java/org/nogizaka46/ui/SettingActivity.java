@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import org.nogizaka46.bean.UserInfoBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.db.PreUtils;
 import org.nogizaka46.http.HttpUtils;
+import org.nogizaka46.utils.ImageLoader;
 
 import java.io.File;
 import java.util.List;
@@ -99,6 +102,8 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.linear_content)
     LinearLayout linearContent;
     private PopupWindow popupwindow_sex;
+    private String filepath ;
+    private String avatar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +121,11 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                sendUserInfo();
+                if(TextUtils.isEmpty(filepath)){
+                    sendUserInfo();
+                }else{
+                    uploadAvater();
+                }
             }
         });
         initPopup();
@@ -161,6 +170,15 @@ public class SettingActivity extends BaseActivity {
                              tvEmail.setText(data.getEmail());
                              tvIntroduce.setText(data.getIntroduction());
 
+                             if(data.getSex()==1){
+                                 tvGender.setText("男");
+                             }else{
+                                 tvGender.setText("女");
+                             }
+                             
+                             new ImageLoader.Builder(SettingActivity.this).setImageUrl(data.getAvatar()).setImageView(ivAvater);
+
+
                          }else{
                              Toast.makeText(SettingActivity.this ,userInfoBeanLzyResponse.message,Toast.LENGTH_SHORT).show();
                          }
@@ -178,9 +196,14 @@ public class SettingActivity extends BaseActivity {
         String phone = tvPhone.getText().toString();
         String email = tvEmail.getText().toString();
         String intro = tvIntroduce.getText().toString();
+        String s = tvGender.getText().toString();
+        int sex = 0;
+        if(s.equals("男")){
+            sex =1 ;
+        }
 
         HttpUtils.getInstance().getRetrofitInterface()
-                .UserSet(userid,usertoken,nickname,phone,email,intro)
+                .UserSet(userid,usertoken,nickname,phone,email,intro,sex,avatar)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<String>>() {
@@ -438,11 +461,11 @@ public class SettingActivity extends BaseActivity {
                     LocalMedia localMedia = localMedias.get(0);
                     Log.e("TAG", "onActivityResult: " + "1" + localMedia.getCompressPath() + "2" + localMedia.getCutPath() + "3" + localMedia.getPath());
                     if (localMedia.isCompressed()) {
-                        String compressPath = localMedia.getCompressPath();
-                        uploadAvater(compressPath);
+                        filepath = localMedia.getCompressPath();
+                        //uploadAvater(compressPath);
                     } else {
-                        String cutPath = localMedia.getCutPath();
-                        uploadAvater(cutPath);
+                        filepath= localMedia.getCutPath();
+                       // uploadAvater(cutPath);
                     }
 
                  break;
@@ -451,14 +474,11 @@ public class SettingActivity extends BaseActivity {
     }
 
 
-    private void setUserData(String avatar, String nickname, String sex, String birth, String location) {
 
-    }
-
-    private void uploadAvater(String compressPath) {
+    private void uploadAvater() {
         String uid = PreUtils.readStrting(SettingActivity.this, Constant.USER_ID);
         String token = PreUtils.readStrting(SettingActivity.this, Constant.USER_TOKEN);
-        File file = new File(compressPath);
+        File file = new File(filepath);
 
         RequestBody requestBody = new MultipartBody.Builder()
             .setType(MultipartBody.FORM)
@@ -479,7 +499,7 @@ public class SettingActivity extends BaseActivity {
                     @Override
                     public void onNext(LzyResponse<AvatarSucBean> avatarSucBeanLzyResponse) {
                         AvatarSucBean data = avatarSucBeanLzyResponse.data;
-
+                        avatar = data.getAvatar();
                         Toast.makeText(SettingActivity.this ,data.toString() ,Toast.LENGTH_SHORT).show();
                     }
 
@@ -487,11 +507,14 @@ public class SettingActivity extends BaseActivity {
                     public void onError(Throwable e) {
                           Toast.makeText(SettingActivity.this ,e.getMessage(),Toast.LENGTH_SHORT).show();
 
+                          onComplete();
 
                     }
 
                     @Override
                     public void onComplete() {
+
+                        sendUserInfo();
 
                     }
                 });

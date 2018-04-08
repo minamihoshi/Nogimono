@@ -26,6 +26,8 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
+import retrofit2.http.QueryName;
 import retrofit2.http.Url;
 
 
@@ -99,6 +101,7 @@ public interface IApiService {
     Observable<LzyResponse<String>> UserSet(@Query("id") String userid, @Query("token")String toke
             ,@Query("nickname") String nickname ,@Query("phone") String phone,
             @Query("email")String email , @Query("introduction")String introduction
+             ,@Query("sex") int sex,@Query("avatar" )String avatar
     );
 
 

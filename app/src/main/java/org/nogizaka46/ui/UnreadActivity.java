@@ -2,10 +2,11 @@ package org.nogizaka46.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -33,8 +34,15 @@ public class UnreadActivity extends BaseActivity {
 
     @BindView(R.id.rv_unread)
     RecyclerView rvUnread;
-    private UnreadAdapter unreadAdapter ;
-    private List<UnreadComBean> list ;
+    @BindView(R.id.login_back)
+    ImageView loginBack;
+    @BindView(R.id.main_header)
+    TextView mainHeader;
+    @BindView(R.id.register)
+    TextView register;
+    private UnreadAdapter unreadAdapter;
+    private List<UnreadComBean> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,21 +50,35 @@ public class UnreadActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         initRv();
+        mainHeader.setText("未读消息");
+        loginBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        register.setText("已读全部");
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 setCommentRead("all");
+            }
+        });
     }
 
     private void initRv() {
         list = new ArrayList<>();
         unreadAdapter = new UnreadAdapter(list);
         rvUnread.setAdapter(unreadAdapter);
-        rvUnread.setLayoutManager(new LinearLayoutManager(UnreadActivity.this ,LinearLayoutManager.VERTICAL ,false));
+        rvUnread.setLayoutManager(new LinearLayoutManager(UnreadActivity.this, LinearLayoutManager.VERTICAL, false));
 
         unreadAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 int fathercid = list.get(position).getFathercid();
 
-                Intent intent = new Intent(UnreadActivity.this ,CommentDetailActivity.class);
-                intent.putExtra(Constant.COMMENT_FATHER_ID,fathercid);
+                Intent intent = new Intent(UnreadActivity.this, CommentDetailActivity.class);
+                intent.putExtra(Constant.COMMENT_FATHER_ID, fathercid);
                 startActivity(intent);
             }
         });
@@ -81,11 +103,11 @@ public class UnreadActivity extends BaseActivity {
     }
 
 
-    private void setCommentRead(String cid){
+    private void setCommentRead(String cid) {
         String uid = PreUtils.readStrting(this, Constant.USER_ID);
         String token = PreUtils.readStrting(this, Constant.USER_TOKEN);
 
-        HttpUtils.getInstance().getRetrofitInterface().setCommentRead(uid,token,cid)
+        HttpUtils.getInstance().getRetrofitInterface().setCommentRead(uid, token, cid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<String>>() {
@@ -97,27 +119,29 @@ public class UnreadActivity extends BaseActivity {
                     @Override
                     public void onNext(LzyResponse<String> stringLzyResponse) {
 
-                        Toast.makeText(UnreadActivity.this ,"操作成功",Toast.LENGTH_SHORT).show();
-                        onResume();
+                        Toast.makeText(UnreadActivity.this, "操作成功", Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Toast.makeText(UnreadActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        onComplete();
                     }
 
                     @Override
                     public void onComplete() {
-
+                        getUnreadCom();
                     }
                 });
 
     }
+
     private void getUnreadCom() {
 
         String uid = PreUtils.readStrting(this, Constant.USER_ID);
         String token = PreUtils.readStrting(this, Constant.USER_TOKEN);
-        HttpUtils.getInstance().getRetrofitInterface().getUnreadComment(uid ,token)
+        HttpUtils.getInstance().getRetrofitInterface().getUnreadComment(uid, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<List<UnreadComBean>>>() {
@@ -129,7 +153,10 @@ public class UnreadActivity extends BaseActivity {
                     @Override
                     public void onNext(LzyResponse<List<UnreadComBean>> listLzyResponse) {
                         list.clear();
-                        list.addAll(listLzyResponse.data);
+                        if (listLzyResponse.data != null) {
+                            list.addAll(listLzyResponse.data);
+                        }
+
                         unreadAdapter.notifyDataSetChanged();
                     }
 

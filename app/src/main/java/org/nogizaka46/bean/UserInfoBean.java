@@ -20,6 +20,24 @@ public class UserInfoBean {
     private String nickname;
     private String introduction;
     private int status;
+    private int sex ;
+    private String avatar ;
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getEmail() {
         return email;
