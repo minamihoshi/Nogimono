@@ -3,6 +3,7 @@ package org.nogizaka46.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,27 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.nogizaka46.R;
+import org.nogizaka46.bean.LzyResponse;
+import org.nogizaka46.bean.UserInfoBean;
+import org.nogizaka46.config.Constant;
+import org.nogizaka46.db.PreUtils;
+import org.nogizaka46.http.HttpUtils;
 import org.nogizaka46.ui.LoginActivity;
 import org.nogizaka46.ui.SettingActivity;
 import org.nogizaka46.ui.UnreadActivity;
 import org.nogizaka46.ui.activity.AboutActivity;
+import org.nogizaka46.utils.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class Main3Frag extends Fragment {
@@ -48,6 +60,9 @@ public class Main3Frag extends Fragment {
     TextView tvUnread;
     @BindView(R.id.layout_unread)
     LinearLayout layoutUnread;
+    @BindView(R.id.iv_denglu)
+    ImageView ivDenglu;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,7 +78,57 @@ public class Main3Frag extends Fragment {
             return;
         initView();
 
+
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
+
+    }
+
+    void getUserInfo() {
+        String userid = PreUtils.readStrting(getActivity(), Constant.USER_ID);
+        String usertoken = PreUtils.readStrting(getActivity(), Constant.USER_TOKEN);
+        HttpUtils.getInstance().getRetrofitInterface().getUserInfo(userid, usertoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LzyResponse<UserInfoBean>>() {
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LzyResponse<UserInfoBean> userInfoBeanLzyResponse) {
+
+                        if (userInfoBeanLzyResponse.code == 200) {
+                            UserInfoBean data = userInfoBeanLzyResponse.data;
+                            String nickname = data.getNickname();
+                            tvDenglu.setText(nickname);
+                            new ImageLoader.Builder(getActivity()).setImageUrl(data.getAvatar()).setImageView(ivHead).show();
+                        } else {
+                            Toast.makeText(getActivity(), userInfoBeanLzyResponse.message, Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+                });
+    }
+
 
     private void initView() {
 
@@ -109,7 +174,7 @@ public class Main3Frag extends Fragment {
         layoutUnread.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity() , UnreadActivity.class);
+                Intent intent = new Intent(getActivity(), UnreadActivity.class);
                 startActivity(intent);
             }
         });

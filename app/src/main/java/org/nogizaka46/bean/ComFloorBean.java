@@ -144,12 +144,15 @@ public class ComFloorBean {
              * msg : 哈哈
              */
 
+
             private UserBeanX user;
             private TouserBean touser;
             private int cid;
             private String time;
             private int floor;
             private String msg;
+
+
 
             public UserBeanX getUser() {
                 return user;

@@ -33,7 +33,7 @@
     <TextView
         android:id="@+id/tv_floor_comfather"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="140dp"
         android:layout_marginTop="10dp"
         tools:text="#1"
         android:layout_width="wrap_content"

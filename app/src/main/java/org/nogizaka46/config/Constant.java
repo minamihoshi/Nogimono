@@ -32,4 +32,5 @@ public  final static  String KEY_RECOMMEND_URL_KEY="KEY_RECOMMEND_URL_KEY";
      public static final String  USER_TOKEN = "user_token";
 
      public static final String COMMENT_FATHER_ID  ="father_cid";
+     public static final String COMMENT_FATHER_ARTICEL ="father_article";
 }

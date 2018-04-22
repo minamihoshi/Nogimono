@@ -14,6 +14,7 @@ import org.nogizaka46.R;
 import org.nogizaka46.bean.CommentBean;
 import org.nogizaka46.utils.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,15 +43,30 @@ public class CommentAdapter extends BaseQuickAdapter<CommentBean ,BaseViewHolder
                    .setText(R.id.tv_msg_comfather,item.getMsg())
                    .setText(R.id.tv_time_comfather,item.getTime())
                    .setText(R.id.tv_floor_comfather,"#"+item.getFloor());
-        new ImageLoader.Builder(mContext).setImageUrl(item.getUser().getAvatar()).setImageView((ImageView) helper.getView(R.id.iv_avatar_comfather));
+        new ImageLoader.Builder(mContext).setImageUrl(item.getUser().getAvatar()).setImageView((ImageView) helper.getView(R.id.iv_avatar_comfather))
+                .setLoadResourceId(R.drawable.morenhead)
+                .show();
 
 
 
 
         RecyclerView rv_child = helper.getView(R.id.rv_com_child);
 
+
         List<CommentBean.ChildBean> child = item.getChild();
-        ComChildAdapter childAdapter = new ComChildAdapter(child);
+        List<CommentBean.ChildBean> childBeans = new ArrayList<>();
+        ComChildAdapter childAdapter;
+        if(child.size()>4){
+
+            childBeans.addAll(child.subList(0, 4));
+            CommentBean.ChildBean childBean = new CommentBean.ChildBean();
+            childBean.setGoMore(true);
+            childBeans.add(childBean);
+            childAdapter = new ComChildAdapter(childBeans);
+        }else{
+            childAdapter = new ComChildAdapter(child);
+        }
+
         rv_child.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL ,false));
         rv_child.setAdapter(childAdapter);
 

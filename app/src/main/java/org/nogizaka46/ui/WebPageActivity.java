@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
@@ -37,11 +37,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.sina.weibo.sdk.api.WebpageObject;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -76,7 +76,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
 
 
 public class WebPageActivity extends BaseActivity {
@@ -96,6 +95,8 @@ public class WebPageActivity extends BaseActivity {
     Button btnSend;
     @BindView(R.id.tv_huifu)
     TextView tvHuifu;
+    @BindView(R.id.lin_bottom)
+    LinearLayout linBottom;
     private DownloadManager mDownloadManager = null;
     private String mFileName = "";
     private long downloadId;
@@ -114,7 +115,8 @@ public class WebPageActivity extends BaseActivity {
     private String touid;
     private CommentAdapter commentAdapter;
     private List<CommentBean> list;
-  private InputMethodManager inputMethodManager;
+    private InputMethodManager inputMethodManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,18 +124,40 @@ public class WebPageActivity extends BaseActivity {
         ButterKnife.bind(this);
         // img_left_layout.setVisibility(View.VISIBLE);
         context = WebPageActivity.this;
+
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null) {
+                newBean = (NewBean) getIntent().getExtras().getSerializable(Constant.STARTWEB);
+                if (newBean != null) {
+                    previews = newBean.getView();
+                    url = UrlConfig.BASE_FORMATWEB + previews;
+                    Log.e("TAG", "onCreate: "+"--" +url );
+                    news_id = newBean.getId();
+                    isBlog = false;
+                } else {
+                    String blogurl = getIntent().getStringExtra(Constant.STARTWEB_BLOG);
+                    url = blogurl;
+                    isBlog = true;
+                }
+            }
+        }
+
         initToolBar();
         initwebview();
         initRv();
         initSoft();
-
-
+        initComBottom();
+    }
+    private void initComBottom() {
+        if (isBlog) {
+            linBottom.setVisibility(View.GONE);
+        }else{
+            linBottom.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initSoft() {
-
-         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
+        inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
 
     private void initRv() {
@@ -141,6 +165,15 @@ public class WebPageActivity extends BaseActivity {
         commentAdapter = new CommentAdapter(list, new CommentAdapter.onItemClickLintener() {
             @Override
             public void onClick(CommentBean item, int childposition) {
+
+                if(item.getChild().size()>4 && childposition==4){
+                    Intent intent = new Intent(WebPageActivity.this ,CommentDetailActivity.class);
+                    intent.putExtra(Constant.COMMENT_FATHER_ARTICEL,news_id);
+                    intent.putExtra(Constant.COMMENT_FATHER_ID,item.getCid());
+                    startActivity(intent);
+                    return;
+                }
+
                 //点击子评论
                 int cid = item.getCid(); //主评论cid
                 String nickname = item.getChild().get(childposition).getUser().getNickname();//要回复的nickname
@@ -148,13 +181,16 @@ public class WebPageActivity extends BaseActivity {
                 father = String.valueOf(cid);
                 touid = String.valueOf(id);
                 tvHuifu.setVisibility(View.VISIBLE);
-                tvHuifu.setText("回复"+nickname+":");
+                tvHuifu.setText("回复" + nickname + ":");
                 editComment.requestFocus();
-                inputMethodManager.toggleSoftInput(0,0);
+                inputMethodManager.toggleSoftInput(0, 0);
             }
 
             @Override
             public void onLongClick(CommentBean item, int childposition) {
+                if(item.getChild().size()>4 && childposition==4){
+                   return;
+                }
                 showCommetDelDialog(String.valueOf(item.getChild().get(childposition).getCid()));
             }
         });
@@ -171,7 +207,7 @@ public class WebPageActivity extends BaseActivity {
                 tvHuifu.setVisibility(View.GONE);
                 tvHuifu.setText("");
                 editComment.requestFocus();
-                inputMethodManager.toggleSoftInput(0,0);
+                inputMethodManager.toggleSoftInput(0, 0);
 
             }
         });
@@ -191,7 +227,6 @@ public class WebPageActivity extends BaseActivity {
     }
 
 
-
     private void showCommetDelDialog(final String cid) {
         new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE).setTitleText(getResources().getString(R.string.dialog_titles))
                 .setContentText("是否删除这条评论").setConfirmText(getResources().getString(R.string.ok)).setCancelText(getResources().getString(R.string.cancel)).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -207,10 +242,10 @@ public class WebPageActivity extends BaseActivity {
 
     }
 
-    void deleteComment(String cid){
+    void deleteComment(String cid) {
         String userid = PreUtils.readStrting(WebPageActivity.this, Constant.USER_ID);
         String token = PreUtils.readStrting(WebPageActivity.this, Constant.USER_TOKEN);
-        HttpUtils.getInstance().getRetrofitInterface().delComment(userid,token,cid)
+        HttpUtils.getInstance().getRetrofitInterface().delComment(userid, token, cid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<String>>() {
@@ -218,19 +253,22 @@ public class WebPageActivity extends BaseActivity {
                     public void onSubscribe(Disposable d) {
 
                     }
+
                     @Override
                     public void onNext(LzyResponse<String> stringLzyResponse) {
-                        if(stringLzyResponse.code==200){
-                            Toast.makeText(WebPageActivity.this ,"删除成功",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(WebPageActivity.this ,stringLzyResponse.message,Toast.LENGTH_SHORT).show();
+                        if (stringLzyResponse.code == 200) {
+                            Toast.makeText(WebPageActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(WebPageActivity.this, stringLzyResponse.message, Toast.LENGTH_SHORT).show();
                         }
 
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                            Toast.makeText(WebPageActivity.this ,e.getMessage() ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WebPageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onComplete() {
                         getAllComment();
@@ -266,22 +304,7 @@ public class WebPageActivity extends BaseActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initwebview() {
-        if (getIntent() != null) {
-            if (getIntent().getExtras() != null) {
-                newBean = (NewBean) getIntent().getExtras().getSerializable(Constant.STARTWEB);
-                if (newBean != null) {
-                    previews = newBean.getView();
-                    url = UrlConfig.BASE_FORMATWEB + previews;
-                    news_id = newBean.getId();
-                    isBlog = false;
-                } else {
-                    String blogurl = getIntent().getStringExtra(Constant.STARTWEB_BLOG);
-                    url = blogurl;
-                    isBlog = true;
-                }
 
-            }
-        }
         Log.e("TAG", "initwebview: " + url);
         webview.loadUrl(url);
         webSetting = webview.getSettings();
@@ -339,6 +362,12 @@ public class WebPageActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 toolbar.setTitle(view.getTitle());
+
+                ViewGroup.LayoutParams layoutParams = webview.getLayoutParams();
+                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                webview.setLayoutParams(layoutParams);
+
+
                 CookieManager cookieManager = CookieManager.getInstance();
                 CookieStr = cookieManager.getCookie(url);
                 Log.e("TAG", "onPageFinished: " + CookieStr);
@@ -705,7 +734,7 @@ public class WebPageActivity extends BaseActivity {
                     public void onComplete() {
                         editComment.setText("");
                         tvHuifu.setVisibility(View.GONE);
-                        inputMethodManager.toggleSoftInput(0,0);
+                        inputMethodManager.toggleSoftInput(0, 0);
                         getAllComment();
                     }
                 });

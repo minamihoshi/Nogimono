@@ -36,6 +36,7 @@
 
 
         <ImageView
+            android:id="@+id/iv_denglu"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:src="@drawable/entergaryright"

@@ -129,12 +129,21 @@ public class CommentBean {
          * msg : 评论内容
          */
 
+        private boolean isGoMore ;
         private UserBeanX user;
         private UserBeanX touser;
         private int cid;
         private String time;
         private int floor;
         private String msg;
+
+        public boolean isGoMore() {
+            return isGoMore;
+        }
+
+        public void setGoMore(boolean goMore) {
+            isGoMore = goMore;
+        }
 
         public UserBeanX getUser() {
             return user;

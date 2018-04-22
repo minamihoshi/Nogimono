@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.MemberAdapter;
 import org.nogizaka46.base.BaseFragment;
@@ -28,8 +32,8 @@ import org.nogizaka46.utils.ToastHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observer;
@@ -46,14 +50,17 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     TextView tvArea;
     @BindView(R.id.iv_areaselect)
     ImageView ivAreaselect;
+    @BindView(R.id.refresh_game)
+    SmartRefreshLayout refreshGame;
 
     private GridLayoutManager manager;
     private MemberAdapter adapter;
     private List<MemberListBean> list;
-  //  private Subscription subscription;
+    //  private Subscription subscription;
     private boolean isShowSelect;
     private String group;
     Unbinder bind;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -64,7 +71,7 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.main1_frag, container, false);
-         bind = ButterKnife.bind(this, view);
+        bind = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -73,11 +80,17 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
         super.onActivityCreated(savedInstanceState);
 
         list = new ArrayList<>();
-         group = "all";
+        group = "all";
         manager = new GridLayoutManager(mContext, 3, GridLayoutManager.VERTICAL, false);
         adapter = new MemberAdapter(mContext, list, this);
         recyclerview.setLayoutManager(manager);
         recyclerview.setAdapter(adapter);
+        refreshGame.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                initData();
+            }
+        });
         //recyclerview.addItemDecoration(new DividerGridItemDecoration(mContext));
         initData();
         initPopup();
@@ -85,7 +98,7 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
 
     private void initData() {
         //subscription =
-                HttpUtils.getInstance().getRetrofitInterface().getMemberBean(group)
+        HttpUtils.getInstance().getRetrofitInterface().getMemberBean(group)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<MemberListBean>>() {
@@ -94,12 +107,16 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
                     @Override
                     public void onError(Throwable e) {
                         ToastHelper.showToast(mContext, getString(R.string.wangluowenti));
-
+                        onComplete();
                     }
 
                     @Override
                     public void onComplete() {
 
+
+                        if(refreshGame.isRefreshing()){
+                            refreshGame.finishRefresh(2000);
+                        }
                     }
 
                     @Override
@@ -122,7 +139,7 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-      bind.unbind();
+        bind.unbind();
 //        if (!subscription.isUnsubscribed() && subscription != null) {
 //            subscription.unsubscribe();
 //        }
@@ -213,24 +230,24 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_area:
-                if(popupWindow!=null){
-                    if(!isShowSelect){
+                if (popupWindow != null) {
+                    if (!isShowSelect) {
                         // tvArea.setTextColor(getResources().getColor(R.color.colorAccent));
                         tvArea.setSelected(true);
                         ivAreaselect.setImageResource(R.drawable.area2);
-                        isShowSelect =true ;
-                        Log.e("TAG", "onViewClicked: show"  );
+                        isShowSelect = true;
+                        Log.e("TAG", "onViewClicked: show");
                         popupWindow.showAsDropDown(tvArea);
                         //  areaAdapter.notifyDataSetChanged();
 
-                    }else {
+                    } else {
                         tvArea.setSelected(false);
                         ivAreaselect.setImageResource(R.drawable.area1);
-                        isShowSelect =false ;
-                        if(popupWindow.isShowing()){
+                        isShowSelect = false;
+                        if (popupWindow.isShowing()) {
                             popupWindow.dismiss();
                         }
-                        Log.e("TAG", "onViewClicked: dismissssssss"  );
+                        Log.e("TAG", "onViewClicked: dismissssssss");
 
                     }
 

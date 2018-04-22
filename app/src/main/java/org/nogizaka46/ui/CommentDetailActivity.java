@@ -1,5 +1,7 @@
 package org.nogizaka46.ui;
 
+import android.app.UiModeManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,9 +23,11 @@ import org.nogizaka46.adapter.ComDetailAdapter;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.bean.ComFloorBean;
 import org.nogizaka46.bean.LzyResponse;
+import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.db.PreUtils;
 import org.nogizaka46.http.HttpUtils;
+import org.nogizaka46.utils.ImageLoader;
 import org.nogizaka46.view.SweetAlertDialog;
 
 import java.util.ArrayList;
@@ -70,6 +74,7 @@ public class CommentDetailActivity extends BaseActivity {
     private InputMethodManager inputMethodManager;
     private String father;
     private String touid;
+    private String fid; //文章id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +83,21 @@ public class CommentDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         cid = getIntent().getIntExtra(Constant.COMMENT_FATHER_ID, 0);
-
+        fid = getIntent().getStringExtra(Constant.COMMENT_FATHER_ARTICEL);
         initView();
         initRv();
         initSoft();
+    }
+
+    private void openweb(){
+        NewBean bean = new NewBean();
+        bean.setView("/view/"+fid);
+        bean.setId(fid);
+        Intent intent = new Intent(this, WebPageActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constant.STARTWEB,bean);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void initView() {
@@ -90,7 +106,7 @@ public class CommentDetailActivity extends BaseActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                openweb();
             }
         });
         loginBack.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +150,6 @@ public class CommentDetailActivity extends BaseActivity {
     private void initSoft() {
 
         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
     }
 
     private void initRv() {
@@ -197,6 +212,9 @@ public class CommentDetailActivity extends BaseActivity {
                             tvFloorComfather.setText("#" + bean.getFloor().getFloor());
                             tvMsgComfather.setText(bean.getFloor().getMsg());
                             tvTimeComfather.setText(bean.getFloor().getTime());
+
+                            new ImageLoader.Builder(CommentDetailActivity.this).setImageUrl(user.getAvatar()).setImageView(ivAvatarComfather)
+                                    .setLoadResourceId(R.drawable.morenhead).show();
 
                             List<ComFloorBean.FloorBean.ChildBean> child = bean.getFloor().getChild();
 

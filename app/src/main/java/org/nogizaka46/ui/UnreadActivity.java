@@ -76,9 +76,11 @@ public class UnreadActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 int fathercid = list.get(position).getFathercid();
+                int fid = list.get(position).getFid(); //文章id
 
                 Intent intent = new Intent(UnreadActivity.this, CommentDetailActivity.class);
                 intent.putExtra(Constant.COMMENT_FATHER_ID, fathercid);
+                intent.putExtra(Constant.COMMENT_FATHER_ARTICEL,fid);
                 startActivity(intent);
             }
         });

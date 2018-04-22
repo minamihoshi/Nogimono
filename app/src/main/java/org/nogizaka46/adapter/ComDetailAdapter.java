@@ -43,7 +43,12 @@ public class ComDetailAdapter extends BaseQuickAdapter<ComFloorBean.FloorBean.Ch
             helper .setText(R.id.tv_content_comchild ,item.getMsg());
         }
 
-        new ImageLoader.Builder(mContext).setImageUrl(item.getUser().getAvatar()).setImageView((ImageView) helper.getView(R.id.iv_avatar_comchild));
+        new ImageLoader.Builder(mContext).setImageUrl(item.getUser().getAvatar()).setImageView((ImageView) helper.getView(R.id.iv_avatar_comchild))
+                .setLoadResourceId(R.drawable.morenhead)
+                .show();
+
+
+
 
     }
 }

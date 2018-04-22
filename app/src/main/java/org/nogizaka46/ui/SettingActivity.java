@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -53,6 +54,7 @@ import okhttp3.RequestBody;
 public class SettingActivity extends BaseActivity {
 
 
+    private static final String TAG ="SettingActivity" ;
     @BindView(R.id.login_back)
     ImageView loginBack;
     @BindView(R.id.main_header)
@@ -175,8 +177,9 @@ public class SettingActivity extends BaseActivity {
                              }else{
                                  tvGender.setText("女");
                              }
-                             
-                             new ImageLoader.Builder(SettingActivity.this).setImageUrl(data.getAvatar()).setImageView(ivAvater);
+
+                             Log.e(TAG, "avatrar"+data.getAvatar() );
+                             new ImageLoader.Builder(SettingActivity.this).setImageUrl(data.getAvatar()).setImageView(ivAvater).show();
 
 
                          }else{
@@ -500,6 +503,7 @@ public class SettingActivity extends BaseActivity {
                     public void onNext(LzyResponse<AvatarSucBean> avatarSucBeanLzyResponse) {
                         AvatarSucBean data = avatarSucBeanLzyResponse.data;
                         avatar = data.getAvatar();
+                        new ImageLoader.Builder(SettingActivity.this ).setImageUrl(avatar).setImageView(ivAvater).show();
                         Toast.makeText(SettingActivity.this ,data.toString() ,Toast.LENGTH_SHORT).show();
                     }
 

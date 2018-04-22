@@ -28,7 +28,7 @@ public class NewBean implements Serializable{
      * provider : 日不懂语翻不会译的团长
      * summary : miwaスタッフ【公式】@miwastaff 今晚23時在富士台的「Love music」中、将会和播放乃木坂46的各位合唱「結-ゆい-」！
      * detail : /data/646480
-     * view : /preview/article/646480
+     * view : /view/646480
      * withpic : [{"image":"https://platform.idolx46.top/photo/646480/587454e923f04c96ed61cf5bfba280d5.jpg"}]
      */
     @PrimaryKey(AssignType.BY_MYSELF)
