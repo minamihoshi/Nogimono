@@ -212,10 +212,11 @@ public class SettingActivity extends BaseActivity {
                 .subscribe(new Observer<LzyResponse<String>>() {
                     @Override
                     public void onError(Throwable e) {
-                       tvNickname.setText("");
-                       tvPhone.setText("");
-                       tvEmail.setText("");
-                       tvIntroduce.setText("");
+//                       tvNickname.setText("");
+//                       tvPhone.setText("");
+//                       tvEmail.setText("");
+//                       tvIntroduce.setText("");
+                        onComplete();
                     }
 
                     @Override
@@ -231,7 +232,7 @@ public class SettingActivity extends BaseActivity {
                     @Override
                     public void onNext(LzyResponse<String> stringLzyResponse) {
 
-                        Toast.makeText(SettingActivity.this , stringLzyResponse.message ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingActivity.this , "设置成功" ,Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -335,15 +336,15 @@ public class SettingActivity extends BaseActivity {
                 }
                 break;
             case R.id.linear_phone:
-                intent.putExtra("title", "自我介绍");
-                intent.putExtra("hint", "请输入简介");
+                intent.putExtra("title", "设置电话");
+                intent.putExtra("hint", "请输入电话");
                 intent.putExtra("maxLength", 200);
                 startActivityForResult(intent, 2);
                 break;
             case R.id.linear_email:
 
-                intent.putExtra("title", "自我介绍");
-                intent.putExtra("hint", "请输入简介");
+                intent.putExtra("title", "电子邮箱");
+                intent.putExtra("hint", "请输入电子邮箱");
                 intent.putExtra("maxLength", 200);
                 startActivityForResult(intent, 3);
                 break;
@@ -373,9 +374,9 @@ public class SettingActivity extends BaseActivity {
                 .compress(true)
                 .withAspectRatio(1, 1)
                 .hideBottomControls(false)
-                .freeStyleCropEnabled(true)
+                .freeStyleCropEnabled(false)
                 .rotateEnabled(true)
-                .scaleEnabled(true)
+                .scaleEnabled(false)
                 .cropWH(120,120)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
 
@@ -471,6 +472,7 @@ public class SettingActivity extends BaseActivity {
                        // uploadAvater(cutPath);
                     }
 
+                    new ImageLoader.Builder(SettingActivity.this).setImageUrl(filepath).setImageView(ivAvater).show();
                  break;
             }
         }
@@ -501,10 +503,12 @@ public class SettingActivity extends BaseActivity {
 
                     @Override
                     public void onNext(LzyResponse<AvatarSucBean> avatarSucBeanLzyResponse) {
+                        Log.e(TAG, "onNext: " +avatarSucBeanLzyResponse.code + avatarSucBeanLzyResponse.message  );
+                        Log.e(TAG, "onNext: " +avatarSucBeanLzyResponse.toString() );
                         AvatarSucBean data = avatarSucBeanLzyResponse.data;
                         avatar = data.getAvatar();
                         new ImageLoader.Builder(SettingActivity.this ).setImageUrl(avatar).setImageView(ivAvater).show();
-                        Toast.makeText(SettingActivity.this ,data.toString() ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingActivity.this ,"图片上传成功" ,Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
