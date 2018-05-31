@@ -2,39 +2,34 @@ package org.nogizaka46.ui;
 
 import android.os.Bundle;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
 import org.nogizaka46.bean.LzyResponse;
 import org.nogizaka46.bean.RegisterSuccessBean;
 import org.nogizaka46.config.Constant;
-import org.nogizaka46.contract.IApiService;
 import org.nogizaka46.db.PreUtils;
 import org.nogizaka46.http.HttpUtils;
-import org.nogizaka46.view.DropBounceInterpolator;
+import org.nogizaka46.http.IApiService;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -61,16 +56,14 @@ public class LoginActivity extends BaseActivity {
     ImageView ivQq;
     @BindView(R.id.iv_weibo)
     ImageView ivWeibo;
-    @BindView(R.id.top_button_back)
-    ImageButton topButtonBack;
-    @BindView(R.id.title)
-    TextView title;
     @BindView(R.id.ed_pswcommit)
     EditText edPswcommit;
     @BindView(R.id.lin_pswcommit)
     LinearLayout linPswcommit;
+    @BindView(R.id.topbar)
+    QMUITopBarLayout topbar;
 
-    private boolean isLogin =true ;
+    private boolean isLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +80,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void init() {
-        topButtonBack.setVisibility(View.VISIBLE);
 
-        title.setText("登录");
+        topbar.setTitle("登录");
+
         edUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,27 +139,27 @@ public class LoginActivity extends BaseActivity {
         String pswcommit = edPswcommit.getText().toString();
 
 
-        if(isLogin){
-            userlogin(username ,userpsw);
-        }else {
+        if (isLogin) {
+            userlogin(username, userpsw);
+        } else {
 
-            if(TextUtils.isEmpty(pswcommit)){
-                Toast.makeText(LoginActivity.this,"请输入确认密码",Toast.LENGTH_SHORT).show();
-            }else if(!pswcommit.equals(userpsw)){
-                Toast.makeText(LoginActivity.this,"密码不一致",Toast.LENGTH_SHORT).show();
-            }else{
-                userRegister(username ,userpsw);
+            if (TextUtils.isEmpty(pswcommit)) {
+                Toast.makeText(LoginActivity.this, "请输入确认密码", Toast.LENGTH_SHORT).show();
+            } else if (!pswcommit.equals(userpsw)) {
+                Toast.makeText(LoginActivity.this, "密码不一致", Toast.LENGTH_SHORT).show();
+            } else {
+                userRegister(username, userpsw);
             }
 
         }
 
     }
 
-    private void userRegister(String username ,String userpsw) {
+    private void userRegister(String username, String userpsw) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
         //Subscription subscribe =
 
-                retrofitInterface.UserRegiter(username, userpsw)
+        retrofitInterface.UserRegiter(username, userpsw)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<RegisterSuccessBean>>() {
@@ -189,18 +182,18 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onNext(LzyResponse<RegisterSuccessBean> registerSuccessBeanLzyResponse) {
-                      switch (registerSuccessBeanLzyResponse.code){
-                          case 200:
-                              String id = registerSuccessBeanLzyResponse.data.getId();
-                              String token = registerSuccessBeanLzyResponse.data.getToken();
-                              PreUtils.writeString(LoginActivity.this , Constant.USER_ID,id);
-                              PreUtils.writeString(LoginActivity.this ,Constant.USER_TOKEN,token);
-                              Toast.makeText(LoginActivity.this ,"注册成功",Toast.LENGTH_LONG).show();
-                              break ;
-                          case 1 :
-                              Toast.makeText(LoginActivity.this ,registerSuccessBeanLzyResponse.message,Toast.LENGTH_LONG).show();
-                              break;
-                      }
+                        switch (registerSuccessBeanLzyResponse.code) {
+                            case 200:
+                                String id = registerSuccessBeanLzyResponse.data.getId();
+                                String token = registerSuccessBeanLzyResponse.data.getToken();
+                                PreUtils.writeString(LoginActivity.this, Constant.USER_ID, id);
+                                PreUtils.writeString(LoginActivity.this, Constant.USER_TOKEN, token);
+                                Toast.makeText(LoginActivity.this, "注册成功", Toast.LENGTH_LONG).show();
+                                break;
+                            case 1:
+                                Toast.makeText(LoginActivity.this, registerSuccessBeanLzyResponse.message, Toast.LENGTH_LONG).show();
+                                break;
+                        }
 
 
                     }
@@ -209,12 +202,12 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void userlogin(String username ,String userpsw) {
+    private void userlogin(String username, String userpsw) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
-     //Subscription subscribe =
+        //Subscription subscribe =
 
 
-             retrofitInterface.UserLoginNickname(username, userpsw)
+        retrofitInterface.UserLoginNickname(username, userpsw)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LzyResponse<RegisterSuccessBean>>() {
@@ -223,7 +216,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         String message = e.getMessage();
-                        Log.e("TAG", "onError: " + message );
+                        Log.e("TAG", "onError: " + message);
 
                     }
 
@@ -242,22 +235,22 @@ public class LoginActivity extends BaseActivity {
                     public void onNext(LzyResponse<RegisterSuccessBean> registerSuccessBeanLzyResponse) {
 
 
-                        switch (registerSuccessBeanLzyResponse.code){
+                        switch (registerSuccessBeanLzyResponse.code) {
                             case 200:
                                 String id = registerSuccessBeanLzyResponse.data.getId();
                                 String token = registerSuccessBeanLzyResponse.data.getToken();
 
-                                PreUtils.writeString(LoginActivity.this , Constant.USER_ID,id);
-                                PreUtils.writeString(LoginActivity.this ,Constant.USER_TOKEN,token);
-                                Toast.makeText(LoginActivity.this ,"登录成功",Toast.LENGTH_SHORT).show();
+                                PreUtils.writeString(LoginActivity.this, Constant.USER_ID, id);
+                                PreUtils.writeString(LoginActivity.this, Constant.USER_TOKEN, token);
+                                Log.e("sp", "onNext: " + id + token );
+                                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                 finish();
-                                break ;
-                            case 1 :
+                                break;
+                            case 1:
 
-                                Toast.makeText(LoginActivity.this ,registerSuccessBeanLzyResponse.message,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, registerSuccessBeanLzyResponse.message, Toast.LENGTH_SHORT).show();
                                 break;
                         }
-
 
 
                     }
@@ -271,7 +264,7 @@ public class LoginActivity extends BaseActivity {
         TranslateAnimation mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-          mShowAction.setDuration(500);
+        mShowAction.setDuration(500);
         mShowAction.setInterpolator(new BounceInterpolator());
 
         TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
@@ -283,20 +276,20 @@ public class LoginActivity extends BaseActivity {
         mHiddenAction.setDuration(500);
         mHiddenAction.setInterpolator(new FastOutLinearInInterpolator());
 
-        if(isLogin){
-             tvYanzhengma.setText("我要登录");
-             linPswcommit.setVisibility(View.VISIBLE);
+        if (isLogin) {
+            tvYanzhengma.setText("我要登录");
+            linPswcommit.setVisibility(View.VISIBLE);
             linPswcommit.startAnimation(mShowAction);
-             btnCommit.setText("注册");
-             isLogin  = false ;
-         }else{
+            btnCommit.setText("注册");
+            isLogin = false;
+        } else {
 
-             tvYanzhengma.setText("点我注册哦~");
-             linPswcommit.setVisibility(View.GONE);
+            tvYanzhengma.setText("点我注册哦~");
+            linPswcommit.setVisibility(View.GONE);
             linPswcommit.startAnimation(mHiddenAction);
-             btnCommit.setText("登录");
-             isLogin = true;
-         }
+            btnCommit.setText("登录");
+            isLogin = true;
+        }
     }
 
 

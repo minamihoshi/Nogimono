@@ -18,34 +18,69 @@ android {
         applicationId "org.nogizaka46"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "2.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+//
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+
+    signingConfigs {
+        release {
+            try {
+                storeFile file("./minamihoshi.jks")
+                storePassword "linan123"
+                keyAlias "key0"
+                keyPassword "linan123"
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+
+//        debug {
+//            // storeFile file("./debug.keystore")
+//            try {
+//                storeFile file("./minamihoshi.jks")
+//                storePassword "linan123"
+//                keyAlias "key0"
+//                keyPassword "linan123"
+//            } catch (ex) {
+//                throw new InvalidUserDataException(ex.toString())
+//            }
+//        }
     }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug{
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
     }
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 configurations {
-    //all*.exclude  module: 'glide'  //去除重复依赖库
-    //all*.exclude  module: 'ucrop'
+//    all*.exclude  module: 'glide'  //去除重复依赖库
+//    all*.exclude  module: 'ucrop'
     // exclude 'META-INF/rxjava.properties'
 }
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+  //  compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-    compile files('libs/systembartint-1.0.4.jar')
+
     compile files('libs/lite-orm-1.9.1.jar')
     compile 'com.android.support:recyclerview-v7:27.0.1'
     compile 'com.android.support:appcompat-v7:27.0.1'
@@ -75,14 +110,19 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.6'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
+    compile 'com.gyf.barlibrary:barlibrary:2.3.0'
     compile 'com.qmuiteam:qmui:1.1.0'
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
-    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'//没有使用特殊Header，可以不加这行
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'//没有使用特殊Header，可以不加这行
+    compile 'com.tencent.bugly:crashreport_upgrade:1.3.5'
+    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
+    compile 'com.tencent.tinker:tinker-android-lib:1.9.6'
 //    compile ('com.github.xingxing-yan:BLImage:1.0.0'){
 //        exclude group: 'com.github.bumptech.glide', module: 'glide'
 //    }
-    //compile project(':beautifylib')
-//            {
-//        exclude group: 'com.github.bumptech.glide', module: 'glide'
-//    }
+    compile (project(':beautifylib')) {
+        exclude group: 'com.github.bumptech.glide', module: 'glide'
+        exclude module: 'ucrop'
+    }
 }
+apply from: 'tinker-support.gradle'

@@ -1,5 +1,7 @@
 package org.nogizaka46.ui.blogactivity;
 
+import android.accounts.AbstractAccountAuthenticator;
+
 import org.nogizaka46.bean.BlogBean;
 import org.nogizaka46.contract.Contract;
 import org.reactivestreams.Subscriber;
@@ -34,8 +36,10 @@ public class BlogPresenter {
     void getData(String name , int page , int size,String group){
         view.onLoading();
         Observable<List<BlogBean>> observable = model.getData(name, page, size,group);
+
         observable.subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
+                
                   .subscribe(new Observer<List<BlogBean>>() {
                     @Override
                     public void onError(Throwable e) {

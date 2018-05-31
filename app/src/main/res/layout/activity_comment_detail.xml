@@ -52,10 +52,11 @@
 
     <TextView
         android:id="@+id/tv_floor_comfather"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="140dp"
-        android:layout_marginTop="10dp"
+
+        android:layout_toRightOf="@id/iv_avatar_comfather"
+        android:layout_below="@id/tv_nickname_comfather"
         tools:text="#1"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
@@ -78,7 +79,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_below="@id/viewline"
         android:id="@+id/rv_com_child"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,9 +16,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.OnTwoLevelListener;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
+import com.scwang.smartrefresh.layout.header.TwoLevelHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.nogizaka46.R;
@@ -52,6 +57,8 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
     ImageView ivAreaselect;
     @BindView(R.id.refresh_game)
     SmartRefreshLayout refreshGame;
+    @BindView(R.id.head)
+    TwoLevelHeader head;
 
     private GridLayoutManager manager;
     private MemberAdapter adapter;
@@ -91,6 +98,23 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
                 initData();
             }
         });
+        head.setEnablePullToCloseTwoLevel(true);
+        head.setOnTwoLevelListener(new OnTwoLevelListener() {
+            @Override
+            public boolean onTwoLevel(@NonNull RefreshLayout refreshLayout) {
+
+                MemberListBean memberBean = new MemberListBean();
+                memberBean.setRome(Constant.ALLBLOGS);
+                memberBean.setName("全部");
+                Intent intent = new Intent(mContext, BlogActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constant.STARTBLOG, memberBean);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                return false;
+            }
+        });
         //recyclerview.addItemDecoration(new DividerGridItemDecoration(mContext));
         initData();
         initPopup();
@@ -114,7 +138,7 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
                     public void onComplete() {
 
 
-                        if(refreshGame.isRefreshing()){
+                        if (refreshGame.getState() == RefreshState.Refreshing) {
                             refreshGame.finishRefresh(2000);
                         }
                     }
@@ -236,7 +260,7 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
                         tvArea.setSelected(true);
                         ivAreaselect.setImageResource(R.drawable.area2);
                         isShowSelect = true;
-                        Log.e("TAG", "onViewClicked: show");
+
                         popupWindow.showAsDropDown(tvArea);
                         //  areaAdapter.notifyDataSetChanged();
 
@@ -247,7 +271,7 @@ public class Main1Frag extends BaseFragment implements MemberAdapter.onMemberCli
                         if (popupWindow.isShowing()) {
                             popupWindow.dismiss();
                         }
-                        Log.e("TAG", "onViewClicked: dismissssssss");
+
 
                     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.BlogAdapter;
 import org.nogizaka46.base.BaseActivity;
@@ -34,8 +40,8 @@ import org.nogizaka46.utils.ToastHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -46,8 +52,7 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
     Toolbar toolbar;
     @BindView(R.id.recyclerview_blogs)
     RecyclerView recyclerview;
-    @BindView(R.id.swipeRefresh_blog)
-    SwipeRefreshLayout swipeRefresh;
+
     @BindView(R.id.tv_area)
     TextView tvArea;
     @BindView(R.id.iv_areaselect)
@@ -56,6 +61,8 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
     LinearLayout activityBlog;
     @BindView(R.id.rela_sel)
     RelativeLayout relaSel;
+    @BindView(R.id.refresh_blog)
+    SmartRefreshLayout refreshBlog;
     private List<BlogBean> list;
     private BlogAdapter adapter;
     private LinearLayoutManager manager;
@@ -71,11 +78,12 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
     private boolean isShowSelect;
     private String group = "all";
     Unbinder bind;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog);
-         bind = ButterKnife.bind(this);
+        bind = ButterKnife.bind(this);
 
         NeadClear = true;
         Intent intent = getIntent();
@@ -83,8 +91,8 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
         title_toolbar = bean.getName();
         rome = bean.getRome();
         if (Constant.ALLBLOGS.equals(rome)) {
-          relaSel.setVisibility(View.VISIBLE);
-        }else{
+            relaSel.setVisibility(View.VISIBLE);
+        } else {
             relaSel.setVisibility(View.GONE);
         }
 
@@ -94,19 +102,34 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
         initRefresh();
         initPopup();
         presenter = new BlogPresenter(this);
-        presenter.getData(rome, page, size, group);
-       swipeRefresh.setRefreshing(true);
+     //   presenter.getData(rome, page, size, group);
+       // swipeRefresh.setRefreshing(true);
+        refreshBlog.autoRefresh();
     }
 
     private void initRefresh() {
-        swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_purple);
-        //  swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.color_red);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        refreshBlog.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onRefresh() {
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                NeadClear = false;
+                ++page;
+                presenter.getData(rome, page, size, group);
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 onUserRefresh();
             }
         });
+//        swipeRefresh.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_green_light);
+//        //  swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.color_red);
+//        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                onUserRefresh();
+//            }
+//        });
     }
 
     void onUserRefresh() {
@@ -121,26 +144,26 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
         recyclerview.setLayoutManager(manager);
         recyclerview.setAdapter(adapter);
         recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-        recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                //判断是否该加载更多数据（1.屏幕处于停止状态；2.屏幕已经滑动到了item的最底端）
-                if (mLastVisibleItem == adapter.getItemCount() - 1 && newState == RecyclerView
-                        .SCROLL_STATE_IDLE) {
-                    NeadClear = false;
-                    ++page;
-                    presenter.getData(rome, page, size, group);
-
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                mLastVisibleItem = manager.findLastVisibleItemPosition();
-            }
-        });
+//        recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                //判断是否该加载更多数据（1.屏幕处于停止状态；2.屏幕已经滑动到了item的最底端）
+//                if (mLastVisibleItem == adapter.getItemCount() - 1 && newState == RecyclerView
+//                        .SCROLL_STATE_IDLE) {
+//                    NeadClear = false;
+//                    ++page;
+//                    presenter.getData(rome, page, size, group);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                mLastVisibleItem = manager.findLastVisibleItemPosition();
+//            }
+//        });
     }
 
 
@@ -190,8 +213,18 @@ public class BlogActivity extends BaseActivity implements BlogAdapter.onBlogClic
 
     @Override
     public void onLoaded() {
-        if (swipeRefresh != null && swipeRefresh.isRefreshing()) {
-            swipeRefresh.setRefreshing(false);
+        if (refreshBlog != null  ) {
+
+            if(refreshBlog.getState()== RefreshState.Loading){
+                refreshBlog.finishLoadMore();
+
+            }
+
+            if(refreshBlog.getState()== RefreshState.Refreshing){
+                refreshBlog.finishRefresh();
+
+            }
+
         }
     }
 

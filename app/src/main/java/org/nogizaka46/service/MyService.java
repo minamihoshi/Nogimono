@@ -16,10 +16,8 @@ import android.util.Log;
 
 import org.nogizaka46.R;
 import org.nogizaka46.config.Constant;
-import org.nogizaka46.contract.IApiService;
+import org.nogizaka46.http.IApiService;
 import org.nogizaka46.http.HttpUtils;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

@@ -3,7 +3,7 @@ package org.nogizaka46.ui.newsfragment;
 import org.nogizaka46.bean.NewBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.contract.Contract;
-import org.nogizaka46.contract.IApiService;
+import org.nogizaka46.http.IApiService;
 import org.nogizaka46.http.HttpUtils;
 
 import java.util.List;

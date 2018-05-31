@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableOverScrollDrag="true"
+        app:srlEnableLoadMore="false"
+        app:srlEnableRefresh="false"
+        app:srlDragRate="0.75"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
 
     <include layout="@layout/layout_minehead"></include>
 
@@ -20,7 +40,7 @@
 
         <LinearLayout
             style="@style/work_info_left"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0">
 
@@ -28,7 +48,7 @@
                 android:layout_width="25dp"
                 android:layout_height="26dp"
                 android:layout_marginLeft="9dp"
-                android:src="@drawable/icon_im_setting" />
+                android:src="@drawable/unread" />
 
             <TextView
                 android:id="@+id/tv_unread"
@@ -75,7 +95,7 @@
                 android:layout_width="25dp"
                 android:layout_height="26dp"
                 android:layout_marginLeft="9dp"
-                android:src="@drawable/icon_im_setting" />
+                android:src="@drawable/setting" />
 
             <TextView
                 android:id="@+id/settings"
@@ -123,7 +143,7 @@
                 android:layout_width="25dp"
                 android:layout_height="26dp"
                 android:layout_marginLeft="9dp"
-                android:src="@drawable/icon_item_user" />
+                android:src="@drawable/about" />
 
             <TextView
                 android:id="@+id/about"
@@ -170,7 +190,7 @@
                 android:layout_width="25dp"
                 android:layout_height="26dp"
                 android:layout_marginLeft="9dp"
-                android:src="@drawable/imageselect" />
+                android:src="@drawable/tuya" />
 
             <TextView
                 android:id="@+id/imagesel"
@@ -200,6 +220,7 @@
         android:layout_marginTop="20dp" >
 
         <Button
+            android:visibility="gone"
             android:id="@+id/exit_btn"
             android:layout_width="fill_parent"
             android:layout_height="43dp"
@@ -208,6 +229,7 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>
-
-
+        </LinearLayout>
+        </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

@@ -20,7 +20,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -38,10 +41,15 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -76,6 +84,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 
 public class WebPageActivity extends BaseActivity {
@@ -116,6 +126,7 @@ public class WebPageActivity extends BaseActivity {
     private CommentAdapter commentAdapter;
     private List<CommentBean> list;
     private InputMethodManager inputMethodManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +176,6 @@ public class WebPageActivity extends BaseActivity {
         commentAdapter = new CommentAdapter(list, new CommentAdapter.onItemClickLintener() {
             @Override
             public void onClick(CommentBean item, int childposition) {
-
                 if(item.getChild().size()>4 && childposition==4){
                     Intent intent = new Intent(WebPageActivity.this ,CommentDetailActivity.class);
                     intent.putExtra(Constant.COMMENT_FATHER_ARTICEL,news_id);
@@ -176,14 +186,23 @@ public class WebPageActivity extends BaseActivity {
 
                 //点击子评论
                 int cid = item.getCid(); //主评论cid
-                String nickname = item.getChild().get(childposition).getUser().getNickname();//要回复的nickname
-                int id = item.getChild().get(childposition).getUser().getId(); //要回复的id
+                CommentBean.ChildBean childBean = item.getChild().get(childposition);
+
+                CommentBean.ChildBean.UserBeanX user = childBean.getUser();
+                String nickname = user.getNickname();//要回复的nickname
+                int id = user.getId(); //要回复的id
                 father = String.valueOf(cid);
                 touid = String.valueOf(id);
                 tvHuifu.setVisibility(View.VISIBLE);
-                tvHuifu.setText("回复" + nickname + ":");
+                SpannableString ss = new SpannableString("回复#"+item.getFloor()+"@"+childBean.getFloor() + nickname + ":");//定义hint的值
+                AbsoluteSizeSpan ass = new AbsoluteSizeSpan(12,true);//设置字体大小 true表示单位是sp
+                ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+                editComment.setHint(ss);
                 editComment.requestFocus();
+
                 inputMethodManager.toggleSoftInput(0, 0);
+
             }
 
             @Override
@@ -200,14 +219,22 @@ public class WebPageActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //点击主评论
-                String nickname = list.get(position).getUser().getNickname(); //楼主名
+                CommentBean.UserBean user = list.get(position).getUser();
+
+                String nickname = user.getNickname(); //楼主名
                 int cid = list.get(position).getCid(); //评论cid
                 father = String.valueOf(cid);
                 touid = null;
-                tvHuifu.setVisibility(View.GONE);
-                tvHuifu.setText("");
+                tvHuifu.setVisibility(View.VISIBLE);
                 editComment.requestFocus();
+
+                SpannableString ss = new SpannableString("回复#"+list.get(position).getFloor() + nickname+":" );//定义hint的值
+                AbsoluteSizeSpan ass = new AbsoluteSizeSpan(12,true);//设置字体大小 true表示单位是sp
+                ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                editComment.setHint(ss);
+
                 inputMethodManager.toggleSoftInput(0, 0);
+
 
             }
         });
@@ -242,8 +269,18 @@ public class WebPageActivity extends BaseActivity {
 
     }
 
+
+    //删除评论
     void deleteComment(String cid) {
         String userid = PreUtils.readStrting(WebPageActivity.this, Constant.USER_ID);
+
+        if(TextUtils.isEmpty(userid)){
+            Toast.makeText(this, "您还未登录", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         String token = PreUtils.readStrting(WebPageActivity.this, Constant.USER_TOKEN);
         HttpUtils.getInstance().getRetrofitInterface().delComment(userid, token, cid)
                 .subscribeOn(Schedulers.io())
@@ -577,9 +614,7 @@ public class WebPageActivity extends BaseActivity {
                     }
                     UMShareUtil.shareUrl(WebPageActivity.this, url, title, summary, image, umShareListener);
                 }
-
                 break;
-
         }
         return true;
     }
@@ -655,9 +690,15 @@ public class WebPageActivity extends BaseActivity {
     };
 
 
-    @OnClick({R.id.toolbar, R.id.edit_comment, R.id.btn_send})
+    @OnClick({R.id.toolbar, R.id.edit_comment, R.id.btn_send,R.id.tv_huifu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_huifu:
+                tvHuifu.setVisibility(View.GONE);
+                father = null;
+                touid = null ;
+                editComment.setHint("");
+                break;
             case R.id.toolbar:
                 break;
             case R.id.edit_comment:
@@ -704,8 +745,22 @@ public class WebPageActivity extends BaseActivity {
 
     private void sendComment() {
         String userid = PreUtils.readStrting(WebPageActivity.this, Constant.USER_ID);
+
+        if(TextUtils.isEmpty(userid)){
+
+            Toast.makeText(this, "评论需要登录", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+
+        }
         String token = PreUtils.readStrting(WebPageActivity.this, Constant.USER_TOKEN);
         String msg = editComment.getText().toString();
+
+
+
+
         if (TextUtils.isEmpty(msg)) {
             Toast.makeText(WebPageActivity.this, "评论不能为空", Toast.LENGTH_SHORT).show();
             return;
@@ -739,4 +794,9 @@ public class WebPageActivity extends BaseActivity {
                     }
                 });
     }
+
+
+
+
+
 }

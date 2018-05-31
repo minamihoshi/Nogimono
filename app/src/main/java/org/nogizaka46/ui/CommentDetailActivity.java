@@ -260,6 +260,15 @@ public class CommentDetailActivity extends BaseActivity {
 
     void deleteComment(String cid) {
         String userid = PreUtils.readStrting(CommentDetailActivity.this, Constant.USER_ID);
+
+        if(TextUtils.isEmpty(userid)){
+
+            Toast.makeText(this, "您还没有登录", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this ,LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         String token = PreUtils.readStrting(CommentDetailActivity.this, Constant.USER_TOKEN);
         HttpUtils.getInstance().getRetrofitInterface().delComment(userid, token, cid)
                 .subscribeOn(Schedulers.io())
@@ -295,6 +304,13 @@ public class CommentDetailActivity extends BaseActivity {
 
     private void sendComment() {
         String userid = PreUtils.readStrting(CommentDetailActivity.this, Constant.USER_ID);
+        if(TextUtils.isEmpty(userid)){
+
+            Toast.makeText(this, "您还没有登录", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this ,LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
         String token = PreUtils.readStrting(CommentDetailActivity.this, Constant.USER_TOKEN);
         String msg = editComment.getText().toString();
         if (TextUtils.isEmpty(msg)) {

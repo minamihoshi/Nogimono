@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
 <!--<include layout="@layout/headtoolbar"/>-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         />
@@ -19,10 +20,33 @@
         android:orientation="vertical"
         >
 
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            app:srlHeaderHeight="150dp"
+            app:srlHeaderMaxDragRate="1"
+            app:srlEnableLoadMore="false"
+            >
+
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:lineSpacingExtra="5dp"
+                android:padding="20dp"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp"
+                android:text="网页由 乃木物 提供\n合作或加入Q480242179"
+                app:layout_srlBackgroundColor="#555"
+                app:layout_srlSpinnerStyle="FixedBehind"/>
+
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_height="match_parent"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +68,9 @@
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <include layout="@layout/layout_comment_bottom"></include>
     </LinearLayout>
+
 </LinearLayout>

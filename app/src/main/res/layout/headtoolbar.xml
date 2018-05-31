@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="50dp"
-    android:background="@color/ngzkpurple"
     android:gravity="center_horizontal|center_vertical"
     android:orientation="horizontal" >
 
@@ -18,27 +17,13 @@
         android:orientation="horizontal"
         android:paddingRight="10dp">
 
-        <ImageButton
-            android:id="@+id/top_button_back"
-            android:layout_width="13dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/back_bg"
-            android:clickable="false"
-            android:focusable="false"
-            android:gravity="center_vertical"
-            android:paddingBottom="5dp"
-            />
-
     </LinearLayout>
     <TextView
         android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/ngzkpurple"
         android:layout_marginLeft="55dp"
         android:layout_marginRight="55dp"
         android:textSize="20sp"
@@ -69,5 +54,21 @@
             android:paddingBottom="5dp"
              />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/top_button_back"
+        android:layout_width="13dp"
+        android:layout_height="20dp"
+        android:layout_alignEnd="@+id/back_layout"
+        android:layout_alignRight="@+id/back_layout"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/back_bg"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dp" />
 
 </RelativeLayout>

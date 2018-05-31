@@ -57,12 +57,12 @@ public class Main2Frag extends Fragment {
     }
     private void initData() {
         mTitleList.add(getResources().getString(R.string.tab_1_txt));
-        mTitleList.add(getResources().getString(R.string.tab_2_txt));
         mTitleList.add(getResources().getString(R.string.tab_3_txt));
+        mTitleList.add(getResources().getString(R.string.tab_2_txt));
         mTitleList.add(getResources().getString(R.string.tab_4_txt));
         mPathList.add(Constant.TYPE_ALL);
-        mPathList.add(Constant.TYPE_BLOG);
         mPathList.add(Constant.TYPE_NEWS);
+        mPathList.add(Constant.TYPE_BLOG);
         mPathList.add(Constant.TYPE_MAGAZINE);
         initFrag();
         tabLayout.setTabMode(TabLayout. MODE_FIXED);//设置tab模式，当前为系统默认模式

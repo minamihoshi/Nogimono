@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="wrap_content">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_btn_bg_color"
+        ></View>
     <LinearLayout
         android:layout_marginTop="2dp"
         android:id="@+id/lin_bottom"
@@ -12,36 +19,41 @@
         android:background="@color/white"
 
         >
+
         <TextView
             android:id="@+id/tv_huifu"
             android:visibility="gone"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="回复："
-            android:textColor="@color/white"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+
+            android:text="评论文章"
+            android:textSize="13sp"
             android:gravity="center"
-            android:background="@drawable/shape_com"
-            />
+            android:textColor="@color/ngzkpurple" />
 
         <EditText
             android:id="@+id/edit_comment"
             android:layout_width="0dp"
-            android:layout_weight="5"
-
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:textColorHint="@color/black_overlay"
+            android:background="@null" />
 
         <Button
             android:id="@+id/btn_send"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="50dp"
             android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:minWidth="80dp"
+            android:background="@null"
+            android:gravity="center"
             android:text="发送"
-            android:textColor="@color/white"
-            android:background="@drawable/shape_com"
-            android:layout_margin="5dp"
-            />
+            android:textColor="@color/ngzkpurple"
+            android:textSize="18sp" />
 
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

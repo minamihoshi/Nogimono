@@ -4,7 +4,6 @@ package org.nogizaka46.http;
 
 
 import org.nogizaka46.config.UrlConfig;
-import org.nogizaka46.contract.IApiService;
 import org.nogizaka46.utils.FileManger;
 
 import java.util.concurrent.TimeUnit;

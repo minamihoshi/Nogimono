@@ -12,28 +12,39 @@
         android:id="@+id/refresh_game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlPrimaryColor="@color/ngzkpurple"
-        app:srlAccentColor="@android:color/white"
+
+        app:srlAccentColor="@color/ngzkpurple"
         app:srlEnablePreviewInEditMode="true"
+        android:background="@color/white"
+        app:srlEnableLoadMore="false"
+        app:srlEnableOverScrollDrag="true"
         >
 
-        <com.scwang.smartrefresh.header.FunGameHitBlockHeader
+      <com.scwang.smartrefresh.layout.header.TwoLevelHeader
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <com.scwang.smartrefresh.header.StoreHouseHeader
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            app:fgvLeftColor="@color/black"
-            app:fgvRightColor="@color/blue"
-            app:fgvMiddleColor="@color/white"
-
+            android:layout_height="60dp"
+            app:shhText="nogimono"
             >
-        </com.scwang.smartrefresh.header.FunGameHitBlockHeader>
+        </com.scwang.smartrefresh.header.StoreHouseHeader>
 
-
+</com.scwang.smartrefresh.layout.header.TwoLevelHeader>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_member"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+
+        >
 
     </android.support.v7.widget.RecyclerView>
+
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

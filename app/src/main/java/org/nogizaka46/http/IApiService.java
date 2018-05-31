@@ -1,4 +1,4 @@
-package org.nogizaka46.contract;
+package org.nogizaka46.http;
 
 
 import org.nogizaka46.bean.AvatarSucBean;

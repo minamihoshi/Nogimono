@@ -39,11 +39,11 @@
             android:id="@+id/iv_denglu"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:src="@drawable/entergaryright"
-            android:adjustViewBounds="true"
             android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/tv_denglu"
             android:layout_toRightOf="@+id/tv_denglu"
-            android:layout_toEndOf="@+id/tv_denglu" />
+            android:adjustViewBounds="true"
+            android:src="@drawable/entergaryright" />
 
 
 

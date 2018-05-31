@@ -1,7 +1,8 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!--Theme.AppCompat.Light.NoActionBar-->
+    <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
@@ -27,12 +28,14 @@
     </style>
 
     <style name="my_info">
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">5dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
+
+
     </style>
 
 
@@ -82,7 +85,7 @@
 
 
     <style name="info_row_line">
-        <item name="android:background">@color/gray</item>
+        <item name="android:background">@color/transparent</item>
         <item name="android:layout_marginLeft">15dp</item>
     </style>
 

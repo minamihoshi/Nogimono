@@ -7,10 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -24,21 +26,19 @@ import java.util.Map;
 public class BaseActivity extends AppCompatActivity {
     public Handler handler;
     public List<Map<String, Object>> mSelfData;
-
+    ImmersionBar immersionBar;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         PushAgent.getInstance(this).onAppStart();
         mSelfData = new ArrayList<Map<String, Object>>();
-       //  修改状态栏颜色，4.4+生效
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus();
-        }
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintColor(R.color.main_bg_color);//通知栏所需颜色
 
+         immersionBar = ImmersionBar.with(this);
+         immersionBar
+                .statusBarColor(R.color.white)
+                .statusBarDarkFont(true,0.2f)
+                .init();
     }
     protected void setTranslucentStatus() {
         Window window = getWindow();
@@ -70,5 +70,12 @@ public class BaseActivity extends AppCompatActivity {
         WindowManager.LayoutParams lp = this.getWindow().getAttributes();
         lp.alpha = bgalpha;
         this.getWindow().setAttributes(lp);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (immersionBar != null)
+         immersionBar.destroy();
     }
 }

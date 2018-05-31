@@ -1,10 +1,14 @@
 package org.nogizaka46.ui.fragment;
 
+import android.Manifest;
+import android.app.UiModeManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.yyx.beautifylib.model.BLPickerParam;
+import com.yyx.beautifylib.model.BLResultParam;
+import com.yyx.beautifylib.utils.ToastUtils;
 
 import org.nogizaka46.R;
 import org.nogizaka46.bean.LzyResponse;
@@ -25,6 +33,8 @@ import org.nogizaka46.ui.UnreadActivity;
 import org.nogizaka46.ui.activity.AboutActivity;
 import org.nogizaka46.utils.ImageLoader;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -32,6 +42,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class Main3Frag extends Fragment {
@@ -62,7 +76,8 @@ public class Main3Frag extends Fragment {
     LinearLayout layoutUnread;
     @BindView(R.id.iv_denglu)
     ImageView ivDenglu;
-
+    private String userid ;
+    private String usertoken;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +91,8 @@ public class Main3Frag extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null)
             return;
-        initView();
+           initView();
+
 
 
     }
@@ -89,8 +105,18 @@ public class Main3Frag extends Fragment {
     }
 
     void getUserInfo() {
-        String userid = PreUtils.readStrting(getActivity(), Constant.USER_ID);
-        String usertoken = PreUtils.readStrting(getActivity(), Constant.USER_TOKEN);
+
+
+         userid = PreUtils.readStrting(getActivity(), Constant.USER_ID);
+         usertoken = PreUtils.readStrting(getActivity(), Constant.USER_TOKEN);
+
+        if(TextUtils.isEmpty(userid)){
+            //Toast.makeText(getActivity(), "您还没有登录账号", Toast.LENGTH_SHORT).show();
+            tvDenglu.setText("未登录");
+            ivHead.setImageResource(R.drawable.morenhead);
+            return;
+        }
+
         HttpUtils.getInstance().getRetrofitInterface().getUserInfo(userid, usertoken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -119,7 +145,7 @@ public class Main3Frag extends Fragment {
                             UserInfoBean data = userInfoBeanLzyResponse.data;
                             String nickname = data.getNickname();
                             tvDenglu.setText(nickname);
-                            new ImageLoader.Builder(getActivity()).setImageUrl(data.getAvatar()).setImageView(ivHead).show();
+                            new ImageLoader.Builder(getActivity()).setImageUrl(data.getAvatar()).setLoadResourceId(R.drawable.morenhead).setImageView(ivHead).show();
                         } else {
                             Toast.makeText(getActivity(), userInfoBeanLzyResponse.message, Toast.LENGTH_SHORT).show();
                         }
@@ -151,7 +177,15 @@ public class Main3Frag extends Fragment {
         layout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                Log.e("sp", "onClick: " + userid +usertoken);
+
+                Intent intent = new Intent();
+                if(TextUtils.isEmpty(userid)){
+                    intent.setClass(getActivity() , LoginActivity.class);
+                }else{
+                    intent.setClass(getActivity(),SettingActivity.class);
+                }
+
                 startActivity(intent);
 
             }
@@ -159,13 +193,17 @@ public class Main3Frag extends Fragment {
         layout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  gotoPhotoPickActivity();
+                  gotoPhotoPickActivity();
             }
         });
 
         tvDenglu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+              if(!TextUtils.isEmpty(userid)){
+                  return;
+              }
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
@@ -174,7 +212,14 @@ public class Main3Frag extends Fragment {
         layoutUnread.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UnreadActivity.class);
+
+                Intent intent = new Intent();
+                if(TextUtils.isEmpty(userid)){
+
+                    intent.setClass(getActivity() , LoginActivity.class);
+                }else {
+                    intent.setClass(getActivity() , UnreadActivity.class);
+                }
                 startActivity(intent);
             }
         });
@@ -189,31 +234,31 @@ public class Main3Frag extends Fragment {
     }
 
 
-//    //跳转图片选择页面
-//    @AfterPermissionGranted(0)
-//    private void gotoPhotoPickActivity() {
-//        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-//        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-//            BLPickerParam.startActivity(getActivity());
-//        } else {
-//            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问读写权限", 0, perms);
-//        }
-//    }
+    //跳转图片选择页面
+    @AfterPermissionGranted(0)
+    private void gotoPhotoPickActivity() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
+            BLPickerParam.startActivity(getActivity());
+        } else {
+            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问读写权限", 0, perms);
+        }
+    }
 
     //获取返回结果数据
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK && requestCode == BLPickerParam.REQUEST_CODE_PHOTO_PICKER) {
-//            BLResultParam param = data.getParcelableExtra(BLResultParam.KEY);
-//            List<String> imageList = param.getImageList();
-//            StringBuilder sb = new StringBuilder();
-//            for (String path : imageList) {
-//                sb.append(path);
-//                sb.append("\n");
-//            }
-//            ToastUtils.toast(getActivity(), sb.toString());
-//        }
+        if (resultCode == RESULT_OK && requestCode == BLPickerParam.REQUEST_CODE_PHOTO_PICKER) {
+            BLResultParam param = data.getParcelableExtra(BLResultParam.KEY);
+            List<String> imageList = param.getImageList();
+            StringBuilder sb = new StringBuilder();
+            for (String path : imageList) {
+                sb.append(path);
+                sb.append("\n");
+            }
+            ToastUtils.toast(getActivity(), sb.toString());
+        }
 
     }
 

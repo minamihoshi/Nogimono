@@ -25,6 +25,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
         tools:text="1分钟前"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true" />
@@ -32,9 +33,10 @@
 
     <TextView
         android:id="@+id/tv_floor_comfather"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="140dp"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv_nickname_comfather"
+        android:layout_toRightOf="@id/iv_avatar_comfather"
+        android:layout_marginTop="2dp"
+        android:textSize="10sp"
         tools:text="#1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,6 +48,7 @@
         android:layout_alignBottom="@+id/iv_avatar_comfather"
         android:layout_toEndOf="@+id/iv_avatar_comfather"
         android:layout_toRightOf="@+id/iv_avatar_comfather"
+        android:textSize="12sp"
         android:text="我是评论啦啦啦。。。。。测试评论" />
 
     <View
@@ -58,7 +61,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_below="@id/viewline"
         android:id="@+id/rv_com_child"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

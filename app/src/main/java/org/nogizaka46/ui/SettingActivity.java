@@ -35,6 +35,7 @@ import org.nogizaka46.config.Constant;
 import org.nogizaka46.db.PreUtils;
 import org.nogizaka46.http.HttpUtils;
 import org.nogizaka46.utils.ImageLoader;
+import org.nogizaka46.utils.ToastHelper;
 
 import java.io.File;
 import java.util.List;
@@ -355,7 +356,11 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void logout() {
-        //退出登录
+        PreUtils.writeString(this, Constant.USER_ID,null);
+        PreUtils.writeString(this, Constant.USER_TOKEN,null);
+
+        ToastHelper.showToast(this,"登出成功");
+        finish();
 
     }
 

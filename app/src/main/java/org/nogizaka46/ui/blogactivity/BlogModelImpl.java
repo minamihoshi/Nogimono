@@ -1,11 +1,9 @@
 package org.nogizaka46.ui.blogactivity;
 
-import android.util.Log;
-
 import org.nogizaka46.bean.BlogBean;
 import org.nogizaka46.config.Constant;
 import org.nogizaka46.contract.Contract;
-import org.nogizaka46.contract.IApiService;
+import org.nogizaka46.http.IApiService;
 import org.nogizaka46.http.HttpUtils;
 
 import java.util.List;

@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBaseConfig;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
@@ -38,6 +40,8 @@ public class MyApplication extends CrashApplication{
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+        // 安装tinker
+        Beta.installTinker();
     }
 
 
@@ -56,6 +60,8 @@ public class MyApplication extends CrashApplication{
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Bugly.init(getApplicationContext(), "497ee12d1d", false);
 
         Config.isJumptoAppStore = true;
         UMShareAPI.get(this);

@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.qmuiteam.qmui.widget.QMUIWindowInsetLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
-    >
 
-  <include layout="@layout/headtoolbar" ></include>
+    >
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_marginTop="?attr/qmui_topbar_height"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+
+        >
+
 
 
     <ImageView
@@ -27,8 +45,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_et">
 
@@ -71,9 +89,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/shape_et">
 
         <EditText
@@ -114,9 +132,9 @@
         android:id="@+id/lin_pswcommit"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="15dp"
         android:visibility="gone"
         android:background="@drawable/shape_et">
 
@@ -143,8 +161,8 @@
         android:layout_width="match_parent"
         android:text="登录"
         android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:textColor="@color/white"
         android:gravity="center"
         android:background="@drawable/btn_bggray"
@@ -187,6 +205,7 @@
 
 
     <ImageView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
        android:src="@drawable/quicklog"
@@ -194,6 +213,7 @@
         ></ImageView>
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -226,5 +246,8 @@
             android:src="@drawable/weibothird" />
 
     </LinearLayout>
-</LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+</com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>
 
