@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/PushSDK" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/beautifylib" />
+            <option value="$PROJECT_DIR$/ocr_ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

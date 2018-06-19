@@ -56,16 +56,24 @@ public class Main2Frag extends Fragment {
         //viewPager.setPageTransformer();
     }
     private void initData() {
+       // 11 博客（推特类） 12 新闻  13 出演 14 通稿 15发售 16 其他
         mTitleList.add(getResources().getString(R.string.tab_1_txt));
         mTitleList.add(getResources().getString(R.string.tab_3_txt));
         mTitleList.add(getResources().getString(R.string.tab_2_txt));
-        mTitleList.add(getResources().getString(R.string.tab_4_txt));
+        mTitleList.add(getResources().getString(R.string.tab_5_txt));
+        mTitleList.add(getResources().getString(R.string.tab_6_txt));
+        mTitleList.add(getResources().getString(R.string.tab_7_txt));
+        mTitleList.add(getResources().getString(R.string.tab_8_txt));
+
         mPathList.add(Constant.TYPE_ALL);
         mPathList.add(Constant.TYPE_NEWS);
         mPathList.add(Constant.TYPE_BLOG);
-        mPathList.add(Constant.TYPE_MAGAZINE);
+        mPathList.add(Constant.TYPE_ACT);
+        mPathList.add(Constant.TYPE_MEDIA);
+        mPathList.add(Constant.TYPE_RELEASE);
+        mPathList.add(Constant.TYPE_OTHER);
         initFrag();
-        tabLayout.setTabMode(TabLayout. MODE_FIXED);//设置tab模式，当前为系统默认模式
+        tabLayout.setTabMode(TabLayout. MODE_SCROLLABLE);//设置tab模式，当前为系统默认模式
         MyPagerAdapter mAdapter = new MyPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。

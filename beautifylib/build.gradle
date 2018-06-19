@@ -40,4 +40,5 @@ dependencies {
     implementation 'com.yalantis:ucrop:2.2.0'
     implementation 'com.yalantis:ucrop:2.2.0-native'
     implementation files('libs/camerasdk_lib.jar')
+
 }

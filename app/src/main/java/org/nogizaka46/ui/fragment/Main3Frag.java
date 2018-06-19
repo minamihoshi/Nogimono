@@ -1,14 +1,15 @@
 package org.nogizaka46.ui.fragment;
 
 import android.Manifest;
-import android.app.UiModeManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,9 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yyx.beautifylib.model.BLPickerParam;
-import com.yyx.beautifylib.model.BLResultParam;
-import com.yyx.beautifylib.utils.ToastUtils;
+import com.baidu.ocr.ui.camera.CameraActivity;
+import com.qmuiteam.qmui.widget.QMUIProgressBar;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
 
 import org.nogizaka46.R;
 import org.nogizaka46.bean.LzyResponse;
@@ -31,7 +35,9 @@ import org.nogizaka46.ui.LoginActivity;
 import org.nogizaka46.ui.SettingActivity;
 import org.nogizaka46.ui.UnreadActivity;
 import org.nogizaka46.ui.activity.AboutActivity;
+import org.nogizaka46.utils.FileUtil;
 import org.nogizaka46.utils.ImageLoader;
+import org.nogizaka46.utils.RecognizeService;
 
 import java.util.List;
 
@@ -42,10 +48,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
+
 
 import static android.app.Activity.RESULT_OK;
+import static com.tencent.bugly.beta.tinker.TinkerManager.getApplication;
 
 
 public class Main3Frag extends Fragment {
@@ -76,9 +82,12 @@ public class Main3Frag extends Fragment {
     LinearLayout layoutUnread;
     @BindView(R.id.iv_denglu)
     ImageView ivDenglu;
-    private String userid ;
+    @BindView(R.id.layout4)
+    LinearLayout layout4;
+    private String userid;
     private String usertoken;
-
+    private QMUITipDialog   tipDialog;
+    private static final int REQUEST_CODE_GENERAL_BASIC = 106;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.main3_frag, container, false);
@@ -91,8 +100,7 @@ public class Main3Frag extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null)
             return;
-           initView();
-
+        initView();
 
 
     }
@@ -106,11 +114,10 @@ public class Main3Frag extends Fragment {
 
     void getUserInfo() {
 
+        userid = PreUtils.readStrting(getActivity(), Constant.USER_ID);
+        usertoken = PreUtils.readStrting(getActivity(), Constant.USER_TOKEN);
 
-         userid = PreUtils.readStrting(getActivity(), Constant.USER_ID);
-         usertoken = PreUtils.readStrting(getActivity(), Constant.USER_TOKEN);
-
-        if(TextUtils.isEmpty(userid)){
+        if (TextUtils.isEmpty(userid)) {
             //Toast.makeText(getActivity(), "您还没有登录账号", Toast.LENGTH_SHORT).show();
             tvDenglu.setText("未登录");
             ivHead.setImageResource(R.drawable.morenhead);
@@ -177,23 +184,36 @@ public class Main3Frag extends Fragment {
         layout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("sp", "onClick: " + userid +usertoken);
+                Log.e("sp", "onClick: " + userid + usertoken);
 
                 Intent intent = new Intent();
-                if(TextUtils.isEmpty(userid)){
-                    intent.setClass(getActivity() , LoginActivity.class);
-                }else{
-                    intent.setClass(getActivity(),SettingActivity.class);
+                if (TextUtils.isEmpty(userid)) {
+                    intent.setClass(getActivity(), LoginActivity.class);
+                } else {
+                    intent.setClass(getActivity(), SettingActivity.class);
                 }
 
                 startActivity(intent);
 
             }
         });
+        layout3.setVisibility(View.GONE);
         layout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  gotoPhotoPickActivity();
+               // gotoPhotoPickActivity();
+            }
+        });
+
+        layout4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CameraActivity.class);
+                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+                        FileUtil.getSaveFile(getApplication()).getAbsolutePath());
+                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
+                        CameraActivity.CONTENT_TYPE_GENERAL);
+                startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
             }
         });
 
@@ -201,9 +221,9 @@ public class Main3Frag extends Fragment {
             @Override
             public void onClick(View v) {
 
-              if(!TextUtils.isEmpty(userid)){
-                  return;
-              }
+                if (!TextUtils.isEmpty(userid)) {
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
@@ -214,11 +234,11 @@ public class Main3Frag extends Fragment {
             public void onClick(View view) {
 
                 Intent intent = new Intent();
-                if(TextUtils.isEmpty(userid)){
+                if (TextUtils.isEmpty(userid)) {
 
-                    intent.setClass(getActivity() , LoginActivity.class);
-                }else {
-                    intent.setClass(getActivity() , UnreadActivity.class);
+                    intent.setClass(getActivity(), LoginActivity.class);
+                } else {
+                    intent.setClass(getActivity(), UnreadActivity.class);
                 }
                 startActivity(intent);
             }
@@ -234,30 +254,74 @@ public class Main3Frag extends Fragment {
     }
 
 
-    //跳转图片选择页面
-    @AfterPermissionGranted(0)
-    private void gotoPhotoPickActivity() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-            BLPickerParam.startActivity(getActivity());
-        } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问读写权限", 0, perms);
-        }
-    }
+//    //跳转图片选择页面
+//    @AfterPermissionGranted(0)
+//    private void gotoPhotoPickActivity() {
+//        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+//        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
+//            BLPickerParam.startActivity(getActivity());
+//        } else {
+//            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问读写权限", 0, perms);
+//        }
+//    }
 
     //获取返回结果数据
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == BLPickerParam.REQUEST_CODE_PHOTO_PICKER) {
-            BLResultParam param = data.getParcelableExtra(BLResultParam.KEY);
-            List<String> imageList = param.getImageList();
-            StringBuilder sb = new StringBuilder();
-            for (String path : imageList) {
-                sb.append(path);
-                sb.append("\n");
-            }
-            ToastUtils.toast(getActivity(), sb.toString());
+//        if (resultCode == RESULT_OK && requestCode == BLPickerParam.REQUEST_CODE_PHOTO_PICKER) {
+//            BLResultParam param = data.getParcelableExtra(BLResultParam.KEY);
+//            List<String> imageList = param.getImageList();
+//            StringBuilder sb = new StringBuilder();
+//            for (String path : imageList) {
+//                sb.append(path);
+//                sb.append("\n");
+//            }
+//            ToastUtils.toast(getActivity(), sb.toString());
+//        }
+
+
+        // 识别成功回调，通用文字识别
+        if (requestCode == REQUEST_CODE_GENERAL_BASIC && resultCode == RESULT_OK) {
+
+            tipDialog = new QMUITipDialog.Builder(getContext())
+                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                    .setTipWord("识别中")
+                    .create();
+            tipDialog.show();
+            RecognizeService.recGeneralBasic(getActivity(), FileUtil.getSaveFile(getActivity()).getAbsolutePath(),
+                    new RecognizeService.ServiceListener() {
+                        @Override
+                        public void onResult(final String result) {
+
+                           // Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                            tipDialog.dismiss();
+                            new QMUIDialog.MessageDialogBuilder(getActivity())
+                                    .setTitle("结果")
+                                    .setMessage(result)
+                                    .addAction("取消", new QMUIDialogAction.ActionListener() {
+                                        @Override
+                                        public void onClick(QMUIDialog dialog, int index) {
+                                                 dialog.dismiss();
+                                        }
+                                    })
+                                    .addAction("复制内容", new QMUIDialogAction.ActionListener() {
+                                        @Override
+                                        public void onClick(QMUIDialog dialog, int index) {
+                                           //获取剪贴板管理器：
+                                            ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                           // 创建普通字符型ClipData
+                                            ClipData mClipData = ClipData.newPlainText("识别结果", result);
+                                           // 将ClipData内容放到系统剪贴板里。
+                                            cm.setPrimaryClip(mClipData);
+                                            Toast.makeText(getActivity(), "复制成功", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+
+                                    .show();
+
+                        }
+                    });
         }
 
     }

@@ -28,7 +28,7 @@ public class NewsModelImpl implements Contract.INewsModel{
     @Override
     public Observable<List<NewBean>> getData(String type, int page, int size) {
         IApiService retrofitInterface = HttpUtils.getInstance().getRetrofitInterface();
-        if (type == Constant.TYPE_ALL){
+        if (type .equals(Constant.TYPE_ALL) ){
           return retrofitInterface.getNewsBean(page,size);
         }else {
             return retrofitInterface.getNewsBean(type,page,size);

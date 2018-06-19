@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         initView();
         setDefaultFragment();
         getNewVersionCode();
-        Toast.makeText(this, "我是热更新toast", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "我是热更新toast", Toast.LENGTH_SHORT).show();
     }
 
     @Override

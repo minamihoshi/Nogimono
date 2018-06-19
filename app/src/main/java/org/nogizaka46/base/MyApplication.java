@@ -6,6 +6,10 @@ import android.graphics.Color;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBaseConfig;
 import com.tencent.bugly.Bugly;
@@ -93,8 +97,29 @@ public class MyApplication extends CrashApplication{
             }
         });
 
+
+
+        initAccessTokenWithAkSk();
+
     }
 
+    /**
+     * 用明文ak，sk初始化
+     */
+    private void initAccessTokenWithAkSk() {
+        OCR.getInstance(this).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken result) {
+                String token = result.getAccessToken();
+               // hasGotToken = true;
+            }
 
+            @Override
+            public void onError(OCRError error) {
+                error.printStackTrace();
+                //alertText("AK，SK方式获取token失败", error.getMessage());
+            }
+        }, getApplicationContext(),  "sp7EL79u595XGfWuyRTZ1yM2", "WRsq72PgIcAE4aYIghGvBSfQeTXMLmIM");
+    }
 
 }

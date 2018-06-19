@@ -24,8 +24,13 @@ public  final static  String KEY_RECOMMEND_URL_KEY="KEY_RECOMMEND_URL_KEY";
 
      public static final String TYPE_ALL  ="TYPE_ALL";
      public static final String  TYPE_MAGAZINE ="magazine";
-     public static final String TYPE_NEWS ="news";
-     public static final String TYPE_BLOG ="blog";
+     public static final String TYPE_BLOG ="4";
+     public static final String TYPE_NEWS ="12";
+     public static final String TYPE_ACT="13";
+     public static final String TYPE_MEDIA ="14";
+     public static final String TYPE_RELEASE ="15";
+     public static final String TYPE_OTHER ="16";
+
 
 
      public static final String USER_ID = "user_id";
