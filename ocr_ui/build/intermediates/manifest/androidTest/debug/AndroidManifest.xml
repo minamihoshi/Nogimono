@@ -4,7 +4,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="25" />
+        android:targetSdkVersion="22" />
 
     <instrumentation
         android:name="android.support.test.runner.AndroidJUnitRunner"
@@ -33,6 +33,10 @@
             android:name="com.baidu.ocr.ui.camera.CameraActivity"
             android:configChanges="screenSize|orientation"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+
+        <meta-data
+            android:name="android.arch.lifecycle.VERSION"
+            android:value="27.0.0-SNAPSHOT" />
     </application>
 
 </manifest>

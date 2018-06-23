@@ -72,22 +72,22 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     Main1Frag main1Frag;
     Main2Frag main2Frag;
     Main3Frag main3Frag;
-    @BindView(R.id.bottom_navigation_view)
+    //@BindView(R.id.toolbar_main)
+    Toolbar toolbar;
+    //@BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbar;
+   // @BindView(R.id.appBar)
+    AppBarLayout appBar;
+    //@BindView(R.id.fragment_container)
+    RelativeLayout fragmentContainer;
+   // @BindView(R.id.bottom_navigation_view)
     BottomNavigationView bottomNavigationView;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
+   // @BindView(R.id.coordinatorlayout)
+    CoordinatorLayout coordinator;
     @BindView(R.id.navigation)
     NavigationView navigation;
-    @BindView(R.id.toolbar_main)
-    Toolbar toolbar;
-    @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout collapsingToolbar;
-    @BindView(R.id.appBar)
-    AppBarLayout appBar;
-    @BindView(R.id.coordinator)
-    CoordinatorLayout coordinator;
-    @BindView(R.id.fragment_container)
-    RelativeLayout fragmentContainer;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     private int INTERVAL_OF_TWO_CLICK_TO_QUIT = 1000;
     private long mLastPressBackTime;
     //private Subscription subscription;
@@ -96,13 +96,19 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     private int versionCode;
     ActionBar supportActionBar;
     CoordinatorLayout.LayoutParams params;
-    private String title , subtitle;
+    private String title, subtitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         ButterKnife.bind(this);
+         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+         toolbar = findViewById(R.id.toolbar_main);
+         appBar = findViewById(R.id.appBar);
+         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+         coordinator  =findViewById(R.id.coordinatorlayout);
+         fragmentContainer = findViewById(R.id.fragment_container);
         initView();
         setDefaultFragment();
         getNewVersionCode();
@@ -135,7 +141,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         //}
 
         transaction.commit();
-       // bottomNavigationView.getMenu().getItem(1).setChecked(true);
+        // bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
         bottomNavigationView.findViewById(R.id.menu_home).performClick();
 
@@ -145,7 +151,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     private void initView() {
 
         setSupportActionBar(toolbar);
-         supportActionBar = getSupportActionBar();
+        supportActionBar = getSupportActionBar();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_close, R.string.navigation_drawer_open);
@@ -160,19 +166,19 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         appBar.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                if( state == State.EXPANDED ) {
+                if (state == State.EXPANDED) {
 
                     //展开状态
                     toolbar.setTitle(title);
                     toolbar.setSubtitle(subtitle);
 
-                }else if(state == State.COLLAPSED){
+                } else if (state == State.COLLAPSED) {
 
                     //折叠状态
                     toolbar.setTitle("");
                     toolbar.setSubtitle("");
 
-                }else {
+                } else {
                     //中间状态
 
                 }
@@ -274,11 +280,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 } else {
                     transaction.show(main1Frag);
                 }
-                 params =
+                params =
                         (CoordinatorLayout.LayoutParams) fragmentContainer.getLayoutParams();
                 params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
                 fragmentContainer.requestLayout();
-                appBar.setExpanded(true,true);
+                appBar.setExpanded(true, true);
                 title = getResources().getString(R.string.tab_mainpage_gz);
                 subtitle = "双击进入全部";
                 toolbar.setTitle(title);
@@ -294,14 +300,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     transaction.show(main2Frag);
                 }
 
-                 params =
-                      (CoordinatorLayout.LayoutParams) fragmentContainer.getLayoutParams();
+                params =
+                        (CoordinatorLayout.LayoutParams) fragmentContainer.getLayoutParams();
                 params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
                 fragmentContainer.requestLayout();
 
                 appBar.setExpanded(true);
                 title = getResources().getString(R.string.tab_mainpage);
-                subtitle="";
+                subtitle = "";
                 toolbar.setTitle(title);
                 toolbar.setSubtitle("");
 
@@ -309,7 +315,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
             case R.id.menu_me:
 
-               // appBar.setVisibility(View.GONE);
+                // appBar.setVisibility(View.GONE);
 //                params =
 //                        (CoordinatorLayout.LayoutParams) fragmentContainer.getLayoutParams();
 //                params.setBehavior(null);
@@ -322,10 +328,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 } else {
                     transaction.show(main3Frag);
                 }
-                Log.e("TAG", "onNavigationItemSelected: 11111111" );
+                Log.e("TAG", "onNavigationItemSelected: 11111111");
                 appBar.setExpanded(false);
                 appBar.setExpanded(false);
-                Log.e("TAG", "onNavigationItemSelected: 2222222" );
+                Log.e("TAG", "onNavigationItemSelected: 2222222");
                 toolbar.setTitle(getResources().getString(R.string.tab_mainpage_me));
                 toolbar.setSubtitle("");
                 break;
@@ -568,8 +574,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 .create()
                 .show();
     }
-
-
 
 
 }

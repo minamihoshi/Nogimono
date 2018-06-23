@@ -56,7 +56,7 @@ public class Main2Frag extends Fragment {
         //viewPager.setPageTransformer();
     }
     private void initData() {
-       // 11 博客（推特类） 12 新闻  13 出演 14 通稿 15发售 16 其他
+       // 4 博客（推特类） 12 新闻  13 出演 14 通稿 15发售 16 其他
         mTitleList.add(getResources().getString(R.string.tab_1_txt));
         mTitleList.add(getResources().getString(R.string.tab_3_txt));
         mTitleList.add(getResources().getString(R.string.tab_2_txt));
