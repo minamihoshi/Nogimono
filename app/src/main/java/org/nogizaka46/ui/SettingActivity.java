@@ -24,7 +24,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.umeng.message.common.Const;
+
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;

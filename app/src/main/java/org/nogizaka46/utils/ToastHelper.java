@@ -1,6 +1,7 @@
 package org.nogizaka46.utils;
 
 import android.content.Context;
+import android.os.Looper;
 import android.widget.Toast;
 
 /**
@@ -29,7 +30,28 @@ public class ToastHelper {
         }
         toast.show();
     }
+    public static void Toastshow(final Context context, final String text) {
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(500);
+//                    Looper.prepare();
+//                    Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+//                    Looper.loop();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+        if (toast == null) {
+            toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        } else {
+            toast.setText(text);
+        }
+        toast.show();
+    }
 
     }
 

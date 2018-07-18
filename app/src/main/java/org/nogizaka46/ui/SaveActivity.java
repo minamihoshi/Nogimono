@@ -20,12 +20,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.umeng.socialize.ShareAction;
+//import com.umeng.socialize.ShareAction;
+//import com.umeng.socialize.UMShareAPI;
+//import com.umeng.socialize.UMShareListener;
+//import com.umeng.socialize.bean.SHARE_MEDIA;
+//import com.umeng.socialize.media.UMImage;
+//import com.umeng.socialize.media.UMWeb;
+
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
 
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.MyNewsAdapter;
@@ -38,6 +40,7 @@ import org.nogizaka46.config.UrlConfig;
 import org.nogizaka46.utils.DividerItemDecoration;
 import org.nogizaka46.utils.ToastHelper;
 import org.nogizaka46.utils.UMShareUtil;
+//import org.nogizaka46.utils.UMShareUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +186,8 @@ public class SaveActivity extends BaseActivity implements MyNewsAdapter.onNewsCl
                     WithpicBean withpicBean = withpic.get(0);
                     image = withpicBean.getImage();
                 }
-                UMShareUtil.shareUrl(SaveActivity.this,url,title,summary,image,umShareListener);
+                UMShareUtil.shareUrl(SaveActivity.this,url,title,summary,image);
+             //   UMShareUtil.shareUrl(SaveActivity.this,url,title,summary,image,umShareListener);
 //                new ShareAction(SaveActivity.this).setPlatform(SHARE_MEDIA.QQ)
 //                        .withMedia(getUmengWeb(url,title,summary))
 //                        .setDisplayList(SHARE_MEDIA.QQ)
@@ -217,31 +221,31 @@ public class SaveActivity extends BaseActivity implements MyNewsAdapter.onNewsCl
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
 
     }
-    private UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-            //分享开始的回调
-        }
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-
-            Toast.makeText(SaveActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(SaveActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            if(t!=null){
-                com.umeng.socialize.utils.Log.d("throw","throw:"+t.getMessage());
-            }
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(SaveActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-        }
-    };
+//    private UMShareListener umShareListener = new UMShareListener() {
+//        @Override
+//        public void onStart(SHARE_MEDIA platform) {
+//            //分享开始的回调
+//        }
+//        @Override
+//        public void onResult(SHARE_MEDIA platform) {
+//
+//            Toast.makeText(SaveActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//        @Override
+//        public void onError(SHARE_MEDIA platform, Throwable t) {
+//            Toast.makeText(SaveActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+//            if(t!=null){
+//                com.umeng.socialize.utils.Log.d("throw","throw:"+t.getMessage());
+//            }
+//        }
+//
+//        @Override
+//        public void onCancel(SHARE_MEDIA platform) {
+//            Toast.makeText(SaveActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+//        }
+//    };
 
 
 //    UMWeb getUmengWeb(String url, String title , String des){

@@ -31,6 +31,16 @@ android {
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 
     signingConfigs {
+//        release {
+//            try {
+//                storeFile file("./minamihoshi.jks")
+//                storePassword "linan123"
+//                keyAlias "key0"
+//                keyPassword "linan123"
+//            } catch (ex) {
+//                throw new InvalidUserDataException(ex.toString())
+//            }
+//        }
         release {
             try {
                 storeFile file("./minamihoshi.jks")
@@ -40,8 +50,21 @@ android {
             } catch (ex) {
                 throw new InvalidUserDataException(ex.toString())
             }
+            keyAlias 'key0'
+            keyPassword 'linan123'
+            storeFile file('C:/Users/Administrator/Desktop/Nogimono/app/minamihoshi.jks')
+            storePassword 'linan123'
         }
-
+//        release {
+//            try {
+//                storeFile file("./lrzhaokey.jks")
+//                storePassword "f1374896"
+//                keyAlias "lrzhaokey"
+//                keyPassword "f1374896"
+//            } catch (ex) {
+//                throw new InvalidUserDataException(ex.toString())
+//            }
+//        }
 //        debug {
 //            // storeFile file("./debug.keystore")
 //            try {
@@ -53,12 +76,21 @@ android {
 //                throw new InvalidUserDataException(ex.toString())
 //            }
 //        }
+        config {
+            keyAlias 'key0'
+            keyPassword 'linan123'
+            storeFile file('./minamihoshi.jks')
+            storePassword 'linan123'
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters "x86", "armeabi", "armeabi-v7a"
+            }
         }
         debug {
             minifyEnabled false
@@ -94,18 +126,11 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.android.support:support-v4:27.0.1'
-    //compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
-    compile files('libs/libs/umeng_social_tool.jar')
-    compile files('libs/libs/umeng_social_shareview.jar')
-    compile files('libs/libs/umeng_social_net.jar')
-    compile files('libs/libs/umeng_social_api.jar')
-    compile files('libs/libs/SocialSDK_WeChat_Simplify.jar')
-    compile files('libs/libs/SocialSDK_Sina_Simplify.jar')
-    compile files('libs/libs/SocialSDK_QQ_Simplify.jar')
-    compile files('libs/libs/umeng_shareboard_widget.jar')
-    compile files('libs/libs/umeng_social_shareboard.jar')
-    compile project(':PushSDK')
+    // compile files('libs/libs/umeng_social_tool.jar')
+    //   compile files('libs/libs/umeng_social_net.jar')
+    //  compile files('libs/libs/umeng_social_api.jar')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.6'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
@@ -120,11 +145,30 @@ dependencies {
     //    compile ('com.github.xingxing-yan:BLImage:1.0.0'){
     //        exclude group: 'com.github.bumptech.glide', module: 'glide'
     //    }
-//    compile(project(':beautifylib')) {
-//        exclude group: 'com.github.bumptech.glide', module: 'glide'
-//        exclude module: 'ucrop'
-//    }
+    //    compile(project(':beautifylib')) {
+    //        exclude group: 'com.github.bumptech.glide', module: 'glide'
+    //        exclude module: 'ucrop'
+    //    }
     implementation files('libs/ocr-sdk.jar')
     implementation project(':ocr_ui')
+    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+    compile 'com.umeng.sdk:common:1.5.3'
+    //PushSDK必须依赖utdid库，所以需要加入对应依赖
+    compile 'com.umeng.sdk:utdid:1.1.5.3'
+    //PushSDK
+    compile 'com.umeng.sdk:push:4.2.0'
+    compile 'com.umeng.sdk:push-huawei:1.0.0'
+    compile 'com.umeng.sdk:push-xiaomi:1.0.0'
+    compile 'com.umeng.sdk:push-meizu:1.0.0'
+    //    // implementation project(':PushSDK')
+    implementation files('libs/libs/umeng-share-QQ-simplify-6.9.2.jar')
+    implementation files('libs/libs/umeng-share-sina-simplify-6.9.2.jar')
+    implementation files('libs/libs/umeng-share-wechat-simplify-6.9.2.jar')
+    implementation files('libs/libs/umeng-shareboard-widget-6.9.2.jar')
+    implementation files('libs/libs/utdid4all-1.1.5.3_proguard.jar')
+    //  implementation files('libs/libs/umeng-common-1.5.3.jar')
+    implementation files('libs/libs/umeng-sharetool-6.9.2.jar')
+    implementation files('libs/libs/umeng-share-core-6.9.2.jar')
+    //implementation project(':UMLibrary')
 }
 apply from: 'tinker-support.gradle'

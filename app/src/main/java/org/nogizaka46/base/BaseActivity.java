@@ -16,6 +16,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
+
 import org.nogizaka46.R;
 
 import java.util.ArrayList;

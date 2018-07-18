@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NogiZaka468.iml" filepath="$PROJECT_DIR$/NogiZaka468.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PushSDK/PushSDK.iml" filepath="$PROJECT_DIR$/PushSDK/PushSDK.iml" />
+      <module fileurl="file://C:\Users\Administrator\Desktop\Nogimono-master\Nogimono-master\NogiZaka468.iml" filepath="C:\Users\Administrator\Desktop\Nogimono-master\Nogimono-master\NogiZaka468.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Nogimono.iml" filepath="$PROJECT_DIR$/Nogimono.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UMLibrary/UMLibrary.iml" filepath="$PROJECT_DIR$/UMLibrary/UMLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/beautifylib/beautifylib.iml" filepath="$PROJECT_DIR$/beautifylib/beautifylib.iml" />
       <module fileurl="file://$PROJECT_DIR$/ocr_ui/ocr_ui.iml" filepath="$PROJECT_DIR$/ocr_ui/ocr_ui.iml" />

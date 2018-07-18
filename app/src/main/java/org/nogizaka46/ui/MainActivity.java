@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+//import com.umeng.socialize.UMShareAPI;
+//import com.umeng.socialize.UMShareListener;
+//import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.nogizaka46.R;
 import org.nogizaka46.base.BaseActivity;
@@ -58,6 +62,7 @@ import org.nogizaka46.ui.fragment.MemberFrag.Main1Frag;
 import org.nogizaka46.utils.ClearCacheUtils;
 import org.nogizaka46.utils.ToastHelper;
 import org.nogizaka46.utils.UMShareUtil;
+//import org.nogizaka46.utils.UMShareUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -118,6 +123,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     @Override
     public void onResume() {
         super.onResume();
+
 
     }
 
@@ -231,7 +237,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                         startActivity(intent1);
                         break;
                     case R.id.nav_share:
-                        UMShareUtil.shareUrl(MainActivity.this, download, "我在使用乃木物", "坂道系综合资讯app 一起来用吧~", null, umShareListener);
+                        //分享按钮
+
+                       UMShareUtil.shareUrl(MainActivity.this, download, "我在使用乃木物", "坂道系综合资讯app 一起来用吧~", null);
                         break;
 
                     case R.id.nav_manage:
@@ -521,32 +529,71 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     }
 
-    private UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-            //分享开始的回调
-        }
-
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-
-            Toast.makeText(MainActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(MainActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            if (t != null) {
-                com.umeng.socialize.utils.Log.d("throw", "throw:" + t.getMessage());
-            }
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(MainActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-        }
-    };
+//    private UMShareListener umShareListener = new UMShareListener() {
+//        @Override
+//        public void onStart(SHARE_MEDIA platform) {
+//            //分享开始的回调
+//        }
+//
+//        @Override
+//        public void onResult(SHARE_MEDIA platform) {
+//
+//            Toast.makeText(MainActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//        @Override
+//        public void onError(SHARE_MEDIA platform, Throwable t) {
+//            Toast.makeText(MainActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+//            if (t != null) {
+//             Log.d("throw", "throw:" + t.getMessage());
+//            }
+//        }
+//
+//        @Override
+//        public void onCancel(SHARE_MEDIA platform) {
+//            Toast.makeText(MainActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+//        }
+//    };
+//    private UMShareListener shareListener = new UMShareListener() {
+//        /**
+//         * @descrption 分享开始的回调
+//         * @param platform 平台类型
+//         */
+//        @Override
+//        public void onStart(SHARE_MEDIA platform) {
+//
+//        }
+//
+//        /**
+//         * @descrption 分享成功的回调
+//         * @param platform 平台类型
+//         */
+//        @Override
+//        public void onResult(SHARE_MEDIA platform) {
+//            Toast.makeText(MainActivity.this,"成功                                        了",Toast.LENGTH_LONG).show();
+//        }
+//
+//        /**
+//         * @descrption 分享失败的回调
+//         * @param platform 平台类型
+//         * @param t 错误原因
+//         */
+//        @Override
+//        public void onError(SHARE_MEDIA platform, Throwable t) {
+//            Toast.makeText(MainActivity.this,"失                                            败"+t.getMessage(),Toast.LENGTH_LONG).show();
+//        }
+//
+//        /**
+//         * @descrption 分享取消的回调
+//         * @param platform 平台类型
+//         */
+//        @Override
+//        public void onCancel(SHARE_MEDIA platform) {
+//            Toast.makeText(MainActivity.this,"取消                                          了",Toast.LENGTH_LONG).show();
+//
+//        }
+//    };
 
     private void showConfirmMessageDialog() {
         final QMUIDialog.CheckBoxMessageDialogBuilder builder = new QMUIDialog.CheckBoxMessageDialogBuilder(this);

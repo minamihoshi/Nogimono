@@ -1,1 +1,1 @@
-include ':app', ':PushSDK',':ocr_ui', ':beautifylib'
+include ':app', ':ocr_ui', ':beautifylib', ':UMLibrary'

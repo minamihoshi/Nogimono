@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <!--Theme.AppCompat.Light.NoActionBar-->
@@ -131,6 +131,8 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
-
+    <!--<style name="Theme_Umeng_Push_Splash" parent="android:Theme.NoTitleBar.Fullscreen" tools:ignore="DuplicateDefinition">-->
+        <!--<item name="android:windowBackground">@drawable/umeng_push_default_splash_bg</item>-->
+    <!--</style>-->
 
 </resources>

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.utils.Log;
+//import com.umeng.socialize.UMShareListener;
+//import com.umeng.socialize.bean.SHARE_MEDIA;
+//import com.umeng.socialize.media.UMImage;
+//import com.umeng.socialize.media.UMWeb;
+//import com.umeng.socialize.utils.Log;
 
 import org.nogizaka46.R;
 import org.nogizaka46.adapter.MyNewsAdapter;
@@ -42,6 +43,7 @@ import org.nogizaka46.ui.WebPageActivity;
 import org.nogizaka46.utils.SpacesItemDecoration;
 import org.nogizaka46.utils.ToastHelper;
 import org.nogizaka46.utils.UMShareUtil;
+//import org.nogizaka46.utils.UMShareUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -260,7 +262,8 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
                     image = withpicBean.getImage();
                 }
                 popupWindow.dismiss();
-                UMShareUtil.shareUrl((Activity) mContext, url, title, summary, image, umShareListener);
+                //分享位置
+               UMShareUtil.shareUrl((Activity) mContext, url, title, summary, image);
 //                new ShareAction((Activity) mContext).setPlatform(SHARE_MEDIA.QQ)
 //                        .withText("分享")
 //                        .withMedia(getUmengWeb(url,title,summary))
@@ -302,47 +305,48 @@ public class NewsFragment extends Fragment implements Contract.INewsView, MyNews
         startActivity(intent);
     }
 
-    private UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-            //分享开始的回调
-        }
+//    private UMShareListener umShareListener = new UMShareListener() {
+//        @Override
+//        public void onStart(SHARE_MEDIA platform) {
+//            //分享开始的回调
+//        }
+//
+//        @Override
+//        public void onResult(SHARE_MEDIA platform) {
+//
+//            Toast.makeText(getActivity(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//        @Override
+//        public void onError(SHARE_MEDIA platform, Throwable t) {
+//            Toast.makeText(getActivity(), platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+//            if (t != null) {
+//                Log.d("throw", "throw:" + t.getMessage());
+//            }
+//        }
+//
+//        @Override
+//        public void onCancel(SHARE_MEDIA platform) {
+//            Toast.makeText(getActivity(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+//        }
+//    };
+//
+//
+//    UMWeb getUmengWeb(String url, String title, String des) {
+//        UMWeb web = new UMWeb(url);
+//        web.setTitle(title);//标题
+//        //web.setThumb();  //缩略图
+//        web.setDescription(des);//描述
+//        return web;
+//    }
+//
+//    UMImage getUMimage() {
+//
+//        UMImage image = new UMImage(getActivity(), R.mipmap.ic_launcher);
+//        UMImage thumb = new UMImage(getActivity(), R.mipmap.ic_launcher);
+//        image.setThumb(thumb);
+//        return image;
+//    }
 
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-
-            Toast.makeText(getActivity(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(getActivity(), platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            if (t != null) {
-                Log.d("throw", "throw:" + t.getMessage());
-            }
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(getActivity(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-
-    UMWeb getUmengWeb(String url, String title, String des) {
-        UMWeb web = new UMWeb(url);
-        web.setTitle(title);//标题
-        //web.setThumb();  //缩略图
-        web.setDescription(des);//描述
-        return web;
-    }
-
-    UMImage getUMimage() {
-
-        UMImage image = new UMImage(getActivity(), R.mipmap.ic_launcher);
-        UMImage thumb = new UMImage(getActivity(), R.mipmap.ic_launcher);
-        image.setThumb(thumb);
-        return image;
-    }
 }
